@@ -2,7 +2,8 @@ name: Release
 
 # On a version tag (v1.2.3, v1.2.3-beta.1): the tests, then the ua_cryptography library (crates/ua-cryptography-ffi) for
 # every platform, then a GitHub release with one archive per platform and SHA256SUMS, then the npm package
-# ua-cryptography once the author approves the `npm` environment. The crates go to crates.io by hand (`cargo publish`).
+# ua-cryptography once the author approves the `npm` environment and the crates on crates.io once the author approves
+# the `crates-io` environment.
 
 on:
   push:
@@ -430,3 +431,28 @@ jobs:
           tag="latest"
           if [[ "$VERSION" == *-* ]]; then tag="next"; fi
           npm publish "ua-cryptography-$VERSION.tgz" --access public --tag "$tag"
+
+  # Publishing is the author's decision: the job waits for an approval of the `crates-io` environment (Settings →
+  # Environments → crates-io → Required reviewers). crates.io trusts this workflow by OIDC (each crate's Trusted
+  # Publishing settings), so no token is stored; the one the job obtains lives 30 minutes.
+  crates-io:
+    needs: [release]
+    runs-on: ubuntu-latest
+    environment: crates-io
+    permissions:
+      contents: read
+      id-token: write # the OIDC token crates.io exchanges for a publish token
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: rust-lang/crates-io-auth-action@v1
+        id: auth
+
+      # In dependency order, each crate waiting for the previous one to reach the index; the crates with
+      # publish = false (ffi, operations, wasm) are skipped.
+      - name: Publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+        run: cargo publish --workspace --locked

@@ -3,7 +3,7 @@ resolver = "3"
 members = ["crates/*"]
 
 [workspace.package]
-version = "0.2.0"
+version = "0.1.5"
 edition = "2024"
 rust-version = "1.85"
 license = "MIT"
@@ -12,18 +12,18 @@ repository = "https://github.com/ua-cryptography/ua-cryptography-rust"
 [workspace.dependencies]
 # The crates of this workspace. crates.io needs the version beside the path; it stays equal to the workspace version
 # (build_scripts/check-crate-versions.sh, run by CI).
-ua-cryptography-gf2m = { path = "crates/ua-cryptography-gf2m", version = "0.2.0" }
-ua-cryptography-gost = { path = "crates/ua-cryptography-gost", version = "0.2.0" }
-ua-cryptography-dstu4145 = { path = "crates/ua-cryptography-dstu4145", version = "0.2.0" }
-ua-cryptography-dstu-sboxes = { path = "crates/ua-cryptography-dstu-sboxes", version = "0.2.0" }
-ua-cryptography-dstu7564 = { path = "crates/ua-cryptography-dstu7564", version = "0.2.0" }
-ua-cryptography-dstu7624 = { path = "crates/ua-cryptography-dstu7624", version = "0.2.0" }
-ua-cryptography-der = { path = "crates/ua-cryptography-der", version = "0.2.0" }
-ua-cryptography-xml-c14n = { path = "crates/ua-cryptography-xml-c14n", version = "0.2.0" }
+ua-cryptography-gf2m = { path = "crates/ua-cryptography-gf2m", version = "0.1.5" }
+ua-cryptography-gost = { path = "crates/ua-cryptography-gost", version = "0.1.5" }
+ua-cryptography-dstu4145 = { path = "crates/ua-cryptography-dstu4145", version = "0.1.5" }
+ua-cryptography-dstu-sboxes = { path = "crates/ua-cryptography-dstu-sboxes", version = "0.1.5" }
+ua-cryptography-dstu7564 = { path = "crates/ua-cryptography-dstu7564", version = "0.1.5" }
+ua-cryptography-dstu7624 = { path = "crates/ua-cryptography-dstu7624", version = "0.1.5" }
+ua-cryptography-der = { path = "crates/ua-cryptography-der", version = "0.1.5" }
+ua-cryptography-xml-c14n = { path = "crates/ua-cryptography-xml-c14n", version = "0.1.5" }
 # Without its HTTP clients unless a crate asks for feature `http` (they do not build for wasm32-unknown-unknown).
-ua-cryptography-pki = { path = "crates/ua-cryptography-pki", version = "0.2.0", default-features = false }
+ua-cryptography-pki = { path = "crates/ua-cryptography-pki", version = "0.1.5", default-features = false }
 # The layer under the C ABI and the JavaScript bindings; never published.
-ua-cryptography-operations = { path = "crates/ua-cryptography-operations", version = "0.2.0" }
+ua-cryptography-operations = { path = "crates/ua-cryptography-operations", version = "0.1.5" }
 
 # Third-party crates; each crate that uses one says why in its own Cargo.toml.
 num-bigint = "0.4"
