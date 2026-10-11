@@ -1,0 +1,18 @@
+[package]
+name = "ua-cryptography-gost"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "GOST 28147-89 block cipher and GOST 34.311-95 hash function with any substitution table (DKE)"
+keywords = ["gost", "gost28147", "gost34311", "hash", "cipher"]
+categories = ["cryptography"]
+repository.workspace = true
+# The tests read testdata/ of the workspace, which a package cannot carry: they run in the repository.
+include = ["src/**", "README.md", "LICENSE"]
+
+[dependencies]
+
+[dev-dependencies]
+# Reads the BouncyCastle answers recorded by tools/csharp-oracle.
+serde_json.workspace = true

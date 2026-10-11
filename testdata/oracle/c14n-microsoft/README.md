@@ -21,5 +21,5 @@ where Microsoft and the C# canonicalizer disagree. Canonical forms are stored as
   non-ASCII names, a BOM and XML declaration, default-namespace undeclaration), every method over the document and
   every element; `microsoftInclusiveWithComments` is Microsoft's whole-document output, for comparison.
 
-Read by `crates/ua-xml-c14n/tests/canonicalizer_against_microsoft.rs` and
-`crates/ua-xml-c14n/tests/canonicalizer_against_reference.rs`.
+Read by `crates/ua-cryptography-xml-c14n/tests/canonicalizer_against_microsoft.rs` and
+`crates/ua-cryptography-xml-c14n/tests/canonicalizer_against_reference.rs`.

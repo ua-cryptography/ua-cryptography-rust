@@ -1,0 +1,537 @@
+//! Known-answer tests of DSTU 7624:2014 (the examples BouncyCastle's DSTU7624Test uses) and the parameter checks.
+
+mod common;
+
+use common::from_hex;
+use ua_cryptography_dstu7624::BlockSize;
+use ua_cryptography_dstu7624::Cbc;
+use ua_cryptography_dstu7624::Ccm;
+use ua_cryptography_dstu7624::Cfb;
+use ua_cryptography_dstu7624::CipherFailure;
+use ua_cryptography_dstu7624::Cmac;
+use ua_cryptography_dstu7624::Ctr;
+use ua_cryptography_dstu7624::Ecb;
+use ua_cryptography_dstu7624::Gcm;
+use ua_cryptography_dstu7624::Gmac;
+use ua_cryptography_dstu7624::KeyWrap;
+use ua_cryptography_dstu7624::Ofb;
+use ua_cryptography_dstu7624::SetupError;
+use ua_cryptography_dstu7624::Xts;
+
+struct Example {
+    number: usize,
+    mode: &'static str,
+    block_bits: usize,
+    segment_bits: usize,
+    key: &'static str,
+    iv: &'static str,
+    input: &'static str,
+    output: &'static str,
+}
+
+/// Block cipher, CBC, CFB, OFB and CTR examples of the standard.
+const EXAMPLES: [Example; 26] = [
+    Example {
+        number: 0,
+        mode: "ecb",
+        block_bits: 128,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F",
+        iv: "",
+        input: "101112131415161718191A1B1C1D1E1F",
+        output: "81BF1C7D779BAC20E1C9EA39B4D2AD06",
+    },
+    Example {
+        number: 1,
+        mode: "ecb",
+        block_bits: 128,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F",
+        iv: "",
+        input: "202122232425262728292A2B2C2D2E2F",
+        output: "58EC3E091000158A1148F7166F334F14",
+    },
+    Example {
+        number: 2,
+        mode: "ecb",
+        block_bits: 256,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F",
+        iv: "",
+        input: "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+        output: "F66E3D570EC92135AEDAE323DCBD2A8CA03963EC206A0D5A88385C24617FD92C",
+    },
+    Example {
+        number: 3,
+        mode: "ecb",
+        block_bits: 256,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+        iv: "",
+        input: "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F",
+        output: "606990E9E6B7B67A4BD6D893D72268B78E02C83C3CD7E102FD2E74A8FDFE5DD9",
+    },
+    Example {
+        number: 4,
+        mode: "ecb",
+        block_bits: 512,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+        iv: "",
+        input: "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E7F",
+        output: "4A26E31B811C356AA61DD6CA0596231A67BA8354AA47F3A13E1DEEC320EB56B895D0F417175BAB662FD6F134BB15C86CCB906A26856EFEB7C5BC6472940DD9D9",
+    },
+    Example {
+        number: 5,
+        mode: "cbc",
+        block_bits: 128,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F",
+        iv: "101112131415161718191A1B1C1D1E1F",
+        input: "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F404142434445464748494A4B4C4D4E4F",
+        output: "A73625D7BE994E85469A9FAABCEDAAB6DBC5F65DD77BB35E06BD7D1D8EAFC8624D6CB31CE189C82B8979F2936DE9BF14",
+    },
+    Example {
+        number: 6,
+        mode: "cbc",
+        block_bits: 128,
+        segment_bits: 0,
+        key: "0F0E0D0C0B0A09080706050403020100",
+        iv: "1F1E1D1C1B1A19181716151413121110",
+        input: "88F2F048BA696170E3818915E0DBC0AFA6F141FEBC2F817138DA4AAB2DBF9CE490A488C9C82AC83FB0A6C0EEB64CFD22",
+        output: "4F4E4D4C4B4A494847464544434241403F3E3D3C3B3A393837363534333231302F2E2D2C2B2A29282726252423222120",
+    },
+    Example {
+        number: 7,
+        mode: "cbc",
+        block_bits: 128,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F",
+        iv: "202122232425262728292A2B2C2D2E2F",
+        input: "303132333435363738393A3B3C3D3E3F404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D8000",
+        output: "13EA15843AD14C50BC03ECEF1F43E398E4217752D3EB046AC393DACC5CA1D6FA0EB9FCEB229362B4F1565527EE3D8433",
+    },
+    Example {
+        number: 8,
+        mode: "cbc",
+        block_bits: 128,
+        segment_bits: 0,
+        key: "1F1E1D1C1B1A191817161514131211100F0E0D0C0B0A09080706050403020100",
+        iv: "2F2E2D2C2B2A29282726252423222120",
+        input: "BC8F026FC603ECE05C24FDE87542730999B381870882AC0535D4368C4BABD81B884E96E853EE7E055262D9D204FBE212",
+        output: "5F5E5D5C5B5A595857565554535251504F4E4D4C4B4A494847464544434241403F3E3D3C3B3A39383736353433323130",
+    },
+    Example {
+        number: 9,
+        mode: "cbc",
+        block_bits: 256,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F",
+        iv: "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+        input: "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E7F808182838485868788898A8B8C8D8E8F909192939495969798999A9B9C9D9E9F",
+        output: "9CDFDAA75929E7C2A5CFC1BF16B42C5AE3886D0258E8C577DC01DAF62D185FB999B9867736B87110F5F1BC7481912C593F48FF79E2AFDFAB9F704A277EC3E557B1B0A9F223DAE6ED5AF591C4F2D6FB22E48334F5E9B96B1A2EA5200F30A406CE",
+    },
+    Example {
+        number: 10,
+        mode: "cbc",
+        block_bits: 256,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+        iv: "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F",
+        input: "606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E7F808182838485868788898A8B8C8D8E8F909192939495969798999A9B9C9D9E9FA0A1A2A3A4A5A6A7A8A9AAABACADAEAFB0B1B2B3B4B5B6B7B8B9BABBBCBDBEBF",
+        output: "B8A2474578C2FEBF3F94703587BD5FDC3F4A4D2F43575B6144A1E1031FB3D1452B7FD52F5E3411461DAC506869FF8D2FAEF4FEE60379AE00B33AA3EAF911645AF8091CD8A45D141D1FB150E5A01C1F26FF3DBD26AC4225EC7577B2CE57A5B0FF",
+    },
+    Example {
+        number: 11,
+        mode: "cbc",
+        block_bits: 256,
+        segment_bits: 0,
+        key: "3F3E3D3C3B3A393837363534333231302F2E2D2C2B2A292827262524232221201F1E1D1C1B1A191817161514131211100F0E0D0C0B0A09080706050403020100",
+        iv: "5F5E5D5C5B5A595857565554535251504F4E4D4C4B4A49484746454443424140",
+        input: "C69A59E10D00F087319B62288A57417C074EAD07C732A87055F0A5AD2BB288105705C45E091A9A6726E9672DC7D8C76FC45C782BCFEF7C39D94DEB84B17035BC8651255A0D34373451B6E1A2C827DB97566C9FF5506C5579F982A0EFC5BA7C28",
+        output: "BFBEBDBCBBBAB9B8B7B6B5B4B3B2B1B0AFAEADACABAAA9A8A7A6A5A4A3A2A1A09F9E9D9C9B9A999897969594939291908F8E8D8C8B8A898887868584838281807F7E7D7C7B7A797877767574737271706F6E6D6C6B6A69686766656463626160",
+    },
+    Example {
+        number: 12,
+        mode: "cbc",
+        block_bits: 512,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+        iv: "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E7F",
+        input: "808182838485868788898A8B8C8D8E8F909192939495969798999A9B9C9D9E9FA0A1A2A3A4A5A6A7A8A9AAABACADAEAFB0B1B2B3B4B5B6B7B8B9BABBBCBDBEBFC0C1C2C3C4C5C6C7C8C9CACBCCCDCECFD0D1D2D3D4D5D6D7D8D9DADBDCDDDEDFE0E1E2E3E4E5E6E7E8E9EAEBECEDEEEFF0F1F2F3F4F5F6F7F8F9FAFBFCFDFEFF",
+        output: "D4739B829EF901B24C1162AE4FDEF897EDA41FAC7F5770CDC90E1D1CDF124E8D7831E06B4498A4B6F6EC815DF2461DC99BB0449B0F09FCAA2C84090534BCC9329626FD74EF8F0A0BCB5765184629C3CBF53B0FB134F6D0421174B1C4E884D1CD1069A7AD19752DCEBF655842E79B7858BDE01390A760D85E88925BFE38B0FA57",
+    },
+    Example {
+        number: 13,
+        mode: "cbc",
+        block_bits: 512,
+        segment_bits: 0,
+        key: "3F3E3D3C3B3A393837363534333231302F2E2D2C2B2A292827262524232221201F1E1D1C1B1A191817161514131211100F0E0D0C0B0A09080706050403020100",
+        iv: "7F7E7D7C7B7A797877767574737271706F6E6D6C6B6A696867666564636261605F5E5D5C5B5A595857565554535251504F4E4D4C4B4A49484746454443424140",
+        input: "5D5B3E3DE5BAA70E0A0684D458856CE759C6018D0B3F087FC1DAC101D380236DD934F2880B02D56A575BCA35A0CE4B0D9BA1F4A39C16CA7D80D59956630F09E54EC91E32B6830FE08323ED393F8028D150BF03CAD0629A5AFEEFF6E44257980618DB2F32B7B2B65B96E8451F1090829D2FFFC615CC1581E9221438DCEAD1FD12",
+        output: "FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0EFEEEDECEBEAE9E8E7E6E5E4E3E2E1E0DFDEDDDCDBDAD9D8D7D6D5D4D3D2D1D0CFCECDCCCBCAC9C8C7C6C5C4C3C2C1C0BFBEBDBCBBBAB9B8B7B6B5B4B3B2B1B0AFAEADACABAAA9A8A7A6A5A4A3A2A1A09F9E9D9C9B9A999897969594939291908F8E8D8C8B8A89888786858483828180",
+    },
+    Example {
+        number: 14,
+        mode: "cfb",
+        block_bits: 128,
+        segment_bits: 128,
+        key: "000102030405060708090A0B0C0D0E0F",
+        iv: "101112131415161718191A1B1C1D1E1F",
+        input: "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F404142434445464748494A4B4C4D4E4F",
+        output: "A19E3E5E53BE8A07C9E0C01298FF83291F8EE6212110BE3FA5C72C88A082520B265570FE28680719D9B4465E169BC37A",
+    },
+    Example {
+        number: 15,
+        mode: "ofb",
+        block_bits: 128,
+        segment_bits: 128,
+        key: "000102030405060708090A0B0C0D0E0F",
+        iv: "101112131415161718191A1B1C1D1E1F",
+        input: "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F404142434445464748494A4B4C4D4E4F",
+        output: "A19E3E5E53BE8A07C9E0C01298FF832953205C661BD85A51F3A94113BC785CAB634B36E89A8FDD16A12E4467F5CC5A26",
+    },
+    Example {
+        number: 16,
+        mode: "ofb",
+        block_bits: 128,
+        segment_bits: 128,
+        key: "0F0E0D0C0B0A09080706050403020100",
+        iv: "1F1E1D1C1B1A19181716151413121110",
+        input: "649A1EAAE160AF20F5B3EF2F58D66C1178B82E00D26F30689C8EC22E8E86E9CBB0BD4FFEE39EB13C2311276A906DD636",
+        output: "4F4E4D4C4B4A494847464544434241403F3E3D3C3B3A393837363534333231302F2E2D2C2B2A29282726252423222120",
+    },
+    Example {
+        number: 17,
+        mode: "ofb",
+        block_bits: 128,
+        segment_bits: 128,
+        key: "1F1E1D1C1B1A191817161514131211100F0E0D0C0B0A09080706050403020100",
+        iv: "2F2E2D2C2B2A29282726252423222120",
+        input: "1A66CFBFEC00C6D52E39923E858DD64B214AB787798D3D5059A6B498AD66B34EAC48C4074BEC0D98C6",
+        output: "5F5E5D5C5B5A595857565554535251504F4E4D4C4B4A494847464544434241403F3E3D3C3B3A393837",
+    },
+    Example {
+        number: 18,
+        mode: "ofb",
+        block_bits: 256,
+        segment_bits: 256,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F",
+        iv: "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+        input: "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E7F808182838485868788898A8B8C8D8E8F90",
+        output: "B62F7F144A8C6772E693A96890F064C3F06831BF743F5B0DD061067F3D22877331AA6A99D939F05B7550E9402BD1615CC7B2D4A167E83EC0D8A894F92C72E176F3880B61C311D69CE1210C59184E818E19",
+    },
+    Example {
+        number: 19,
+        mode: "ofb",
+        block_bits: 256,
+        segment_bits: 256,
+        key: "1F1E1D1C1B1A191817161514131211100F0E0D0C0B0A09080706050403020100",
+        iv: "3F3E3D3C3B3A393837363534333231302F2E2D2C2B2A29282726252423222120",
+        input: "7758A939DD6BD00CAF9153E5A5D5A66129105CA1EA54A97C06FA4A40960A068F55E34F9339A14436216948F92FA2FB5286D3AB1E81543FC0018A0C4E8C493475F4D35DCFB0A7A5377F6669B857CDC978E4",
+        output: "9F9E9D9C9B9A999897969594939291908F8E8D8C8B8A898887868584838281807F7E7D7C7B7A797877767574737271706F6E6D6C6B6A696867666564636261605F5E5D5C5B5A595857565554535251504F",
+    },
+    Example {
+        number: 20,
+        mode: "ofb",
+        block_bits: 256,
+        segment_bits: 256,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+        iv: "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F",
+        input: "606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E7F808182838485868788898A8B8C8D8E8F909192939495969798999A9B9C9D9E9FA0A1A2A3A4A5A6A7A8A9AAABACADAEAFB0",
+        output: "0008F28A82D2D01D23BFB2F8BB4F06D8FE73BA4F48A2977585570ED3818323A668883C9DCFF610CC7E3EA5C025FBBC5CA6520F8F11CA35CEB9B07031E6DBFABE39001E9A3CC0A24BBC565939592B4DEDBD",
+    },
+    Example {
+        number: 21,
+        mode: "ofb",
+        block_bits: 256,
+        segment_bits: 256,
+        key: "3F3E3D3C3B3A393837363534333231302F2E2D2C2B2A292827262524232221201F1E1D1C1B1A191817161514131211100F0E0D0C0B0A09080706050403020100",
+        iv: "5F5E5D5C5B5A595857565554535251504F4E4D4C4B4A49484746454443424140",
+        input: "98E122708FDABB1B1A5765C396DC79D7573221EC486ADDABD1770B147A6DD00B5FBC4F1EC68C59775B7AAA4D43C4CCE4F396D982DF64D30B03EF6C3B997BA0ED940BBC590BD30D64B5AE207147D71086B5",
+        output: "BFBEBDBCBBBAB9B8B7B6B5B4B3B2B1B0AFAEADACABAAA9A8A7A6A5A4A3A2A1A09F9E9D9C9B9A999897969594939291908F8E8D8C8B8A898887868584838281807F7E7D7C7B7A797877767574737271706F",
+    },
+    Example {
+        number: 22,
+        mode: "ofb",
+        block_bits: 512,
+        segment_bits: 512,
+        key: "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+        iv: "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E7F",
+        input: "808182838485868788898A8B8C8D8E8F909192939495969798999A9B9C9D9E9FA0A1A2A3A4A5A6A7A8A9AAABACADAEAFB0B1B2B3B4B5B6B7B8B9BABBBCBDBEBFC0C1C2C3C4C5C6C7C8C9CACBCCCDCECFD0D1D2D3D4D5D6D7D8D9DADBDCDDDEDFE0",
+        output: "CAA761980599B3ED2E945C41891BAD95F72B11C73ED26536A6847458BC76C827357156B4B3FE0DC1877F5B9F17B866C37B21D89531DB48007D05DEC928B06766C014BB9080385EDF0677E48A0A39B5E7489E28E82FFFD1F84694F17296CB701656",
+    },
+    Example {
+        number: 23,
+        mode: "ofb",
+        block_bits: 512,
+        segment_bits: 512,
+        key: "3F3E3D3C3B3A393837363534333231302F2E2D2C2B2A292827262524232221201F1E1D1C1B1A191817161514131211100F0E0D0C0B0A09080706050403020100",
+        iv: "7F7E7D7C7B7A797877767574737271706F6E6D6C6B6A696867666564636261605F5E5D5C5B5A595857565554535251504F4E4D4C4B4A49484746454443424140",
+        input: "06C061A4A66DFC0910034B3CFBDC4206D8908241C56BF41C4103CFD6DF322210B87F57EAE9F9AD815E606A7D1E8E6BD7CB1EBFBDBCB085C2D06BF3CC1586CB2EE1D81D38437F425131321647E42F5DE309D33F25B89DE37124683E4B44824FC56D",
+        output: "EFEEEDECEBEAE9E8E7E6E5E4E3E2E1E0DFDEDDDCDBDAD9D8D7D6D5D4D3D2D1D0CFCECDCCCBCAC9C8C7C6C5C4C3C2C1C0BFBEBDBCBBBAB9B8B7B6B5B4B3B2B1B0AFAEADACABAAA9A8A7A6A5A4A3A2A1A09F9E9D9C9B9A999897969594939291908F",
+    },
+    Example {
+        number: 24,
+        mode: "ctr",
+        block_bits: 128,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F",
+        iv: "101112131415161718191A1B1C1D1E1F",
+        input: "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F404142434445464748",
+        output: "A90A6B9780ABDFDFF64D14F5439E88F266DC50EDD341528DD5E698E2F000CE21F872DAF9FE1811844A",
+    },
+    Example {
+        number: 25,
+        mode: "ctr",
+        block_bits: 128,
+        segment_bits: 0,
+        key: "000102030405060708090A0B0C0D0E0F",
+        iv: "101112131415161718191A1B1C1D1E1F",
+        input: "303132333435363738393A3B3C3D3E3F404142434445464748494A4B4C4D4E4F",
+        output: "B91A7B8790BBCFCFE65D04E5538E98E216AC209DA33122FDA596E8928070BE51",
+    },
+];
+
+#[test]
+fn the_cipher_and_the_confidentiality_modes_reproduce_the_examples_of_the_standard() {
+    for example in &EXAMPLES {
+        let block_size = BlockSize::from_bits(example.block_bits).unwrap();
+        let (key, iv) = (from_hex(example.key), from_hex(example.iv));
+        let (plain, cipher) = (from_hex(example.input), from_hex(example.output));
+        let label = format!("example {} ({})", example.number, example.mode);
+        match example.mode {
+            "ecb" => {
+                let ecb = Ecb::new(block_size, &key).unwrap();
+                assert_eq!(ecb.encrypt(&plain).unwrap(), cipher, "{label}");
+                assert_eq!(ecb.decrypt(&cipher).unwrap(), plain, "{label}");
+            }
+            "cbc" => {
+                let cbc = Cbc::new(block_size, &key).unwrap();
+                assert_eq!(cbc.encrypt(&iv, &plain).unwrap(), cipher, "{label}");
+                assert_eq!(cbc.decrypt(&iv, &cipher).unwrap(), plain, "{label}");
+            }
+            "cfb" => {
+                let cfb = Cfb::with_segment(block_size, &key, example.segment_bits).unwrap();
+                assert_eq!(cfb.encrypt(&iv, &plain).unwrap(), cipher, "{label}");
+                assert_eq!(cfb.decrypt(&iv, &cipher).unwrap(), plain, "{label}");
+            }
+            "ofb" => {
+                let ofb = Ofb::with_segment(block_size, &key, example.segment_bits).unwrap();
+                assert_eq!(ofb.apply_gamma(&iv, &plain).unwrap(), cipher, "{label}");
+                assert_eq!(ofb.apply_gamma(&iv, &cipher).unwrap(), plain, "{label}");
+            }
+            "ctr" => {
+                let ctr = Ctr::new(block_size, &key).unwrap();
+                assert_eq!(ctr.apply_gamma(&iv, &plain).unwrap(), cipher, "{label}");
+                assert_eq!(ctr.apply_gamma(&iv, &cipher).unwrap(), plain, "{label}");
+            }
+            other => panic!("unknown mode {other}"),
+        }
+    }
+}
+
+#[test]
+fn the_mac_reproduces_the_examples_of_the_standard() {
+    let cases = [
+        (
+            128,
+            128,
+            "000102030405060708090A0B0C0D0E0F",
+            "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F404142434445464748494A4B4C4D4E4F",
+            "123B4EAB8E63ECF3E645A99C1115E241",
+        ),
+        (
+            512,
+            128,
+            "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+            concat!(
+                "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E7F",
+                "808182838485868788898A8B8C8D8E8F909192939495969798999A9B9C9D9E9FA0A1A2A3A4A5A6A7A8A9AAABACADAEAFB0B1B2B3B4B5B6B7B8B9BABBBCBDBEBF"
+            ),
+            "7279FA6BC8EF7525B2B35260D00A1743",
+        ),
+    ];
+    for (block_bits, mac_bits, key, message, mac) in cases {
+        let cmac = Cmac::new(BlockSize::from_bits(block_bits).unwrap(), &from_hex(key), mac_bits).unwrap();
+        assert_eq!(
+            cmac.calculate_mac(&from_hex(message)).unwrap(),
+            from_hex(mac),
+            "{block_bits}-bit block"
+        );
+    }
+}
+
+#[test]
+fn key_wrapping_reproduces_the_examples_of_the_standard_and_detects_corruption() {
+    let cases = [
+        (
+            "000102030405060708090A0B0C0D0E0F",
+            "101112131415161718191A1B1C1D1E1F",
+            "1DC91DC6E52575F6DBED25ADDA95A1B6AD3E15056E489738972C199FB9EE2913",
+        ),
+        (
+            "000102030405060708090A0B0C0D0E0F",
+            "101112131415161718191A1B1C1D1E1F20219000000000000000800000000000",
+            "0EA983D6CE48484D51462C32CC61672210FCC44196ABE635BAF878FDB83E1A63114128585D49DB355C5819FD38039169",
+        ),
+    ];
+    for (key, data, wrapped) in cases {
+        let key_wrap = KeyWrap::new(BlockSize::Bits128, &from_hex(key)).unwrap();
+        assert_eq!(key_wrap.wrap_key(&from_hex(data)).unwrap(), from_hex(wrapped));
+        assert_eq!(key_wrap.unwrap_key(&from_hex(wrapped)).unwrap(), from_hex(data));
+
+        let mut corrupted = from_hex(wrapped);
+        corrupted[3] ^= 1;
+        assert_eq!(
+            key_wrap.unwrap_key(&corrupted),
+            Err(CipherFailure::IntegrityCheckFailed)
+        );
+    }
+}
+
+#[test]
+fn ccm_reproduces_the_example_of_the_standard() {
+    let ccm = Ccm::new(BlockSize::Bits128, &from_hex("000102030405060708090A0B0C0D0E0F")).unwrap();
+    let nonce = from_hex("101112131415161718191A1B1C1D1E1F");
+    let associated_data = from_hex("202122232425262728292A2B2C2D2E2F");
+    let plain = from_hex("303132333435363738393A3B3C3D3E3F");
+    // ciphertext ‖ tag; the tag is 26A936173A4DC9160D6E3FDA3A974060 XOR the next gamma block
+    let expected = from_hex("B91A7B8790BBCFCFE65D04E5538E98E2704454C9DD39ADACE0B19D03F6AAB07E");
+    assert_eq!(ccm.encrypt(&nonce, &associated_data, &plain, 128).unwrap(), expected);
+    assert_eq!(ccm.decrypt(&nonce, &associated_data, &expected, 128).unwrap(), plain);
+}
+
+#[test]
+fn xts_reproduces_the_examples_of_the_standard() {
+    let cases = [
+        (
+            "000102030405060708090A0B0C0D0E0F",
+            "101112131415161718191A1B1C1D1E1F",
+            "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+            "B3E431B3FBAF31108C302669EE7116D1CF518B6D329D30618DF5628E426BDEF1",
+        ),
+        (
+            "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F",
+            "202122232425262728292A2B2C2D2E2F",
+            "303132333435363738393A3B3C3D3E3F404142434445464748494A4B4C4D4E4F",
+            "830AC78A6F629CB4C7D5D156FD84955BD0998CA1E0BC1FF135676BF2A2598FA1",
+        ),
+    ];
+    for (key, iv, plain, cipher) in cases {
+        let xts = Xts::new(BlockSize::Bits128, &from_hex(key)).unwrap();
+        assert_eq!(xts.encrypt(&from_hex(iv), &from_hex(plain)).unwrap(), from_hex(cipher));
+        assert_eq!(xts.decrypt(&from_hex(iv), &from_hex(cipher)).unwrap(), from_hex(plain));
+    }
+}
+
+#[test]
+fn gcm_reproduces_the_examples_of_the_standard() {
+    let cases = [
+        (
+            "000102030405060708090A0B0C0D0E0F",
+            "101112131415161718191A1B1C1D1E1F",
+            "202122232425262728292A2B2C2D2E2F",
+            "303132333435363738393A3B3C3D3E3F404142434445464748494A4B4C4D4E4F",
+            "B91A7B8790BBCFCFE65D04E5538E98E216AC209DA33122FDA596E8928070BE51C8310571CD60F9584B45C1B4ECE179AF",
+        ),
+        (
+            "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F",
+            "202122232425262728292A2B2C2D2E2F",
+            "303132333435363738393A3B3C3D3E3F",
+            "505152535455565758595A5B5C5D5E5F606162636465666768696A6B6C6D6E6F",
+            "FF83F27C6D4EA26101B1986235831406A297940D6C0E695596D612623E0E7CDC3C474281AFEAE4FD6D61E995258747AB",
+        ),
+    ];
+    for (key, nonce, associated_data, plain, cipher_and_tag) in cases {
+        let gcm = Gcm::new(BlockSize::Bits128, &from_hex(key)).unwrap();
+        let (nonce, associated_data) = (from_hex(nonce), from_hex(associated_data));
+        let expected = from_hex(cipher_and_tag);
+        assert_eq!(
+            gcm.encrypt(&nonce, &associated_data, &from_hex(plain), 128).unwrap(),
+            expected
+        );
+        assert_eq!(
+            gcm.decrypt(&nonce, &associated_data, &expected, 128).unwrap(),
+            from_hex(plain)
+        );
+    }
+}
+
+#[test]
+fn gmac_reproduces_the_example_of_the_standard() {
+    let key = from_hex(
+        "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F",
+    );
+    let message = from_hex(
+        "808182838485868788898A8B8C8D8E8F909192939495969798999A9B9C9D9E9FA0A1A2A3A4A5A6A7A8A9AAABACADAEAFB0B1B2B3B4B5B6B7B8B9BABBBCBDBEBF",
+    );
+    let gmac = Gmac::new(BlockSize::Bits512, &key).unwrap();
+    assert_eq!(
+        gmac.calculate_mac(&[0; 32], &message, 512).unwrap(),
+        from_hex(
+            "897C32E05E776FD988C5171FE70BB72949172E514E3308A871BA5BD898FB6EBD6E3897D2D55697D90D6428216C08052E3A5E7D4626F4DBBF1546CE21637357A3"
+        )
+    );
+}
+
+#[test]
+fn invalid_parameters_are_refused() {
+    let key_16 = [0u8; 16];
+    assert_eq!(
+        BlockSize::from_bits(192),
+        Err(SetupError::UnsupportedBlockSize { bits: 192 })
+    );
+    // a key shorter than the block, a key longer than twice the block
+    assert_eq!(
+        Ecb::new(BlockSize::Bits256, &key_16).err(),
+        Some(SetupError::WrongKeyLength {
+            key_bytes: 16,
+            block_bytes: 32
+        })
+    );
+    assert_eq!(
+        Ecb::new(BlockSize::Bits128, &[0; 64]).err(),
+        Some(SetupError::WrongKeyLength {
+            key_bytes: 64,
+            block_bytes: 16
+        })
+    );
+    assert_eq!(
+        Ecb::new(BlockSize::Bits128, &key_16).unwrap().encrypt(&[0; 15]),
+        Err(CipherFailure::PartialBlock {
+            length: 15,
+            block_bytes: 16
+        })
+    );
+    assert_eq!(
+        Cmac::new(BlockSize::Bits128, &key_16, 128)
+            .unwrap()
+            .calculate_mac(&[0; 20]),
+        Err(CipherFailure::PartialBlock {
+            length: 20,
+            block_bytes: 16
+        })
+    );
+    assert_eq!(
+        Ccm::new(BlockSize::Bits128, &key_16)
+            .unwrap()
+            .encrypt(&[0; 16], &[], &[0; 1], 256),
+        Err(CipherFailure::UnsupportedMacLength { bits: 256 })
+    );
+    assert_eq!(
+        Gcm::new(BlockSize::Bits128, &key_16)
+            .unwrap()
+            .encrypt(&[0; 16], &[], &[0; 1], 32),
+        Err(CipherFailure::UnsupportedMacLength { bits: 32 })
+    );
+    assert_eq!(
+        Xts::new(BlockSize::Bits128, &key_16)
+            .unwrap()
+            .encrypt(&[0; 8], &[0; 16]),
+        Err(CipherFailure::WrongIvLength {
+            length: 8,
+            block_bytes: 16
+        })
+    );
+}

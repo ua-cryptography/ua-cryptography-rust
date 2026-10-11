@@ -1,9 +1,9 @@
 # ua-sign — signing and verification from the command line
 
-`ua-sign` (`crates/ua-sign`) signs and verifies files in the formats of the Ukrainian PKI with DSTU 4145 keys
-kept in JKS key stores. It is built on [ua-pki](#the-library-underneath); beyond the dependencies of the libraries it
-uses only `rpassword` (a password typed at the terminal without echo). It is a port of the C# `ua-sign`,
-and `build_scripts/interop.sh` checks the two against each other.
+`ua-sign` (`crates/ua-cryptography-sign`) signs and verifies files in the formats of the Ukrainian PKI with DSTU 4145
+keys kept in JKS key stores. It is built on [ua-cryptography-pki](#the-library-underneath); beyond the dependencies of
+the libraries it uses only `rpassword` (a password typed at the terminal without echo). It is a port of the C#
+`ua-sign`, and `build_scripts/interop.sh` checks the two against each other.
 
 | Command | What it does |
 |---|---|
@@ -169,7 +169,7 @@ policy=1.2.804.2.1.1.1.2.3.4.1.1
 imprint_algorithm=DSTU 7564-256 (1.2.804.2.1.1.1.1.2.2.1)
 ```
 
-Test: `crates/ua-sign/tests/ua_sign.rs`, `the_ini_report_of_…_holds_every_detail`.
+Test: `crates/ua-cryptography-sign/tests/ua_sign.rs`, `the_ini_report_of_…_holds_every_detail`.
 
 ## What is not supported
 
@@ -181,11 +181,13 @@ Test: `crates/ua-sign/tests/ua_sign.rs`, `the_ini_report_of_…_holds_every_deta
 
 ## The library underneath
 
-`ua-pki` (`crates/ua-pki`) can be used without the tool; its README lists the API:
+`ua-cryptography-pki` (`crates/ua-cryptography-pki`) can be used without the tool; its README lists the API:
 
 ```rust
-use ua_pki::{CadesOptions, CadesSigner, Certificate, JksKeyStore, SignatureServices, SigningKey, ValidationOptions,
-    signature_verifier};
+use ua_cryptography_pki::{
+    CadesOptions, CadesSigner, Certificate, JksKeyStore, SignatureServices, SigningKey, ValidationOptions,
+    signature_verifier,
+};
 
 let store = JksKeyStore::load(&std::fs::read("key.jks")?, password)?;
 let signer = SigningKey::from_jks(&store, password, None, None)?;

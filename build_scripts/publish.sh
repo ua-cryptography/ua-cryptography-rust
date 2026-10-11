@@ -11,10 +11,10 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 host="$(rustc -vV | awk '/^host:/ { print $2 }')"
 target="${1:-$host}"
 if [[ "$target" == "$host" ]]; then
-  cargo build --release --manifest-path "$root/Cargo.toml" -p ua-sign
+  cargo build --release --manifest-path "$root/Cargo.toml" -p ua-cryptography-sign
   built="$root/target/release"
 else
-  cargo build --release --manifest-path "$root/Cargo.toml" -p ua-sign --target "$target"
+  cargo build --release --manifest-path "$root/Cargo.toml" -p ua-cryptography-sign --target "$target"
   built="$root/target/$target/release"
 fi
 out="$root/artifacts/ua-sign/$target"

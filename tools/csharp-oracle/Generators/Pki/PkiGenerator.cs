@@ -66,7 +66,7 @@ internal sealed class PkiGenerator : IFixtureGenerator
         bare certificate path "now", which needs the run to be younger than five years (regenerate then).
 
         Not recorded (no oracle needed or not possible): tampered copies (the Rust tests tamper themselves), PAdES (the
-        library has none), `Pki/Asn1/DerTests` (BouncyCastle DER primitives: the ua-der crate's own fixtures),
-        `XmlCanonicalizerTests` other than the XAdES document (the ua-xml-c14n crate's own fixtures).
+        library has none), `Pki/Asn1/DerTests` (BouncyCastle DER primitives: the ua-cryptography-der crate's own fixtures),
+        `XmlCanonicalizerTests` other than the XAdES document (the ua-cryptography-xml-c14n crate's own fixtures).
         """;
 }

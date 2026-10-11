@@ -23,5 +23,5 @@ fi
 if [[ -n "$binary" ]]; then
   exec "$binary" ${args[@]+"${args[@]}"}
 else
-  exec cargo run --quiet --release --manifest-path "$root/Cargo.toml" -p ua-sign -- ${args[@]+"${args[@]}"}
+  exec cargo run --quiet --release --manifest-path "$root/Cargo.toml" -p ua-cryptography-sign -- ${args[@]+"${args[@]}"}
 fi

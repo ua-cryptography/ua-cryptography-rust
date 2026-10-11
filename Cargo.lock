@@ -738,8 +738,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b6f5e870be6c3b371b77fe0ee0bafb859fa4964b4404c27de1d380043c4dda20"
 
 [[package]]
-name = "ua-der"
-version = "0.1.2"
+name = "ua-cryptography-der"
+version = "0.1.3"
 dependencies = [
  "base64",
  "num-bigint",
@@ -748,40 +748,40 @@ dependencies = [
 ]
 
 [[package]]
-name = "ua-dstu-sboxes"
-version = "0.1.2"
+name = "ua-cryptography-dstu-sboxes"
+version = "0.1.3"
 
 [[package]]
-name = "ua-dstu4145"
-version = "0.1.2"
+name = "ua-cryptography-dstu4145"
+version = "0.1.3"
 dependencies = [
  "num-bigint",
  "num-traits",
  "rand_core",
  "serde_json",
- "ua-gf2m",
- "ua-gost",
+ "ua-cryptography-gf2m",
+ "ua-cryptography-gost",
 ]
 
 [[package]]
-name = "ua-dstu7564"
-version = "0.1.2"
+name = "ua-cryptography-dstu7564"
+version = "0.1.3"
 dependencies = [
  "serde_json",
- "ua-dstu-sboxes",
+ "ua-cryptography-dstu-sboxes",
 ]
 
 [[package]]
-name = "ua-dstu7624"
-version = "0.1.2"
+name = "ua-cryptography-dstu7624"
+version = "0.1.3"
 dependencies = [
  "serde_json",
- "ua-dstu-sboxes",
+ "ua-cryptography-dstu-sboxes",
 ]
 
 [[package]]
-name = "ua-ffi"
-version = "0.1.2"
+name = "ua-cryptography-ffi"
+version = "0.1.3"
 dependencies = [
  "getrandom",
  "js-sys",
@@ -790,18 +790,18 @@ dependencies = [
  "serde",
  "serde_json",
  "time",
- "ua-dstu4145",
- "ua-dstu7564",
- "ua-dstu7624",
- "ua-gf2m",
- "ua-gost",
- "ua-pki",
+ "ua-cryptography-dstu4145",
+ "ua-cryptography-dstu7564",
+ "ua-cryptography-dstu7624",
+ "ua-cryptography-gf2m",
+ "ua-cryptography-gost",
+ "ua-cryptography-pki",
  "wasm-bindgen",
 ]
 
 [[package]]
-name = "ua-gf2m"
-version = "0.1.2"
+name = "ua-cryptography-gf2m"
+version = "0.1.3"
 dependencies = [
  "num-bigint",
  "num-traits",
@@ -809,15 +809,15 @@ dependencies = [
 ]
 
 [[package]]
-name = "ua-gost"
-version = "0.1.2"
+name = "ua-cryptography-gost"
+version = "0.1.3"
 dependencies = [
  "serde_json",
 ]
 
 [[package]]
-name = "ua-pki"
-version = "0.1.2"
+name = "ua-cryptography-pki"
+version = "0.1.3"
 dependencies = [
  "base64",
  "num-bigint",
@@ -828,19 +828,19 @@ dependencies = [
  "sha1",
  "sha2",
  "time",
- "ua-der",
- "ua-dstu4145",
- "ua-dstu7564",
- "ua-gf2m",
- "ua-gost",
- "ua-xml-c14n",
+ "ua-cryptography-der",
+ "ua-cryptography-dstu4145",
+ "ua-cryptography-dstu7564",
+ "ua-cryptography-gf2m",
+ "ua-cryptography-gost",
+ "ua-cryptography-xml-c14n",
  "ureq",
  "zip",
 ]
 
 [[package]]
-name = "ua-sign"
-version = "0.1.2"
+name = "ua-cryptography-sign"
+version = "0.1.3"
 dependencies = [
  "base64",
  "num-bigint",
@@ -848,19 +848,19 @@ dependencies = [
  "rpassword",
  "serde_json",
  "time",
- "ua-der",
- "ua-dstu4145",
- "ua-dstu7564",
- "ua-gf2m",
- "ua-gost",
- "ua-pki",
- "ua-xml-c14n",
+ "ua-cryptography-der",
+ "ua-cryptography-dstu4145",
+ "ua-cryptography-dstu7564",
+ "ua-cryptography-gf2m",
+ "ua-cryptography-gost",
+ "ua-cryptography-pki",
+ "ua-cryptography-xml-c14n",
  "zip",
 ]
 
 [[package]]
-name = "ua-xml-c14n"
-version = "0.1.2"
+name = "ua-cryptography-xml-c14n"
+version = "0.1.3"
 dependencies = [
  "roxmltree",
  "serde_json",

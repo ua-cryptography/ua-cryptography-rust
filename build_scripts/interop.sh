@@ -4,7 +4,8 @@
 #   - each side signs one document in every format (cades enveloped and detached, xades, asic-s, asic-e) with both
 #     hashes at level B, and both sides verify every signature (--trust the signer's certificate);
 #   - levels T and LT with the synthetic hierarchy's signer, its time-stamping service and OCSP responders served by
-#     the Rust test PKI server (crates/ua-sign/tests/pki_server.rs), verified by both sides (--trust its root);
+#     the Rust test PKI server (crates/ua-cryptography-sign/tests/pki_server.rs), verified by both sides
+#     (--trust its root);
 #   - a tampered copy of every signature is rejected by both sides;
 #   - both sides write the INI report of every signature; the differences (other than verified_at) are listed.
 #
@@ -22,8 +23,8 @@ export UA_SIGN_PASSWORD="${UA_SIGN_PASSWORD:-interop-password}"
 document_text="Interop document / Документ для перевірки сумісності"
 
 echo "Building the Rust ua-sign (release) and publishing the C# ua-sign (framework-dependent)..."
-cargo build --quiet --release --manifest-path "$root/Cargo.toml" -p ua-sign
-cargo test --quiet --manifest-path "$root/Cargo.toml" -p ua-sign --test pki_server --no-run 2> /dev/null
+cargo build --quiet --release --manifest-path "$root/Cargo.toml" -p ua-cryptography-sign
+cargo test --quiet --manifest-path "$root/Cargo.toml" -p ua-cryptography-sign --test pki_server --no-run 2> /dev/null
 dotnet publish "$csharp/src/UA.Cryptography.Cli" -c Release -o "$dir/csharp-ua-sign" -v quiet > /dev/null
 rust_binary="$root/target/release/ua-sign"
 csharp_binary="$dir/csharp-ua-sign/ua-sign"
@@ -172,7 +173,7 @@ echo "Levels T and LT, the hierarchy's signer and the Rust test PKI server:"
 pki="$work/pki"
 mkdir -p "$pki"
 UA_SIGN_TEST_PKI_DIRECTORY="$pki" UA_SIGN_TEST_PKI_PASSWORD="$UA_SIGN_PASSWORD" \
-  cargo test --quiet --manifest-path "$root/Cargo.toml" -p ua-sign --test pki_server -- --ignored \
+  cargo test --quiet --manifest-path "$root/Cargo.toml" -p ua-cryptography-sign --test pki_server -- --ignored \
   > "$pki/server.log" 2>&1 &
 server=$!
 trap 'touch "$pki/stop"; wait $server 2> /dev/null || true' EXIT

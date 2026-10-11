@@ -15,4 +15,5 @@ Produced by `dotnet run --project tools/csharp-oracle -- der-bc` (`tools/csharp-
 - `berSequence`: BouncyCastle's indefinite-length SEQUENCE holding a constructed OCTET STRING and INTEGER 5.
 - `readerTimes`: time texts and the UTC instant the C# `Asn1Node.GetTime` reads (null where it refuses).
 
-Read by `crates/ua-der/tests/der_against_bouncy_castle.rs` and `crates/ua-der/tests/reader_and_writer.rs`.
+Read by `crates/ua-cryptography-der/tests/der_against_bouncy_castle.rs` and
+`crates/ua-cryptography-der/tests/reader_and_writer.rs`.

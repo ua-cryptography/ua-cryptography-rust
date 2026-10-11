@@ -23,7 +23,7 @@ Derzhstandart of Ukraine and may not be redistributed.
 ## Quick start
 
 ```rust
-use ua_dstu4145::{Signer, get_polynomial_curve};
+use ua_cryptography_dstu4145::{Signer, get_polynomial_curve};
 
 let parameters = get_polynomial_curve(257)?;            // or get_optimal_normal_curve(173)?
 let mut signer = Signer::new(&parameters);               // OS randomness; Signer::with_rng for another generator
@@ -37,7 +37,7 @@ With another hash, pass H(T) most significant byte first (Appendix Б); the Ukra
 and stores D in little-endian ([docs/signature-formats.md](docs/signature-formats.md), section 1):
 
 ```rust
-let mut h = ua_dstu7564::Kupyna::calculate_hash(b"Hello", ua_dstu7564::HashSize::Bits256);
+let mut h = ua_cryptography_dstu7564::Kupyna::calculate_hash(b"Hello", ua_cryptography_dstu7564::HashSize::Bits256);
 h.reverse();                                             // as qualified signature tools sign it
 let mut d = signer.sign_hash(&key.private_key, &h)?;
 d.reverse();                                             // how D is stored in certificates, CMS and XML
@@ -46,17 +46,17 @@ d.reverse();                                             // how D is stored in c
 Authenticated encryption with Kalyna:
 
 ```rust
-use ua_dstu7624::{BlockSize, Gcm};
+use ua_cryptography_dstu7624::{BlockSize, Gcm};
 
 let gcm = Gcm::new(BlockSize::Bits256, &key256)?;
 let sealed = gcm.encrypt(&nonce, &associated_data, &plain_text, 256)?;
 let opened = gcm.decrypt(&nonce, &associated_data, &sealed, 256)?; // Err(CipherFailure::TagMismatch) if forged
 ```
 
-Signing and verifying files: see the `ua-pki` README, or the command line:
+Signing and verifying files: see the `ua-cryptography-pki` README, or the command line:
 
 ```bash
-cargo build --release -p ua-sign
+cargo build --release -p ua-cryptography-sign
 build_scripts/ua-sign.sh keygen --keystore key.jks --subject "CN=Name,O=Organization,C=UA"
 build_scripts/ua-sign.sh sign --keystore key.jks --format asic-e --in contract.pdf
 build_scripts/ua-sign.sh verify --in contract.pdf.asice --trust key.cer
@@ -67,19 +67,23 @@ build_scripts/demo.sh                                    # every format, verifie
 
 | Crate | What it offers |
 |---|---|
-| [`ua-gf2m`](crates/ua-gf2m) | GF(2)[x] with hardware carry-less multiplication (PMULL / PCLMULQDQ) and a portable fallback; GF(2^m) in PB and ONB; basis conversion (В.6); binary curves, Montgomery ladder, point compression |
-| [`ua-gost`](crates/ua-gost) | GOST 28147-89, GOST 34.311-95 with any DKE |
-| [`ua-dstu4145`](crates/ua-dstu4145) | domain parameters and their checks (section 8), the curves of Appendix Г, keys, signing, verification, encodings (5.x), the generator of Appendix А |
-| [`ua-dstu-sboxes`](crates/ua-dstu-sboxes) | the S-boxes shared by DSTU 7564 and DSTU 7624 |
-| [`ua-dstu7564`](crates/ua-dstu7564) | Kupyna |
-| [`ua-dstu7624`](crates/ua-dstu7624) | Kalyna and its modes, one file per mode |
-| [`ua-der`](crates/ua-der) | DER/BER reader keeping the exact bytes of every element, DER writer, PEM |
-| [`ua-xml-c14n`](crates/ua-xml-c14n) | Canonical XML 1.0 and Exclusive C14N 1.0 over `roxmltree`, safe parsing |
-| [`ua-pki`](crates/ua-pki) | X.509, JKS, CMS/CAdES, TSP, OCSP, XAdES, ASiC, certification paths, HTTP clients of the PKI services |
-| [`ua-sign`](crates/ua-sign) | the command-line tool |
-| [`ua-ffi`](crates/ua-ffi) | `ua_cryptography`, everything above as a native library: a C ABI for Windows, macOS, Linux, Android, iOS and JavaScript bindings for the browser |
+| [`ua-cryptography-gf2m`](crates/ua-cryptography-gf2m) | GF(2)[x] with hardware carry-less multiplication (PMULL / PCLMULQDQ) and a portable fallback; GF(2^m) in PB and ONB; basis conversion (В.6); binary curves, Montgomery ladder, point compression |
+| [`ua-cryptography-gost`](crates/ua-cryptography-gost) | GOST 28147-89, GOST 34.311-95 with any DKE |
+| [`ua-cryptography-dstu4145`](crates/ua-cryptography-dstu4145) | domain parameters and their checks (section 8), the curves of Appendix Г, keys, signing, verification, encodings (5.x), the generator of Appendix А |
+| [`ua-cryptography-dstu-sboxes`](crates/ua-cryptography-dstu-sboxes) | the S-boxes shared by DSTU 7564 and DSTU 7624 |
+| [`ua-cryptography-dstu7564`](crates/ua-cryptography-dstu7564) | Kupyna |
+| [`ua-cryptography-dstu7624`](crates/ua-cryptography-dstu7624) | Kalyna and its modes, one file per mode |
+| [`ua-cryptography-der`](crates/ua-cryptography-der) | DER/BER reader keeping the exact bytes of every element, DER writer, PEM |
+| [`ua-cryptography-xml-c14n`](crates/ua-cryptography-xml-c14n) | Canonical XML 1.0 and Exclusive C14N 1.0 over `roxmltree`, safe parsing |
+| [`ua-cryptography-pki`](crates/ua-cryptography-pki) | X.509, JKS, CMS/CAdES, TSP, OCSP, XAdES, ASiC, certification paths, HTTP clients of the PKI services |
+| [`ua-cryptography-sign`](crates/ua-cryptography-sign) | the `ua-sign` command-line tool |
+| [`ua-cryptography-ffi`](crates/ua-cryptography-ffi) | `ua_cryptography`, everything above as a native library: a C ABI for Windows, macOS, Linux, Android, iOS and JavaScript bindings for the browser |
 
 Each crate has a README with its API, boundaries and dependencies.
+
+All but `ua-cryptography-ffi` are crates.io packages of one version (`cargo add ua-cryptography-dstu4145`,
+`cargo install ua-cryptography-sign` for the `ua-sign` command); `ua-cryptography-ffi` ships as the archives of a GitHub
+release.
 
 ## Build and test
 
@@ -88,16 +92,17 @@ Requires Rust 1.85+ (edition 2024).
 ```bash
 cargo test --workspace                                   # every crate, optimized test profile
 cargo clippy --workspace --all-targets                   # zero warnings
-cargo run --release -p ua-dstu4145 --example bench       # performance table
-cargo run --release -p ua-dstu4145 --example bench --features ua-gf2m/portable  # without PMULL/PCLMUL
+cargo run --release -p ua-cryptography-dstu4145 --example bench   # performance table
+# without PMULL/PCLMUL:
+cargo run --release -p ua-cryptography-dstu4145 --example bench --features ua-cryptography-gf2m/portable
 build_scripts/interop.sh                                 # cross-verification with the C# ua-sign (needs .NET 10)
-build_scripts/ffi-header.sh                              # regenerates the C header of ua-ffi (needs cbindgen)
+build_scripts/ffi-header.sh                              # the C header of ua-cryptography-ffi (needs cbindgen)
 ```
 
 CI (`.github/workflows/ci.yml`) runs the tests on Linux, Windows and macOS on every push and pull request. A `v*` tag
 runs `.github/workflows/release.yml`: the tests, then the `ua_cryptography` library for Windows (x64, ARM64), macOS
 (universal), Linux (x64, ARM64), Android (four ABIs), iOS (XCFramework) and the browser (WebAssembly), attached to
-a GitHub release — see [crates/ua-ffi](crates/ua-ffi).
+a GitHub release — see [crates/ua-cryptography-ffi](crates/ua-cryptography-ffi).
 
 ## How the port is verified
 
@@ -121,8 +126,8 @@ README naming the tests that read it:
 
 ## Performance
 
-Apple Silicon, one core, PMULL (`cargo run --release -p ua-dstu4145 --example bench`); the C# figures (.NET 10,
-Apple M2) in parentheses:
+Apple Silicon, one core, PMULL (`cargo run --release -p ua-cryptography-dstu4145 --example bench`); the C# figures (.NET
+10, Apple M2) in parentheses:
 
 | Curve | multiply, ns | square, ns | invert, µs | kP, µs | sign, µs | verify, µs |
 |---|---:|---:|---:|---:|---:|---:|

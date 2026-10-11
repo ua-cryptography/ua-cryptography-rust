@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
-# Regenerates the C header of the ua_cryptography library from crates/ua-ffi (needs `cargo install cbindgen`):
+# Regenerates the C header of the ua_cryptography library from crates/ua-cryptography-ffi
+# (needs `cargo install cbindgen`):
 #
-#   build_scripts/ffi-header.sh           # writes crates/ua-ffi/include/ua_cryptography.h
+#   build_scripts/ffi-header.sh           # writes crates/ua-cryptography-ffi/include/ua_cryptography.h
 #   build_scripts/ffi-header.sh --check   # fails when the committed header is out of date
 #
 # --quiet: cbindgen warns once per item that the C ABI module is not built for wasm32, which is intended.
 set -euo pipefail
 
-crate="$(cd "$(dirname "${BASH_SOURCE[0]}")/../crates/ua-ffi" && pwd)"
+crate="$(cd "$(dirname "${BASH_SOURCE[0]}")/../crates/ua-cryptography-ffi" && pwd)"
 header="$crate/include/ua_cryptography.h"
 if [[ "${1:-}" == "--check" ]]; then
   fresh="$(mktemp)"

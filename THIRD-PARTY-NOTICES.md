@@ -2,12 +2,13 @@
 
 ## BouncyCastle (Java)
 
-`crates/ua-dstu7624/` is a Rust translation (by way of the C# port in ua-cryptography-csharp) of the DSTU 7624 ("Kalyna") classes of BouncyCastle Java 1.86
-(`bcprov-jdk18on`): `DSTU7624Engine`, `DSTU7624WrapEngine`, `DSTU7624Mac`, `KGMac`, `KCTRBlockCipher`,
-`KCCMBlockCipher`, `KGCMBlockCipher`, `KXTSBlockCipher`; each file names the class it was translated from. The S-box tables in `crates/ua-dstu-sboxes`
-(shared with DSTU 7564) were taken from the same library; they are the tables of the standards.
-The reference vectors in `testdata/vectors/dstu7624-bc-java-1.86.json` were produced with BouncyCastle Java by
-`tools/dstu7624-vectors` of the C# repository.
+`crates/ua-cryptography-dstu7624/` is a Rust translation (by way of the C# port in ua-cryptography-csharp) of the DSTU
+7624 ("Kalyna") classes of BouncyCastle Java 1.86 (`bcprov-jdk18on`): `DSTU7624Engine`, `DSTU7624WrapEngine`,
+`DSTU7624Mac`, `KGMac`, `KCTRBlockCipher`, `KCCMBlockCipher`, `KGCMBlockCipher`, `KXTSBlockCipher`; each file names the
+class it was translated from. The S-box tables in `crates/ua-cryptography-dstu-sboxes` (shared with DSTU 7564) were
+taken from the same library; they are the tables of the standards. The reference vectors in
+`testdata/vectors/dstu7624-bc-java-1.86.json` were produced with BouncyCastle Java by `tools/dstu7624-vectors` of the C#
+repository.
 
 MIT License (https://opensource.org/licenses/MIT)
 
@@ -27,7 +28,7 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 
 ## cryptography.org.ua (2010 – 2011)
 
-The base points of the recommended curves in `crates/ua-dstu4145/src/named_curves.rs` (DSTU 4145-2002
+The base points of the recommended curves in `crates/ua-cryptography-dstu4145/src/named_curves.rs` (DSTU 4145-2002
 lists only A, B and n) are the ones published by the Ukrainian open-source project at http://cryptography.org.ua
 ("Рекомендованные кривые", tables 2.1 and 2.2); the authors are listed at http://web.cryptography.org.ua/authors.html.
 That project's code was distributed under the BSD licence with the requirement to credit the project and its authors.

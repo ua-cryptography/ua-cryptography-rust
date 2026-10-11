@@ -11,7 +11,7 @@ if [[ $# -ne 2 ]]; then
 fi
 target="$1"; file="$2"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cargo rustc --release --locked --manifest-path "$root/Cargo.toml" -p ua-ffi --target "$target" \
+cargo rustc --release --locked --manifest-path "$root/Cargo.toml" -p ua-cryptography-ffi --target "$target" \
   --crate-type staticlib -- --print native-static-libs 2>&1 \
   | sed -n 's/.*native-static-libs: //p' > "$file"
 if [[ ! -s "$file" ]]; then

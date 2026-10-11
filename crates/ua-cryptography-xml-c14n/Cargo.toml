@@ -1,0 +1,22 @@
+[package]
+name = "ua-cryptography-xml-c14n"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Canonical XML 1.0 and Exclusive XML Canonicalization 1.0 over roxmltree, with safe XML loading"
+keywords = ["xml", "c14n", "canonicalization", "xmldsig", "xades"]
+categories = ["encoding", "parser-implementations"]
+repository.workspace = true
+# The tests read testdata/ of the workspace, which a package cannot carry: they run in the repository.
+include = ["src/**", "README.md", "LICENSE"]
+
+[dependencies]
+# A read-only XML tree that refuses DTDs; the canonicalizer walks it.
+roxmltree.workspace = true
+
+[dev-dependencies]
+# Reads the oracle fixtures recorded by tools/csharp-oracle.
+serde_json.workspace = true
+# SHA-256 of a canonical subtree, compared with the digest SignedXml computed.
+sha2.workspace = true

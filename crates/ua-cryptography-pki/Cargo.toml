@@ -1,0 +1,59 @@
+[package]
+name = "ua-cryptography-pki"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "The Ukrainian PKI over DSTU 4145: X.509, JKS, CAdES, RFC 3161, OCSP, XAdES, ASiC, certification paths"
+keywords = ["pki", "cades", "xades", "asic", "ukraine"]
+categories = ["cryptography", "authentication"]
+repository.workspace = true
+# The tests read testdata/ of the workspace, which a package cannot carry: they run in the repository.
+include = ["src/**", "README.md", "LICENSE"]
+
+[features]
+default = ["http"]
+# The HTTP clients of the PKI services; off where there are no sockets (wasm32-unknown-unknown).
+http = ["dep:ureq"]
+
+[dependencies]
+# Field elements and points of DSTU 4145 keys: curves, compression, the basis of explicit parameters.
+ua-cryptography-gf2m.workspace = true
+# GOST 34.311 with a certificate's DKE.
+ua-cryptography-gost.workspace = true
+# DSTU 4145 keys, signing and verification, the curves of table Г.1.
+ua-cryptography-dstu4145.workspace = true
+# DSTU 7564 (Kupyna), the hash of the current national PKI.
+ua-cryptography-dstu7564.workspace = true
+# Reading and writing every ASN.1 structure: certificates, CMS, TSP, OCSP, JKS keys.
+ua-cryptography-der.workspace = true
+# Canonical XML for XAdES, safe XML parsing, escaping of XML built as text.
+ua-cryptography-xml-c14n.workspace = true
+# Serial numbers, private keys and nonces of any size.
+num-bigint.workspace = true
+# Zero and one of big integers.
+num-traits.workspace = true
+# Nonces, salts, serial numbers and signature ids from the OS generator.
+rand_core.workspace = true
+# SHA-1: the JKS integrity check and key protector, ESS certificate ids, OCSP responder key hashes.
+sha1.workspace = true
+# SHA-256: the default hash of ESSCertIDv2 and an XML-DSig digest method.
+sha2.workspace = true
+# Base64 of XML-DSig values.
+base64.workspace = true
+# Signing times, validity periods, time-stamp and OCSP times.
+time.workspace = true
+# The XML tree XAdES signatures are verified over (the one ua-cryptography-xml-c14n canonicalizes).
+roxmltree.workspace = true
+# ASiC containers: reading and writing ZIP archives.
+zip.workspace = true
+# The HTTP clients of the time-stamping and OCSP services and of caIssuers downloads.
+ureq = { workspace = true, optional = true }
+
+[[test]]
+name = "http_services"
+required-features = ["http"]
+
+[dev-dependencies]
+# Reads the oracle fixtures recorded by tools/csharp-oracle.
+serde_json.workspace = true

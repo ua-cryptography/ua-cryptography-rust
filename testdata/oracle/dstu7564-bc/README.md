@@ -8,4 +8,4 @@ to compare against at run time.
   bytes) and the 12-byte length field. The inputs are drawn as the C# `Dstu7564Tests` draws them.
 
 Produced by `dotnet run --project tools/csharp-oracle -- dstu7564-bc` (`Generators/Dstu7564Bc.cs`).
-Read by `crates/ua-dstu7564/tests/kupyna.rs`.
+Read by `crates/ua-cryptography-dstu7564/tests/kupyna.rs`.

@@ -3,25 +3,25 @@ resolver = "3"
 members = ["crates/*"]
 
 [workspace.package]
-version = "0.1.2"
+version = "0.1.3"
 edition = "2024"
 rust-version = "1.85"
 license = "MIT"
-publish = false
 repository = "https://github.com/ua-cryptography/ua-cryptography-rust"
 
 [workspace.dependencies]
-# The crates of this workspace.
-ua-gf2m = { path = "crates/ua-gf2m" }
-ua-gost = { path = "crates/ua-gost" }
-ua-dstu4145 = { path = "crates/ua-dstu4145" }
-ua-dstu-sboxes = { path = "crates/ua-dstu-sboxes" }
-ua-dstu7564 = { path = "crates/ua-dstu7564" }
-ua-dstu7624 = { path = "crates/ua-dstu7624" }
-ua-der = { path = "crates/ua-der" }
-ua-xml-c14n = { path = "crates/ua-xml-c14n" }
+# The crates of this workspace. crates.io needs the version beside the path; it stays equal to the workspace version
+# (build_scripts/check-crate-versions.sh, run by CI).
+ua-cryptography-gf2m = { path = "crates/ua-cryptography-gf2m", version = "0.1.2" }
+ua-cryptography-gost = { path = "crates/ua-cryptography-gost", version = "0.1.2" }
+ua-cryptography-dstu4145 = { path = "crates/ua-cryptography-dstu4145", version = "0.1.2" }
+ua-cryptography-dstu-sboxes = { path = "crates/ua-cryptography-dstu-sboxes", version = "0.1.2" }
+ua-cryptography-dstu7564 = { path = "crates/ua-cryptography-dstu7564", version = "0.1.2" }
+ua-cryptography-dstu7624 = { path = "crates/ua-cryptography-dstu7624", version = "0.1.2" }
+ua-cryptography-der = { path = "crates/ua-cryptography-der", version = "0.1.2" }
+ua-cryptography-xml-c14n = { path = "crates/ua-cryptography-xml-c14n", version = "0.1.2" }
 # Without its HTTP clients unless a crate asks for feature `http` (they do not build for wasm32-unknown-unknown).
-ua-pki = { path = "crates/ua-pki", default-features = false }
+ua-cryptography-pki = { path = "crates/ua-cryptography-pki", version = "0.1.2", default-features = false }
 
 # Third-party crates; each crate that uses one says why in its own Cargo.toml.
 num-bigint = "0.4"

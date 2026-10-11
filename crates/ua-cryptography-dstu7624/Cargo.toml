@@ -1,0 +1,20 @@
+[package]
+name = "ua-cryptography-dstu7624"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "DSTU 7624:2014 \"Kalyna\" block cipher and its modes: CBC, CTR, CMAC, CCM, GCM, XTS, key wrapping"
+keywords = ["kalyna", "dstu7624", "block-cipher", "aead", "ukraine"]
+categories = ["cryptography"]
+repository.workspace = true
+# The tests read testdata/ of the workspace, which a package cannot carry: they run in the repository.
+include = ["src/**", "README.md", "LICENSE", "THIRD-PARTY-NOTICES.md"]
+
+[dependencies]
+# The S-boxes π0..π3 and their inverses, shared with DSTU 7564.
+ua-cryptography-dstu-sboxes.workspace = true
+
+[dev-dependencies]
+# Reads the BouncyCastle Java reference vectors of testdata/vectors.
+serde_json.workspace = true

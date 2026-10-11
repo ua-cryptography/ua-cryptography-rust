@@ -9,4 +9,4 @@ because Rust has no BouncyCastle to compare against at run time.
   0, 1, 31, 32, 33, 63, 64, 65, 100 and 1000 bytes. The inputs are drawn as the C# tests draw them.
 
 Produced by `dotnet run --project tools/csharp-oracle -- gost-bc` (`Generators/GostBc.cs`).
-Read by `crates/ua-gost/tests/gost.rs`.
+Read by `crates/ua-cryptography-gost/tests/gost.rs`.

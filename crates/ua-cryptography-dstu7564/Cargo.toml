@@ -1,0 +1,20 @@
+[package]
+name = "ua-cryptography-dstu7564"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "DSTU 7564:2014 \"Kupyna\", the Ukrainian hash function, at 256, 384 and 512 bits"
+keywords = ["kupyna", "dstu7564", "hash", "ukraine", "digest"]
+categories = ["cryptography"]
+repository.workspace = true
+# The tests read testdata/ of the workspace, which a package cannot carry: they run in the repository.
+include = ["src/**", "README.md", "LICENSE"]
+
+[dependencies]
+# The S-boxes π0..π3 shared with DSTU 7624.
+ua-cryptography-dstu-sboxes.workspace = true
+
+[dev-dependencies]
+# Reads the BouncyCastle answers recorded by tools/csharp-oracle.
+serde_json.workspace = true

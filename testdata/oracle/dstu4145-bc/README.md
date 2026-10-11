@@ -17,5 +17,6 @@ generated on the spot.
 - `randomGenerator`: 64 bytes of the C# Appendix А generator (`Dstu4145RandomGenerator`) for the key 01..20, the seed
   0102030405060708 and D = 0123456789ABCDEF, the state of the C# `RandomGeneratorTests`.
 
-Produced by `dotnet run --project tools/csharp-oracle -- dstu4145-bc` (`Generators/Dstu4145Bc.cs`).
-Read by `crates/ua-dstu4145/tests/bouncy_castle.rs` and `crates/ua-dstu4145/tests/random_generator.rs`.
+Produced by `dotnet run --project tools/csharp-oracle -- dstu4145-bc` (`Generators/Dstu4145Bc.cs`). Read by
+`crates/ua-cryptography-dstu4145/tests/bouncy_castle.rs` and
+`crates/ua-cryptography-dstu4145/tests/random_generator.rs`.

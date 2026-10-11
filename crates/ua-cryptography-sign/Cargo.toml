@@ -1,0 +1,49 @@
+[package]
+name = "ua-cryptography-sign"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ukrainian electronic signatures from the command line: DSTU 4145 keys in JKS, CAdES, XAdES, ASiC"
+keywords = ["signature", "cades", "xades", "asic", "ukraine"]
+categories = ["command-line-utilities", "cryptography"]
+repository.workspace = true
+# The tests read testdata/ of the workspace, which a package cannot carry: they run in the repository.
+include = ["src/**", "README.md", "LICENSE"]
+
+# The command keeps its short name: `cargo install ua-cryptography-sign` installs `ua-sign`.
+[[bin]]
+name = "ua-sign"
+path = "src/main.rs"
+
+[dependencies]
+# Key stores, certificates, signing in every format and level, verification and its reports.
+ua-cryptography-pki = { workspace = true, features = ["http"] }
+# The curves of table Г.1 a new key is generated on.
+ua-cryptography-dstu4145.workspace = true
+# The basis of a key's field, shown as PB or ONB.
+ua-cryptography-gf2m.workspace = true
+# Serial numbers of certificates, time-stamps and OCSP responses, shown in hex.
+num-bigint.workspace = true
+# Validity periods, signing times and the report's times.
+time.workspace = true
+# The key store password typed at the terminal without echo.
+rpassword.workspace = true
+
+[dev-dependencies]
+# Reads the synthetic hierarchy's keys recorded by tools/csharp-oracle (testdata/oracle/pki/hierarchy/keys.json).
+serde_json.workspace = true
+# The test PKI server reads requests and writes tokens and OCSP responses; the recipes read what ua-sign wrote.
+ua-cryptography-der.workspace = true
+# Independent recipes: hashes by OID for the profile checks.
+ua-cryptography-gost.workspace = true
+# Independent recipes: DSTU 7564 hashes for the profile checks.
+ua-cryptography-dstu7564.workspace = true
+# The profile checks of XAdES: exclusive canonicalization of the signed elements.
+ua-cryptography-xml-c14n.workspace = true
+# The profile checks of XAdES: the XML tree.
+roxmltree.workspace = true
+# The profile checks of XAdES: base64 values.
+base64.workspace = true
+# Reads and rewrites ASiC containers in the tests.
+zip.workspace = true

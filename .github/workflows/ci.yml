@@ -37,7 +37,9 @@ jobs:
       # The portable carry-less multiplication, which CPUs without PMULL / PCLMULQDQ and wasm take.
       - name: Test the portable field arithmetic
         if: matrix.os == 'ubuntu-latest'
-        run: cargo test --locked -p ua-gf2m -p ua-dstu4145 --features ua-gf2m/portable
+        run: |
+          cargo test --locked -p ua-cryptography-gf2m -p ua-cryptography-dstu4145 \
+            --features ua-cryptography-gf2m/portable
 
   lint:
     runs-on: ubuntu-latest
@@ -60,7 +62,7 @@ jobs:
 
       # The JavaScript bindings exist on wasm32 only.
       - name: Clippy of the browser build
-        run: cargo clippy -p ua-ffi --target wasm32-unknown-unknown --locked -- -D warnings
+        run: cargo clippy -p ua-cryptography-ffi --target wasm32-unknown-unknown --locked -- -D warnings
 
       - uses: taiki-e/install-action@v2
         with:
@@ -68,3 +70,10 @@ jobs:
 
       - name: The C header is current
         run: build_scripts/ffi-header.sh --check
+
+      - name: The crates name the workspace version
+        run: build_scripts/check-crate-versions.sh
+
+      # Every crate packs and builds from its package alone, as crates.io will build it.
+      - name: Packages
+        run: cargo package --workspace --exclude ua-cryptography-ffi --locked

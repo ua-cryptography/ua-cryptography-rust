@@ -20,6 +20,6 @@ if ($env:UA_SIGN_PASSWORD -and $arguments.Count -gt 0 -and $arguments[0] -in 'ke
 if ($binary) {
     & $binary @arguments
 } else {
-    & cargo run --quiet --release --manifest-path (Join-Path $root 'Cargo.toml') -p ua-sign -- @arguments
+    & cargo run --quiet --release --manifest-path (Join-Path $root 'Cargo.toml') -p ua-cryptography-sign -- @arguments
 }
 exit $LASTEXITCODE

@@ -13,10 +13,10 @@ $manifest = Join-Path $root 'Cargo.toml'
 $hostTarget = (& rustc -vV | Select-String '^host:\s*(\S+)' | Select-Object -First 1).Matches[0].Groups[1].Value
 if (-not $Target) { $Target = $hostTarget }
 if ($Target -eq $hostTarget) {
-    & cargo build --release --manifest-path $manifest -p ua-sign
+    & cargo build --release --manifest-path $manifest -p ua-cryptography-sign
     $built = Join-Path $root 'target/release'
 } else {
-    & cargo build --release --manifest-path $manifest -p ua-sign --target $Target
+    & cargo build --release --manifest-path $manifest -p ua-cryptography-sign --target $Target
     $built = Join-Path $root "target/$Target/release"
 }
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
