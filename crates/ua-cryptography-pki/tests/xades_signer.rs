@@ -280,3 +280,31 @@ fn a_missing_file_is_reported() {
             .any(|c| c.details == "the referenced file was not given" && c.status == CheckStatus::Failed)
     );
 }
+
+#[test]
+fn a_pending_signature_asks_the_time_stamp_only_when_completed_over_its_fixed_value() {
+    let pki = Hierarchy::shared();
+    let time_stamps = TestTimeStamps::new();
+    let services = SignatureServices {
+        time_stamps: Some(&time_stamps),
+        ..SignatureServices::default()
+    };
+    let signer = XadesSigner::new(pki.signing_key(), services);
+    let files = files();
+    let pending = signer.prepare(&files, oids::DSTU7564_256, SignatureLevel::T).unwrap();
+    assert_eq!(time_stamps.requests.get(), 0);
+
+    let first = signer.complete(&pending).unwrap().to_bytes();
+    let second = signer.complete(&pending).unwrap().to_bytes();
+    assert_eq!(time_stamps.requests.get(), 2);
+    let signature_value = |xml: &[u8]| {
+        let text = String::from_utf8(xml.to_vec()).unwrap();
+        let start = text.find("<ds:SignatureValue").unwrap();
+        let end = text.find("</ds:SignatureValue>").unwrap();
+        text[start..end].to_owned()
+    };
+    assert_eq!(signature_value(&second), signature_value(&first));
+    let reports = verify(&first, &resolve(&files), &pki.trusting());
+    assert!(reports[0].is_valid(), "{}", describe_report(&reports[0]));
+    assert_eq!(reports[0].level.as_deref(), Some("XAdES-B-T"));
+}

@@ -13,7 +13,7 @@ use crate::time_text;
 use crate::x509::Certificate;
 use crate::xades::xades_signature::DS_DECLARATION;
 use crate::xades::xml_element::XmlElement;
-use crate::xades::{SignedFile, XadesSignature, mime_type_of, uri_escape};
+use crate::xades::{PendingXadesSignature, SignedFile, XadesSignature, mime_type_of, uri_escape};
 use crate::xml_namespaces;
 
 /// The random bytes of a signature Id.
@@ -32,7 +32,8 @@ pub struct XadesSigner<'a> {
 }
 
 /// What a signature document is built from, filled step by step.
-struct SignatureParts {
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct SignatureParts {
     id: String,
     digest_method: &'static str,
     signature_method: &'static str,
@@ -47,12 +48,14 @@ struct SignatureParts {
 }
 
 /// The unsigned signature properties: the time-stamp and, for level LT, the values.
+#[derive(Debug, Clone, PartialEq, Eq)]
 struct UnsignedParts {
     time_stamp: String,
     long_term_values: Option<LongTermValues>,
 }
 
 /// CertificateValues and OCSPValues, base64.
+#[derive(Debug, Clone, PartialEq, Eq)]
 struct LongTermValues {
     certificates: Vec<String>,
     ocsp_responses: Vec<String>,
@@ -65,13 +68,25 @@ impl<'a> XadesSigner<'a> {
     }
 
     /// A ds:Signature over `files`, hashed with `hash_oid` ([`oids::DSTU7564_256`](crate::oids::DSTU7564_256) or
-    /// [`oids::GOST34311`](crate::oids::GOST34311)), at `level`.
+    /// [`oids::GOST34311`](crate::oids::GOST34311)), at `level`: [`prepare`](Self::prepare), then
+    /// [`complete`](Self::complete).
     pub fn sign(
         &self,
         files: &[SignedFile],
         hash_oid: &str,
         level: SignatureLevel,
     ) -> Result<XadesSignature, SigningError> {
+        let pending = self.prepare(files, hash_oid, level)?;
+        self.complete(&pending)
+    }
+
+    /// The signed properties over `files` and the signature value; asks no service.
+    pub fn prepare(
+        &self,
+        files: &[SignedFile],
+        hash_oid: &str,
+        level: SignatureLevel,
+    ) -> Result<PendingXadesSignature, SigningError> {
         if files.is_empty() {
             return Err(SigningError::NothingToSign);
         }
@@ -81,8 +96,20 @@ impl<'a> XadesSigner<'a> {
         let signed_info = canonical_element(&parts, "SignedInfo");
         let signature = self.signer.key().sign_hash(&self.hash(hash_oid, &signed_info)?)?;
         parts.signature_value = BASE64.encode(signature);
-        if level >= SignatureLevel::T {
-            parts.unsigned = Some(self.unsigned_parts(&parts, hash_oid, level)?);
+        Ok(PendingXadesSignature {
+            parts,
+            hash_oid: hash_oid.to_owned(),
+            level,
+        })
+    }
+
+    /// The ds:Signature of `pending`, made by [`prepare`](Self::prepare) with this signer: level T asks the
+    /// time-stamping service over the signature value, level LT the OCSP service. Asking again with the same
+    /// answers gives the same signature.
+    pub fn complete(&self, pending: &PendingXadesSignature) -> Result<XadesSignature, SigningError> {
+        let mut parts = pending.parts.clone();
+        if pending.level >= SignatureLevel::T {
+            parts.unsigned = Some(self.unsigned_parts(&parts, &pending.hash_oid, pending.level)?);
         }
         Ok(XadesSignature::new(parts.id.clone(), build_signature(&parts)))
     }

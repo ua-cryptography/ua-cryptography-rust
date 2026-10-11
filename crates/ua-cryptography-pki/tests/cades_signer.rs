@@ -487,3 +487,27 @@ fn level_t_without_a_time_stamping_service_is_refused() {
     let signer = CadesSigner::new(Hierarchy::shared().signing_key(), services);
     assert_eq!(signer.sign(DATA, &level_lt), Err(SigningError::NoOcspService));
 }
+
+#[test]
+fn a_pending_signature_asks_the_time_stamp_only_when_completed_over_its_fixed_value() {
+    let pki = Hierarchy::shared();
+    let time_stamps = TestTimeStamps::new();
+    let services = SignatureServices {
+        time_stamps: Some(&time_stamps),
+        ..SignatureServices::default()
+    };
+    let signer = CadesSigner::new(pki.signing_key(), services);
+    let pending = signer
+        .prepare(DATA, &options(oids::DSTU7564_256, false, SignatureLevel::T))
+        .unwrap();
+    assert_eq!(time_stamps.requests.get(), 0);
+
+    let first = signer.complete(&pending).unwrap();
+    let second = signer.complete(&pending).unwrap();
+    assert_eq!(time_stamps.requests.get(), 2);
+    let first_value = recipes::read_cms(&first).signers[0].signature.clone();
+    assert_eq!(recipes::read_cms(&second).signers[0].signature, first_value);
+    let result = cades_verifier::verify(&first, None, &pki.trusting()).unwrap();
+    assert!(result.is_valid(), "{}", describe(&result));
+    assert_eq!(result.signatures[0].level.as_deref(), Some("CAdES-T"));
+}

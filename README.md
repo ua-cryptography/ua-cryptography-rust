@@ -77,13 +77,15 @@ build_scripts/demo.sh                                    # every format, verifie
 | [`ua-cryptography-xml-c14n`](crates/ua-cryptography-xml-c14n) | Canonical XML 1.0 and Exclusive C14N 1.0 over `roxmltree`, safe parsing |
 | [`ua-cryptography-pki`](crates/ua-cryptography-pki) | X.509, JKS, CMS/CAdES, TSP, OCSP, XAdES, ASiC, certification paths, HTTP clients of the PKI services |
 | [`ua-cryptography-sign`](crates/ua-cryptography-sign) | the `ua-sign` command-line tool |
-| [`ua-cryptography-ffi`](crates/ua-cryptography-ffi) | `ua_cryptography`, everything above as a native library: a C ABI for Windows, macOS, Linux, Android, iOS and JavaScript bindings for the browser |
+| [`ua-cryptography-operations`](crates/ua-cryptography-operations) | the operations both bindings below offer: bytes in, a model or a refusal out |
+| [`ua-cryptography-ffi`](crates/ua-cryptography-ffi) | `ua_cryptography`, everything above as a native library: a C ABI for Windows, macOS, Linux, Android, iOS |
+| [`ua-cryptography-wasm`](crates/ua-cryptography-wasm) | everything above for JavaScript (WebAssembly, browsers and Node.js), time-stamps and OCSP over `fetch` |
 
 Each crate has a README with its API, boundaries and dependencies.
 
-All but `ua-cryptography-ffi` are crates.io packages of one version (`cargo add ua-cryptography-dstu4145`,
+All but the last three are crates.io packages of one version (`cargo add ua-cryptography-dstu4145`,
 `cargo install ua-cryptography-sign` for the `ua-sign` command); `ua-cryptography-ffi` ships as the archives of a GitHub
-release and, for browsers and Node.js, as the npm package `ua-cryptography` (`npm install ua-cryptography`).
+release and `ua-cryptography-wasm` as the npm package `ua-cryptography` (`npm install ua-cryptography`).
 
 ## Build and test
 
@@ -97,12 +99,14 @@ cargo run --release -p ua-cryptography-dstu4145 --example bench   # performance 
 cargo run --release -p ua-cryptography-dstu4145 --example bench --features ua-cryptography-gf2m/portable
 build_scripts/interop.sh                                 # cross-verification with the C# ua-sign (needs .NET 10)
 build_scripts/ffi-header.sh                              # the C header of ua-cryptography-ffi (needs cbindgen)
+build_scripts/npm-package.sh && build_scripts/npm-online-test.sh artifacts/npm/ua-cryptography-*.tgz   # npm, online
 ```
 
 CI (`.github/workflows/ci.yml`) runs the tests on Linux, Windows and macOS on every push and pull request. A `v*` tag
 runs `.github/workflows/release.yml`: the tests, then the `ua_cryptography` library for Windows (x64, ARM64), macOS
 (universal), Linux (x64, ARM64), Android (four ABIs), iOS (XCFramework) and the browser (WebAssembly), attached to
-a GitHub release — see [crates/ua-cryptography-ffi](crates/ua-cryptography-ffi).
+a GitHub release — see [crates/ua-cryptography-ffi](crates/ua-cryptography-ffi) and
+[crates/ua-cryptography-wasm](crates/ua-cryptography-wasm).
 
 ## How the port is verified
 

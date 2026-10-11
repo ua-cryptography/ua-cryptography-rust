@@ -1,0 +1,32 @@
+[package]
+name = "ua-cryptography-wasm"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+# JavaScript bindings, not a Rust API: shipped as the npm package ua-cryptography, never to crates.io.
+publish = false
+
+[lib]
+# wasm-pack builds the cdylib; the rlib serves the tests.
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# Every operation behind the bindings: bytes in, a model or a refusal out.
+ua-cryptography-operations.workspace = true
+# Signing levels, named files, the service traits the fetched answers stand behind, TSP and OCSP messages.
+ua-cryptography-pki.workspace = true
+# The #[wasm_bindgen] exports and the import of fetch.
+wasm-bindgen.workspace = true
+# Uint8Array, Promise, Error, Reflect: the JavaScript values the bindings pass.
+js-sys.workspace = true
+# Awaits fetch's promises: signOnline and verifyOnline are async.
+wasm-bindgen-futures.workspace = true
+# The nonce of a time-stamp request.
+num-bigint.workspace = true
+# The nonce of an OCSP request.
+rand_core.workspace = true
+# The browser's generator behind OsRng: keys, nonces, signatures.
+getrandom = { workspace = true, features = ["js"] }
+# The browser's clock behind "now".
+time = { workspace = true, features = ["wasm-bindgen"] }

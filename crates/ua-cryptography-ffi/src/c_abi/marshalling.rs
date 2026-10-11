@@ -12,9 +12,9 @@ use crate::c_abi::types::{
     UA_SIGNATURE_LEVEL_B, UA_SIGNATURE_LEVEL_LT, UA_SIGNATURE_LEVEL_T, UaBuffer, UaBytes, UaCurve, UaCurveBasis,
     UaKeyStoreRequest, UaNamedBytes, UaSignatureFormat, UaSignatureHash, UaSignatureLevel, UaSigningOptions,
 };
-use crate::errors::OperationFailure;
-use crate::models::simple_types::{CurveBasis, SignatureFormat, SignatureHash};
-use crate::models::{KeyStoreRequest, NamedCurve, SigningOptions};
+use ua_cryptography_operations::OperationFailure;
+use ua_cryptography_operations::models::simple_types::{CurveBasis, SignatureFormat, SignatureHash};
+use ua_cryptography_operations::models::{KeyStoreRequest, NamedCurve, SigningOptions};
 
 /// The alias of a new key when the caller names none, as `ua-sign keygen` names it.
 const DEFAULT_ALIAS: &str = "key";

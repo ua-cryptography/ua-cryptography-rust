@@ -4,7 +4,7 @@ use std::panic::{self, AssertUnwindSafe};
 
 use crate::c_abi::marshalling::into_buffer;
 use crate::c_abi::types::{UaBuffer, UaStatus};
-use crate::errors::{FailureKind, OperationFailure};
+use ua_cryptography_operations::{FailureKind, OperationFailure};
 
 /// What the caller reads of a panic: the details stay in the process's panic output.
 const INTERNAL_MESSAGE: &str = "Internal error of ua_cryptography.";

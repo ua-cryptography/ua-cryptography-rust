@@ -11,9 +11,10 @@ use crate::c_abi::marshalling::{
     read_text, write_buffer,
 };
 use crate::c_abi::types::{UaBuffer, UaBytes, UaKeyStoreRequest, UaNamedBytes, UaSigningOptions, UaStatus};
-use crate::models::{SigningRequest, VerificationRequest};
-use crate::operations::{certificate_details, key_store, signing, verification};
-use crate::utils::to_json;
+use crate::service_clients::ServiceClients;
+use ua_cryptography_operations::models::{SigningRequest, VerificationRequest};
+use ua_cryptography_operations::operations::{certificate_details, key_store, signing, verification};
+use ua_cryptography_operations::to_json;
 
 /// A new JKS store protected by `password` (the key too), with a DSTU 4145 key and its self-signed certificate.
 ///
@@ -131,7 +132,12 @@ pub unsafe extern "C" fn ua_sign(
                 certificates: read_bytes_list(certificates, certificates_count, "A certificate")?,
                 options: read_signing_options(options)?,
             };
-            write_buffer(signature, signing::sign(&request)?)
+            let plan = signing::plan_signature(&request)?;
+            let clients = ServiceClients::for_signing(&plan, request.options.ocsp_url.as_deref());
+            write_buffer(
+                signature,
+                signing::sign(&request, &plan, &clients.signature_services(&plan))?,
+            )
         })
     }
 }
@@ -166,9 +172,10 @@ pub unsafe extern "C" fn ua_verify(
                 data: read_files(data, data_count, "A data file")?,
                 trust_anchors: read_bytes_list(trust_anchors, trust_anchors_count, "A trust anchor")?,
                 certificates: read_bytes_list(certificates, certificates_count, "A certificate")?,
-                is_online,
             };
-            let summary = verification::verify(&request, OffsetDateTime::now_utc())?;
+            let clients = ServiceClients::for_verification(is_online);
+            let summary =
+                verification::verify(&request, clients.ocsp(), clients.downloads(), OffsetDateTime::now_utc())?;
             write_buffer(report_json, to_json(&summary))
         })
     }

@@ -4,7 +4,7 @@
 use crate::c_abi::call_guard::run_call;
 use crate::c_abi::marshalling::{read_bytes, write_buffer};
 use crate::c_abi::types::{UaBuffer, UaBytes, UaStatus};
-use crate::operations::dstu7624;
+use ua_cryptography_operations::operations::dstu7624;
 
 /// Encrypts one block.
 ///

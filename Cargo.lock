@@ -726,6 +726,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "tokio"
+version = "1.53.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e95f91fcc7a621e8b030f6aa23c71fe9838ae2fb4d8118b75602a328f5144044"
+dependencies = [
+ "pin-project-lite",
+]
+
+[[package]]
 name = "typed-path"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -783,20 +792,11 @@ dependencies = [
 name = "ua-cryptography-ffi"
 version = "0.1.4"
 dependencies = [
- "getrandom",
- "js-sys",
- "num-bigint",
- "rand_core",
- "serde",
  "serde_json",
  "time",
- "ua-cryptography-dstu4145",
- "ua-cryptography-dstu7564",
- "ua-cryptography-dstu7624",
- "ua-cryptography-gf2m",
  "ua-cryptography-gost",
+ "ua-cryptography-operations",
  "ua-cryptography-pki",
- "wasm-bindgen",
 ]
 
 [[package]]
@@ -813,6 +813,23 @@ name = "ua-cryptography-gost"
 version = "0.1.4"
 dependencies = [
  "serde_json",
+]
+
+[[package]]
+name = "ua-cryptography-operations"
+version = "0.1.4"
+dependencies = [
+ "num-bigint",
+ "rand_core",
+ "serde",
+ "serde_json",
+ "time",
+ "ua-cryptography-dstu4145",
+ "ua-cryptography-dstu7564",
+ "ua-cryptography-dstu7624",
+ "ua-cryptography-gf2m",
+ "ua-cryptography-gost",
+ "ua-cryptography-pki",
 ]
 
 [[package]]
@@ -856,6 +873,21 @@ dependencies = [
  "ua-cryptography-pki",
  "ua-cryptography-xml-c14n",
  "zip",
+]
+
+[[package]]
+name = "ua-cryptography-wasm"
+version = "0.1.4"
+dependencies = [
+ "getrandom",
+ "js-sys",
+ "num-bigint",
+ "rand_core",
+ "time",
+ "ua-cryptography-operations",
+ "ua-cryptography-pki",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
 ]
 
 [[package]]
@@ -936,6 +968,17 @@ dependencies = [
  "rustversion",
  "wasm-bindgen-macro",
  "wasm-bindgen-shared",
+]
+
+[[package]]
+name = "wasm-bindgen-futures"
+version = "0.4.79"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3cbab34de2d982e9b48e18d216d04c4a6f641066ff19ffb699980f591ee3610e"
+dependencies = [
+ "js-sys",
+ "tokio",
+ "wasm-bindgen",
 ]
 
 [[package]]

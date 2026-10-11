@@ -4,7 +4,7 @@ version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
-# A C ABI and JavaScript bindings, not a Rust API: shipped as release archives, never to crates.io.
+# A C ABI, not a Rust API: shipped as release archives, never to crates.io.
 publish = false
 
 [lib]
@@ -13,35 +13,15 @@ name = "ua_cryptography"
 crate-type = ["cdylib", "staticlib", "rlib"]
 
 [dependencies]
-# GOST 28147-89 and GOST 34.311-95.
-ua-cryptography-gost.workspace = true
-# DSTU 7564 (Kupyna).
-ua-cryptography-dstu7564.workspace = true
-# DSTU 7624 (Kalyna) and its modes.
-ua-cryptography-dstu7624.workspace = true
-# DSTU 4145: curves, keys, signing, verification, the generator of Appendix А.
-ua-cryptography-dstu4145.workspace = true
-# Point compression and decompression of public keys.
-ua-cryptography-gf2m.workspace = true
-# Key stores, certificates, signing in every format and verification.
-ua-cryptography-pki.workspace = true
-# Private keys, e, r and s as big-endian integers.
-num-bigint.workspace = true
-# The bytes of the Appendix А generator.
-rand_core.workspace = true
-# The JSON of key store entries, certificate details and verification reports.
-serde.workspace = true
-serde_json.workspace = true
-# Times in those reports, and certificate validity.
+# Every operation behind the C ABI: bytes in, a model or a refusal out.
+ua-cryptography-operations.workspace = true
+# Signing levels and named files of the C ABI; the time-stamping, OCSP and caIssuers clients over sockets.
+ua-cryptography-pki = { workspace = true, features = ["http"] }
+# "Now" of a verification.
 time.workspace = true
 
-# Native platforms have sockets: the time-stamping, OCSP and caIssuers clients of ua-cryptography-pki.
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-ua-cryptography-pki = { workspace = true, features = ["http"] }
-
-# The browser build: JavaScript bindings, and the browser's generator and clock for OsRng and "now".
-[target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dependencies]
-wasm-bindgen.workspace = true
-js-sys.workspace = true
-getrandom = { workspace = true, features = ["js"] }
-time = { workspace = true, features = ["wasm-bindgen"] }
+[dev-dependencies]
+# Reads the JSON reports the C ABI returns.
+serde_json.workspace = true
+# The reference hash a C ABI hash is compared with.
+ua-cryptography-gost.workspace = true

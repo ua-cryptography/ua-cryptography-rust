@@ -1,4 +1,5 @@
 mod mime_types;
+mod pending_xades_signature;
 mod signed_file;
 mod uri_escape;
 mod xades_signature;
@@ -7,6 +8,7 @@ pub mod xades_verifier;
 pub(crate) mod xml_element;
 
 pub use mime_types::mime_type_of;
+pub use pending_xades_signature::PendingXadesSignature;
 pub use signed_file::SignedFile;
 pub use xades_signature::XadesSignature;
 pub use xades_signer::XadesSigner;

@@ -1,0 +1,31 @@
+[package]
+name = "ua-cryptography-operations"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+# The layer under the C ABI and the JavaScript bindings, not a Rust API of its own: never to crates.io.
+publish = false
+
+[dependencies]
+# GOST 28147-89 and GOST 34.311-95.
+ua-cryptography-gost.workspace = true
+# DSTU 7564 (Kupyna).
+ua-cryptography-dstu7564.workspace = true
+# DSTU 7624 (Kalyna) and its modes.
+ua-cryptography-dstu7624.workspace = true
+# DSTU 4145: curves, keys, signing, verification, the generator of Appendix А.
+ua-cryptography-dstu4145.workspace = true
+# Point compression and decompression of public keys.
+ua-cryptography-gf2m.workspace = true
+# Key stores, certificates, signing in every format and verification; the services come from the bindings.
+ua-cryptography-pki.workspace = true
+# Private keys, e, r and s as big-endian integers.
+num-bigint.workspace = true
+# The bytes of the Appendix А generator.
+rand_core.workspace = true
+# The JSON of key store entries, certificate details and verification reports.
+serde.workspace = true
+serde_json.workspace = true
+# Times in those reports, and certificate validity.
+time.workspace = true

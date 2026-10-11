@@ -14,7 +14,7 @@ cd "$consumer"
 npm init --yes > /dev/null
 npm install --no-audit --no-fund "$tarball" > /dev/null
 # A bare specifier resolves from the importing file, so the test runs from inside the project.
-cp "$root/crates/ua-cryptography-ffi/tests/js/smoke_test.mjs" .
+cp "$root/crates/ua-cryptography-wasm/tests/js/smoke_test.mjs" .
 node smoke_test.mjs
 node --eval "
   const ua = require('ua-cryptography');

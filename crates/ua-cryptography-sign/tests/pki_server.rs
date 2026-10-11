@@ -6,16 +6,17 @@
 //! ```
 //!
 //! writes DIR/signer.jks (the hierarchy's signer with its chain; password UA_SIGN_TEST_PKI_PASSWORD, default
-//! "test password"), DIR/root.cer and DIR/ca.cer, then DIR/ready holding the server's base URL (/tsp, /ocsp,
-//! /ca.p7b), and serves until DIR/stop appears.
+//! "test password"), DIR/customer.jks (the signer's key under a certificate naming the server's OCSP responder and
+//! caIssuers bundle, without its chain), DIR/root.cer and DIR/ca.cer, then DIR/ready holding the server's base URL
+//! (/tsp, /ocsp, /ca.p7b), and serves until DIR/stop appears.
 
 mod common;
 
 use std::path::Path;
 use std::time::{Duration, Instant};
 
-use common::Hierarchy;
 use common::local_server::LocalPkiServer;
+use common::{Hierarchy, issue, write_key_store};
 
 const DIRECTORY_VARIABLE: &str = "UA_SIGN_TEST_PKI_DIRECTORY";
 const PASSWORD_VARIABLE: &str = "UA_SIGN_TEST_PKI_PASSWORD";
@@ -35,6 +36,22 @@ fn serve_the_test_pki_until_stopped() {
     let pki = Hierarchy::shared();
     let server = LocalPkiServer::start();
     pki.write_signer_key_store(directory.join("signer.jks").to_str().unwrap(), &password);
+    let customer = issue(
+        "CN=Test Customer,O=UA Cryptography Tests,C=UA",
+        &pki.signer.key,
+        &pki.issuing_ca,
+        Some(&server.ocsp_url()),
+        Some(&server.ca_issuers_url()),
+    );
+    server.add_certificate(customer.clone());
+    let customer_store = directory.join("customer.jks");
+    write_key_store(
+        customer_store.to_str().unwrap(),
+        "customer",
+        &pki.signer.key,
+        vec![customer],
+        &password,
+    );
     pki.write_root(directory.join("root.cer").to_str().unwrap());
     std::fs::write(directory.join("ca.cer"), pki.issuing_ca.certificate.encoded()).unwrap();
     std::fs::write(directory.join("ready"), &server.base_url).unwrap();

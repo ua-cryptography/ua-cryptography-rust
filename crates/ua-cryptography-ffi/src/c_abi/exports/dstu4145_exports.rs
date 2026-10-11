@@ -5,7 +5,7 @@
 use crate::c_abi::call_guard::run_call;
 use crate::c_abi::marshalling::{read_bytes, read_curve, read_optional_bytes, write_buffer, write_flag};
 use crate::c_abi::types::{UaBuffer, UaBytes, UaCurve, UaStatus};
-use crate::operations::dstu4145;
+use ua_cryptography_operations::operations::dstu4145;
 
 /// Section 9: a random private key d (from the OS generator) and the compressed public key Q = −dP.
 ///

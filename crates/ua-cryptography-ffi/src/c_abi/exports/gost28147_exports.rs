@@ -3,7 +3,7 @@
 use crate::c_abi::call_guard::run_call;
 use crate::c_abi::marshalling::{read_bytes, read_optional_bytes, write_buffer};
 use crate::c_abi::types::{UaBuffer, UaBytes, UaStatus};
-use crate::operations::gost28147;
+use ua_cryptography_operations::operations::gost28147;
 
 /// Encrypts whole 8-byte blocks under the 32-byte `key`; `dke` is the 64-byte table, DKE No. 1 when NULL.
 ///

@@ -1,7 +1,7 @@
 use time::OffsetDateTime;
 
 use crate::algorithms;
-use crate::cades::CadesOptions;
+use crate::cades::{CadesOptions, PendingCadesSignature};
 use crate::cms::cms_builder;
 use crate::errors::SigningError;
 use crate::oids;
@@ -28,8 +28,15 @@ impl<'a> CadesSigner<'a> {
         Self { signer, services }
     }
 
-    /// A ContentInfo with SignedData over `data`.
+    /// A ContentInfo with SignedData over `data`: [`prepare`](Self::prepare), then [`complete`](Self::complete).
     pub fn sign(&self, data: &[u8], options: &CadesOptions) -> Result<Vec<u8>, SigningError> {
+        let pending = self.prepare(data, options)?;
+        self.complete(&pending)
+    }
+
+    /// The signed attributes over `data` and their signature value; asks the time-stamping service only for a
+    /// content time-stamp.
+    pub fn prepare(&self, data: &[u8], options: &CadesOptions) -> Result<PendingCadesSignature, SigningError> {
         let hash_oid = options.hash_oid.as_str();
         let mut extra = Vec::new();
         if options.has_signing_time {
@@ -45,11 +52,24 @@ impl<'a> CadesSigner<'a> {
         }
 
         let signed_attributes = cms_builder::signed_attributes(data, oids::DATA, &self.signer, hash_oid, &extra)?;
-        let (mut signer_info, signature) = cms_builder::signer_info(&signed_attributes, &self.signer, hash_oid, &[])?;
+        let (_, signature) = cms_builder::signer_info(&signed_attributes, &self.signer, hash_oid, &[])?;
+        Ok(PendingCadesSignature {
+            signed_attributes,
+            signature,
+            encapsulated: (!options.is_detached).then(|| data.to_vec()),
+            options: options.clone(),
+        })
+    }
 
+    /// The ContentInfo of `pending`, made by [`prepare`](Self::prepare) with this signer: level T asks the
+    /// time-stamping service over the signature value, level LT the OCSP service. Asking again with the same
+    /// answers gives the same bytes.
+    pub fn complete(&self, pending: &PendingCadesSignature) -> Result<Vec<u8>, SigningError> {
+        let options = &pending.options;
+        let hash_oid = options.hash_oid.as_str();
         let mut unsigned = Vec::new();
         if options.level >= SignatureLevel::T {
-            let token = self.stamp(&signature, hash_oid)?;
+            let token = self.stamp(&pending.signature, hash_oid)?;
             unsigned.push(cms_builder::attribute(
                 oids::SIGNATURE_TIME_STAMP_TOKEN,
                 [token.encoded()],
@@ -59,19 +79,20 @@ impl<'a> CadesSigner<'a> {
             let data = self.services.collect_long_term_data(&self.signer, hash_oid)?;
             unsigned.extend(long_term_attributes(&data, hash_oid)?);
         }
-        if !unsigned.is_empty() {
-            let certificate = self.signer.certificate();
-            signer_info =
-                cms_builder::signer_info_with(&signed_attributes, &signature, certificate, hash_oid, &unsigned)?;
-        }
-
-        let encapsulated = if options.is_detached { None } else { Some(data) };
-        let certificates = [self.signer.certificate().clone()];
+        let certificate = self.signer.certificate();
+        let signer_info = cms_builder::signer_info_with(
+            &pending.signed_attributes,
+            &pending.signature,
+            certificate,
+            hash_oid,
+            &unsigned,
+        )?;
+        let certificates = [certificate.clone()];
         Ok(cms_builder::signed_data(
             &signer_info,
             hash_oid,
             oids::DATA,
-            encapsulated,
+            pending.encapsulated.as_deref(),
             &certificates,
         ))
     }

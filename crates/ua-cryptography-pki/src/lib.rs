@@ -12,7 +12,8 @@
 //!   ([`HttpTimeStampService`], [`HttpOcspService`], [`HttpCertificateSource`], feature `http`, on by default);
 //!   [`LongTermValidationData`]; [`certificate_files`] reads certificate files and bundles.
 //! - Signing: [`CadesSigner`], [`XadesSigner`], [`asic_container`]; the services a signer uses are
-//!   [`SignatureServices`].
+//!   [`SignatureServices`]. `prepare` + `complete` sign in two steps, the services asked in the second
+//!   ([`PendingCadesSignature`], [`PendingXadesSignature`]).
 //! - Verification: [`signature_verifier`] (any format), [`cades_verifier`], [`xades_verifier`],
 //!   [`certificate_path_validator`]; outcomes are [`VerificationResult`] / [`VerificationReport`] models, not errors.
 
@@ -77,6 +78,7 @@ pub use errors::TimeStampError;
 pub use errors::VerificationError;
 
 pub use cades::CadesOptions;
+pub use cades::PendingCadesSignature;
 pub use cms::CmsAttribute;
 pub use keystore::JksEntry;
 pub use keystore::JksPrivateKeyEntry;
@@ -93,6 +95,7 @@ pub use validation::VerificationReport;
 pub use validation::VerificationResult;
 pub use x509::CertificateExtension;
 pub use x509::DistinguishedName;
+pub use xades::PendingXadesSignature;
 pub use xades::SignedFile;
 
 pub use ocsp::OcspCertificateStatus;

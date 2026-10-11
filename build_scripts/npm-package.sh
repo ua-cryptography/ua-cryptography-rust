@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds the npm package ua-cryptography (crates/ua-cryptography-ffi for browsers and Node.js) at the workspace version
+# Builds the npm package ua-cryptography (crates/ua-cryptography-wasm for browsers and Node.js) at the workspace version
 # and packs it (needs wasm-pack, jq and npm):
 #
 #   build_scripts/npm-package.sh [OUT_DIRECTORY]     (default: artifacts/npm)
@@ -8,13 +8,13 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-crate="$root/crates/ua-cryptography-ffi"
+crate="$root/crates/ua-cryptography-wasm"
 out="${1:-$root/artifacts/npm}"
 mkdir -p "$out"
 out="$(cd "$out" && pwd)"
 package="$out/ua-cryptography"
 version="$(cargo metadata --manifest-path "$root/Cargo.toml" --no-deps --format-version 1 \
-  | jq -r '.packages[] | select(.name == "ua-cryptography-ffi") | .version')"
+  | jq -r '.packages[] | select(.name == "ua-cryptography-wasm") | .version')"
 
 rm -rf "$package" "$out/ua-cryptography-$version.tgz"
 wasm-pack build "$crate" --release --target web --out-dir "$package" --out-name ua_cryptography

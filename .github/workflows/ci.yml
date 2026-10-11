@@ -60,9 +60,9 @@ jobs:
       - name: Clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
 
-      # The JavaScript bindings exist on wasm32 only.
+      # The JavaScript bindings as the browser build compiles them.
       - name: Clippy of the browser build
-        run: cargo clippy -p ua-cryptography-ffi --target wasm32-unknown-unknown --locked -- -D warnings
+        run: cargo clippy -p ua-cryptography-wasm --target wasm32-unknown-unknown --locked -- -D warnings
 
       - uses: taiki-e/install-action@v2
         with:
@@ -76,4 +76,6 @@ jobs:
 
       # Every crate packs and builds from its package alone, as crates.io will build it.
       - name: Packages
-        run: cargo package --workspace --exclude ua-cryptography-ffi --locked
+        run: |
+          cargo package --workspace --locked \
+            --exclude ua-cryptography-ffi --exclude ua-cryptography-wasm --exclude ua-cryptography-operations

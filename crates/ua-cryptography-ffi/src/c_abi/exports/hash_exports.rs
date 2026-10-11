@@ -3,8 +3,8 @@
 use crate::c_abi::call_guard::run_call;
 use crate::c_abi::marshalling::{read_bytes, read_optional_bytes, write_buffer};
 use crate::c_abi::types::{UaBuffer, UaBytes, UaHashState, UaStatus};
-use crate::errors::OperationFailure;
-use crate::operations::{StreamingHash, dstu7564, gost34311};
+use ua_cryptography_operations::OperationFailure;
+use ua_cryptography_operations::operations::{StreamingHash, dstu7564, gost34311};
 
 /// GOST 34.311-95 of `data`: 32 bytes, least significant first, as GOST defines H.
 ///
