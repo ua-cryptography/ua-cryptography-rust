@@ -748,7 +748,7 @@ checksum = "b6f5e870be6c3b371b77fe0ee0bafb859fa4964b4404c27de1d380043c4dda20"
 
 [[package]]
 name = "ua-cryptography-der"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "base64",
  "num-bigint",
@@ -758,11 +758,11 @@ dependencies = [
 
 [[package]]
 name = "ua-cryptography-dstu-sboxes"
-version = "0.1.4"
+version = "0.2.0"
 
 [[package]]
 name = "ua-cryptography-dstu4145"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "num-bigint",
  "num-traits",
@@ -774,7 +774,7 @@ dependencies = [
 
 [[package]]
 name = "ua-cryptography-dstu7564"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "serde_json",
  "ua-cryptography-dstu-sboxes",
@@ -782,7 +782,7 @@ dependencies = [
 
 [[package]]
 name = "ua-cryptography-dstu7624"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "serde_json",
  "ua-cryptography-dstu-sboxes",
@@ -790,7 +790,7 @@ dependencies = [
 
 [[package]]
 name = "ua-cryptography-ffi"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "serde_json",
  "time",
@@ -801,7 +801,7 @@ dependencies = [
 
 [[package]]
 name = "ua-cryptography-gf2m"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "num-bigint",
  "num-traits",
@@ -810,14 +810,14 @@ dependencies = [
 
 [[package]]
 name = "ua-cryptography-gost"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "serde_json",
 ]
 
 [[package]]
 name = "ua-cryptography-operations"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "num-bigint",
  "rand_core",
@@ -834,7 +834,7 @@ dependencies = [
 
 [[package]]
 name = "ua-cryptography-pki"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "base64",
  "num-bigint",
@@ -857,7 +857,7 @@ dependencies = [
 
 [[package]]
 name = "ua-cryptography-sign"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "base64",
  "num-bigint",
@@ -877,7 +877,7 @@ dependencies = [
 
 [[package]]
 name = "ua-cryptography-wasm"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "getrandom",
  "js-sys",
@@ -892,7 +892,7 @@ dependencies = [
 
 [[package]]
 name = "ua-cryptography-xml-c14n"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "roxmltree",
  "serde_json",
