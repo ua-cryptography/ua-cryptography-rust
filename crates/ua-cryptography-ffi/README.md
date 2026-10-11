@@ -72,6 +72,18 @@ The native packages carry the header in `include/` (the XCFramework in each slic
 a static library also links the system libraries listed in `native-static-libs.txt` beside it, as rustc reports
 them for the platform (`build_scripts/ffi-static-libs.sh`).
 
+Beside the archives, each shared library is attached as a bare file of one architecture, for build hooks that
+download a single file (the Dart package `ua_cryptography`). `SHA256SUMS` covers them:
+
+| File | Contents |
+|---|---|
+| `ua-cryptography-<v>-android-{arm64,arm,x64,ia32}.so` | the four ABIs of the `android` archive |
+| `ua-cryptography-<v>-ios-arm64.dylib` | iOS devices; install name `@rpath/libua_cryptography.dylib`, iOS 13+ |
+| `ua-cryptography-<v>-ios-simulator-{arm64,x64}.dylib` | iOS simulators (arm64 needs iOS 14+) |
+| `ua-cryptography-<v>-macos-{arm64,x64}.dylib` | the slices of the `macos-universal` dylib |
+| `ua-cryptography-<v>-linux-{x64,arm64}.so` | the `.so` of the `linux-*` archives |
+| `ua-cryptography-<v>-windows-{x64,arm64}.dll` | the `.dll` of the `windows-*` archives |
+
 Locally: `cargo build --release -p ua-cryptography-ffi` (this machine), `cargo ndk … build -p ua-cryptography-ffi`
 (Android).
 

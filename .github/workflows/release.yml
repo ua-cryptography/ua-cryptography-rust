@@ -1,9 +1,13 @@
 name: Release
 
 # On a version tag (v1.2.3, v1.2.3-beta.1): the tests, then the ua_cryptography library (crates/ua-cryptography-ffi) for
-# every platform, then a GitHub release with one archive per platform and SHA256SUMS, then the npm package
-# ua-cryptography once the author approves the `npm` environment and the crates on crates.io once the author approves
-# the `crates-io` environment.
+# every platform, then a GitHub release with one archive per platform, the bare shared libraries and SHA256SUMS, then
+# the npm package ua-cryptography once the author approves the `npm` environment and the crates on crates.io once the
+# author approves the `crates-io` environment.
+#
+# Bare shared libraries, one architecture each, for build hooks that download a single file (the Dart package):
+# ua-cryptography-<version>-<os>-<arch>.<so|dylib|dll>, os in android, ios, ios-simulator, macos, linux, windows,
+# arch in arm64, arm, x64, ia32. Single-architecture because Flutter runs a hook per architecture and merges with lipo.
 
 on:
   push:
@@ -92,12 +96,16 @@ jobs:
 
       - name: Archive
         shell: pwsh
-        run: Compress-Archive -Path $env:PACKAGE -DestinationPath "$env:PACKAGE.zip"
+        run: |
+          Compress-Archive -Path $env:PACKAGE -DestinationPath "$env:PACKAGE.zip"
+          Copy-Item "$env:PACKAGE\lib\ua_cryptography.dll" "$env:PACKAGE.dll"
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PACKAGE }}
-          path: ${{ env.PACKAGE }}.zip
+          path: |
+            ${{ env.PACKAGE }}.zip
+            ${{ env.PACKAGE }}.dll
           if-no-files-found: error
 
   macos:
@@ -105,6 +113,7 @@ jobs:
     runs-on: macos-latest
     env:
       PACKAGE: ua-cryptography-${{ needs.version.outputs.version }}-macos-universal
+      BARE: ua-cryptography-${{ needs.version.outputs.version }}-macos
       # ring compiles C: without it, it targets the SDK the runner happens to have. Only this one here:
       # with IPHONEOS_DEPLOYMENT_TARGET also set, a bare cc (the smoke test) targets iOS.
       MACOSX_DEPLOYMENT_TARGET: '11.0'
@@ -155,13 +164,20 @@ jobs:
             echo "::notice::No Rosetta on the runner: the x86_64 slice is built but not run."
           fi
 
+      # The slices of the signed universal dylib keep their signatures.
       - name: Archive
-        run: zip -r -y "$PACKAGE.zip" "$PACKAGE"
+        run: |
+          zip -r -y "$PACKAGE.zip" "$PACKAGE"
+          lipo "$PACKAGE/lib/libua_cryptography.dylib" -thin arm64 -output "$BARE-arm64.dylib"
+          lipo "$PACKAGE/lib/libua_cryptography.dylib" -thin x86_64 -output "$BARE-x64.dylib"
+          codesign --verify "$BARE-arm64.dylib" "$BARE-x64.dylib"
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PACKAGE }}
-          path: ${{ env.PACKAGE }}.zip
+          path: |
+            ${{ env.PACKAGE }}.zip
+            ${{ env.BARE }}-*.dylib
           if-no-files-found: error
 
   linux:
@@ -219,12 +235,16 @@ jobs:
           ./smoke_test
 
       - name: Archive
-        run: tar -czf "$PACKAGE.tar.gz" "$PACKAGE"
+        run: |
+          tar -czf "$PACKAGE.tar.gz" "$PACKAGE"
+          cp "$PACKAGE/lib/libua_cryptography.so" "$PACKAGE.so"
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PACKAGE }}
-          path: ${{ env.PACKAGE }}.tar.gz
+          path: |
+            ${{ env.PACKAGE }}.tar.gz
+            ${{ env.PACKAGE }}.so
           if-no-files-found: error
 
   android:
@@ -264,12 +284,19 @@ jobs:
           test "$(find "$PACKAGE/jniLibs" -name libua_cryptography.so | wc -l)" -eq 4
 
       - name: Archive
-        run: zip -r "$PACKAGE.zip" "$PACKAGE"
+        run: |
+          zip -r "$PACKAGE.zip" "$PACKAGE"
+          cp "$PACKAGE/jniLibs/arm64-v8a/libua_cryptography.so" "$PACKAGE-arm64.so"
+          cp "$PACKAGE/jniLibs/armeabi-v7a/libua_cryptography.so" "$PACKAGE-arm.so"
+          cp "$PACKAGE/jniLibs/x86_64/libua_cryptography.so" "$PACKAGE-x64.so"
+          cp "$PACKAGE/jniLibs/x86/libua_cryptography.so" "$PACKAGE-ia32.so"
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PACKAGE }}
-          path: ${{ env.PACKAGE }}.zip
+          path: |
+            ${{ env.PACKAGE }}.zip
+            ${{ env.PACKAGE }}-*.so
           if-no-files-found: error
 
   ios:
@@ -310,13 +337,27 @@ jobs:
           build_scripts/ffi-static-libs.sh aarch64-apple-ios "$PACKAGE/native-static-libs.txt"
           cp LICENSE THIRD-PARTY-NOTICES.md crates/ua-cryptography-ffi/README.md "$PACKAGE/"
 
+      # Dynamic libraries, one per architecture: Flutter loads only dynamic ones and wraps each into a framework.
+      - name: Dynamic libraries
+        run: |
+          for slice in aarch64-apple-ios:arm64 aarch64-apple-ios-sim:simulator-arm64 x86_64-apple-ios:simulator-x64; do
+            bare="$PACKAGE-${slice#*:}.dylib"
+            cp "target/${slice%%:*}/release/libua_cryptography.dylib" "$bare"
+            # rustc writes the build directory as the install name; the changed dylib needs a fresh ad-hoc signature.
+            install_name_tool -id @rpath/libua_cryptography.dylib "$bare"
+            codesign --force --sign - "$bare"
+            lipo -info "$bare"
+          done
+
       - name: Archive
         run: zip -r -y "$PACKAGE.zip" "$PACKAGE"
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PACKAGE }}
-          path: ${{ env.PACKAGE }}.zip
+          path: |
+            ${{ env.PACKAGE }}.zip
+            ${{ env.PACKAGE }}-*.dylib
           if-no-files-found: error
 
   wasm:

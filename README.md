@@ -104,8 +104,8 @@ build_scripts/npm-package.sh && build_scripts/npm-online-test.sh artifacts/npm/u
 
 CI (`.github/workflows/ci.yml`) runs the tests on Linux, Windows and macOS on every push and pull request. A `v*` tag
 runs `.github/workflows/release.yml`: the tests, then the `ua_cryptography` library for Windows (x64, ARM64), macOS
-(universal), Linux (x64, ARM64), Android (four ABIs), iOS (XCFramework) and the browser (WebAssembly), attached to
-a GitHub release — see [crates/ua-cryptography-ffi](crates/ua-cryptography-ffi) and
+(universal), Linux (x64, ARM64), Android (four ABIs), iOS (XCFramework and dynamic libraries) and the browser
+(WebAssembly), attached to a GitHub release as archives and, for the native platforms, as bare shared libraries — see [crates/ua-cryptography-ffi](crates/ua-cryptography-ffi) and
 [crates/ua-cryptography-wasm](crates/ua-cryptography-wasm).
 
 ## How the port is verified
