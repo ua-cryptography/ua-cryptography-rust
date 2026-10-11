@@ -95,9 +95,11 @@ mod tests {
 
     #[test]
     fn full_paths_resolve_parent_directories_by_name() {
-        assert_eq!(full_path("/a/b/../c/./d").unwrap(), PathBuf::from("/a/c/d"));
-        assert!(!is_inside(&full_path("/a/b/../../x").unwrap(), Path::new("/a/b")));
-        assert!(is_inside(&full_path("/a/b/c/x").unwrap(), Path::new("/a/b")));
+        // On Windows "/" is rooted but not absolute: the current drive is prepended.
+        let root = full_path("/").unwrap();
+        assert_eq!(full_path("/a/b/../c/./d").unwrap(), root.join("a/c/d"));
+        assert!(!is_inside(&full_path("/a/b/../../x").unwrap(), &root.join("a/b")));
+        assert!(is_inside(&full_path("/a/b/c/x").unwrap(), &root.join("a/b")));
         assert!(!is_inside(Path::new("/a/b"), Path::new("/a/b")));
         assert!(!is_inside(Path::new("/a/bc"), Path::new("/a/b")));
     }
