@@ -739,7 +739,7 @@ checksum = "b6f5e870be6c3b371b77fe0ee0bafb859fa4964b4404c27de1d380043c4dda20"
 
 [[package]]
 name = "ua-der"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "base64",
  "num-bigint",
@@ -749,11 +749,11 @@ dependencies = [
 
 [[package]]
 name = "ua-dstu-sboxes"
-version = "0.1.1"
+version = "0.1.2"
 
 [[package]]
 name = "ua-dstu4145"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "num-bigint",
  "num-traits",
@@ -765,7 +765,7 @@ dependencies = [
 
 [[package]]
 name = "ua-dstu7564"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde_json",
  "ua-dstu-sboxes",
@@ -773,7 +773,7 @@ dependencies = [
 
 [[package]]
 name = "ua-dstu7624"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde_json",
  "ua-dstu-sboxes",
@@ -781,7 +781,7 @@ dependencies = [
 
 [[package]]
 name = "ua-ffi"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "getrandom",
  "js-sys",
@@ -801,7 +801,7 @@ dependencies = [
 
 [[package]]
 name = "ua-gf2m"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "num-bigint",
  "num-traits",
@@ -810,14 +810,14 @@ dependencies = [
 
 [[package]]
 name = "ua-gost"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde_json",
 ]
 
 [[package]]
 name = "ua-pki"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "base64",
  "num-bigint",
@@ -840,7 +840,7 @@ dependencies = [
 
 [[package]]
 name = "ua-sign"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "base64",
  "num-bigint",
@@ -860,7 +860,7 @@ dependencies = [
 
 [[package]]
 name = "ua-xml-c14n"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "roxmltree",
  "serde_json",

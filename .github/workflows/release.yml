@@ -13,9 +13,6 @@ permissions:
 
 env:
   CARGO_TERM_COLOR: always
-  # ring compiles C: without these it targets the SDK the runner happens to have.
-  MACOSX_DEPLOYMENT_TARGET: '11.0'
-  IPHONEOS_DEPLOYMENT_TARGET: '13.0'
 
 jobs:
   test:
@@ -107,6 +104,9 @@ jobs:
     runs-on: macos-latest
     env:
       PACKAGE: ua-cryptography-${{ needs.version.outputs.version }}-macos-universal
+      # ring compiles C: without it, it targets the SDK the runner happens to have. Only this one here:
+      # with IPHONEOS_DEPLOYMENT_TARGET also set, a bare cc (the smoke test) targets iOS.
+      MACOSX_DEPLOYMENT_TARGET: '11.0'
       # cargo's strip of the dylib breaks the linker of newer Xcode releases ("mis-aligned LINKEDIT string pool").
       CARGO_PROFILE_RELEASE_STRIP: none
     steps:
@@ -275,6 +275,8 @@ jobs:
     runs-on: macos-latest
     env:
       PACKAGE: ua-cryptography-${{ needs.version.outputs.version }}-ios
+      # ring compiles C: without it, it targets the SDK the runner happens to have.
+      IPHONEOS_DEPLOYMENT_TARGET: '13.0'
     steps:
       - uses: actions/checkout@v4
 
