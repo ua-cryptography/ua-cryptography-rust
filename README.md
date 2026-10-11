@@ -83,7 +83,7 @@ Each crate has a README with its API, boundaries and dependencies.
 
 All but `ua-cryptography-ffi` are crates.io packages of one version (`cargo add ua-cryptography-dstu4145`,
 `cargo install ua-cryptography-sign` for the `ua-sign` command); `ua-cryptography-ffi` ships as the archives of a GitHub
-release.
+release and, for browsers and Node.js, as the npm package `ua-cryptography` (`npm install ua-cryptography`).
 
 ## Build and test
 

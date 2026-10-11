@@ -81,14 +81,17 @@ Built by `.github/workflows/release.yml` on a version tag and attached to the Gi
 | `linux-x64`, `linux-arm64` | `libua_cryptography.so`, `libua_cryptography.a`; glibc 2.35+ |
 | `android` | `jniLibs/{arm64-v8a,armeabi-v7a,x86,x86_64}/libua_cryptography.so`, API 21+, 16 KB pages |
 | `ios` | `UaCryptography.xcframework`: static libraries for devices (arm64) and simulators (arm64, x86_64); iOS 13+ |
-| `wasm` | the ES module, `ua_cryptography_bg.wasm`, TypeScript declarations, `package.json` |
+| `wasm` | the npm package unpacked: the ES module, its Node.js entry, `ua_cryptography_bg.wasm`, TypeScript declarations |
 
 The native packages carry the header in `include/` (the XCFramework in each slice's `Headers/`). A program linking
 a static library also links the system libraries listed in `native-static-libs.txt` beside it, as rustc reports
 them for the platform (`build_scripts/ffi-static-libs.sh`).
 
+The WebAssembly build is also the npm package [`ua-cryptography`](https://www.npmjs.com/package/ua-cryptography)
+(`npm/`: its `package.json`, Node.js entry and README), published by the release workflow once the author approves.
+
 Locally: `cargo build --release -p ua-cryptography-ffi` (this machine), `cargo ndk … build -p ua-cryptography-ffi`
-(Android), `wasm-pack build crates/ua-cryptography-ffi --target web` (browser).
+(Android), `build_scripts/npm-package.sh` and `build_scripts/npm-smoke-test.sh` (the npm package).
 
 ## Boundaries
 

@@ -1,13 +1,11 @@
-// A JavaScript caller of the browser package (wasm-pack --target web), run by Node in the release workflow:
+// A JavaScript caller of the npm package ua-cryptography, run in a project where it is installed:
 //
-//   node crates/ua-cryptography-ffi/tests/js/smoke_test.mjs <package directory>
-import { readFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+//   build_scripts/npm-smoke-test.sh <ua-cryptography-VERSION.tgz>
 import assert from 'node:assert/strict';
+import init, * as ua from 'ua-cryptography';
 
-const directory = resolve(process.argv[2]);
-const ua = await import(join(directory, 'ua_cryptography.js'));
-ua.initSync({ module: readFileSync(join(directory, 'ua_cryptography_bg.wasm')) });
+// The Node.js entry has loaded the WebAssembly already; init() is the browser's step and returns at once here.
+await init();
 const text = new TextEncoder().encode('message');
 
 assert.equal(ua.dstu7564CalculateHash(text, 256).length, 32);

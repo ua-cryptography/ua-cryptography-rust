@@ -1,8 +1,8 @@
 name: Release
 
 # On a version tag (v1.2.3, v1.2.3-beta.1): the tests, then the ua_cryptography library (crates/ua-cryptography-ffi) for
-# every platform, then a GitHub release with one archive per platform and SHA256SUMS. Nothing is published to a package
-# registry: that stays the author's decision.
+# every platform, then a GitHub release with one archive per platform and SHA256SUMS, then the npm package
+# ua-cryptography once the author approves the `npm` environment. The crates go to crates.io by hand (`cargo publish`).
 
 on:
   push:
@@ -337,30 +337,33 @@ jobs:
         with:
           tool: wasm-pack
 
-      # An ES module for browsers: `import init, { … } from './ua_cryptography.js'; await init();`
-      - name: Build
-        run: |
-          wasm-pack build crates/ua-cryptography-ffi --release --target web --out-dir "$PWD/$PACKAGE" \
-            --out-name ua_cryptography
-          cd "$PACKAGE"
-          rm -f .gitignore
-          npm pkg set name=ua-cryptography version="$VERSION"
-          cp ../LICENSE ../THIRD-PARTY-NOTICES.md .
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Smoke test
-        run: node crates/ua-cryptography-ffi/tests/js/smoke_test.mjs "$PACKAGE"
+      # The npm package ua-cryptography: the ES module for browsers and its Node.js entry.
+      - name: Build
+        run: build_scripts/npm-package.sh npm
 
+      - name: Smoke test
+        run: build_scripts/npm-smoke-test.sh "npm/ua-cryptography-$VERSION.tgz"
+
+      # The release carries the package unpacked as well, for a page that loads it without npm.
       - name: Archive
-        run: zip -r "$PACKAGE.zip" "$PACKAGE"
+        run: |
+          mv npm/ua-cryptography "$PACKAGE"
+          zip -r "$PACKAGE.zip" "$PACKAGE"
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PACKAGE }}
           path: ${{ env.PACKAGE }}.zip
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          path: npm/ua-cryptography-${{ env.VERSION }}.tgz
           if-no-files-found: error
 
   release:
@@ -375,6 +378,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          pattern: ua-cryptography-*
           path: dist
           merge-multiple: true
 
@@ -396,3 +400,33 @@ jobs:
             gh release create "$GITHUB_REF_NAME" dist/* \
               --verify-tag --title "$GITHUB_REF_NAME" --generate-notes $prerelease
           fi
+
+  # Publishing is the author's decision: the job waits for an approval of the `npm` environment (Settings →
+  # Environments → npm → Required reviewers). npm trusts this workflow by OIDC (the package's Trusted Publisher
+  # settings), so no token is stored, and the package carries a provenance statement.
+  npm:
+    needs: [version, release]
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write # the OIDC token npm exchanges for a publish credential
+    env:
+      VERSION: ${{ needs.version.outputs.version }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - name: Publish
+        run: |
+          # Trusted publishing needs npm 11.5.1 or later.
+          npm install --global npm@11
+          tag="latest"
+          if [[ "$VERSION" == *-* ]]; then tag="next"; fi
+          npm publish "ua-cryptography-$VERSION.tgz" --access public --tag "$tag"
