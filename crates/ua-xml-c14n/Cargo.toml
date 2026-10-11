@@ -1,0 +1,17 @@
+[package]
+name = "ua-xml-c14n"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+# A read-only XML tree that refuses DTDs; the canonicalizer walks it.
+roxmltree.workspace = true
+
+[dev-dependencies]
+# Reads the oracle fixtures recorded by tools/csharp-oracle.
+serde_json.workspace = true
+# SHA-256 of a canonical subtree, compared with the digest SignedXml computed.
+sha2.workspace = true

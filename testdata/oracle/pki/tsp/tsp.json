@@ -1,0 +1,130 @@
+{
+  "tokens": [
+    {
+      "file": "tsp/token-dstu7564.der",
+      "covered": "tsp/covered.bin",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "imprint": "c742505387d3b5cd3062d7721f20b5e7045b597f472636b5c4eabda4238d59fb",
+      "policy": "1.2.804.2.1.1.1.2.3.4.1.1",
+      "serialNumber": "1",
+      "genTime": "2026-10-10T18:50:06Z",
+      "nonce": null,
+      "tsaCertificateEmbedded": true,
+      "tsaCertificate": "hierarchy/tsa.cer",
+      "signerSerialNumber": "8178083030600647207",
+      "signerDigestAlgorithm": "1.2.804.2.1.1.1.1.2.2.1",
+      "signerSignatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1"
+    },
+    {
+      "file": "tsp/token-dstu7564-no-certificate.der",
+      "covered": "tsp/covered.bin",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "imprint": "c742505387d3b5cd3062d7721f20b5e7045b597f472636b5c4eabda4238d59fb",
+      "policy": "1.2.804.2.1.1.1.2.3.4.1.1",
+      "serialNumber": "2",
+      "genTime": "2026-10-10T18:50:06Z",
+      "nonce": null,
+      "tsaCertificateEmbedded": false,
+      "tsaCertificate": "hierarchy/tsa.cer",
+      "signerSerialNumber": "8178083030600647207",
+      "signerDigestAlgorithm": "1.2.804.2.1.1.1.1.2.2.1",
+      "signerSignatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1"
+    },
+    {
+      "file": "tsp/token-gost34311.der",
+      "covered": "tsp/covered.bin",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "imprint": "1498a80a8c92771f2bd524535fb923c73e352959a19f71dd4724685fe1fd8bd3",
+      "policy": "1.2.804.2.1.1.1.2.3.1",
+      "serialNumber": "3",
+      "genTime": "2026-10-10T18:50:06Z",
+      "nonce": null,
+      "tsaCertificateEmbedded": true,
+      "tsaCertificate": "hierarchy/tsa.cer",
+      "signerSerialNumber": "8178083030600647207",
+      "signerDigestAlgorithm": "1.2.804.2.1.1.1.1.2.1",
+      "signerSignatureAlgorithm": "1.2.804.2.1.1.1.1.3.1.1"
+    },
+    {
+      "file": "tsp/token-gost34311-no-certificate.der",
+      "covered": "tsp/covered.bin",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "imprint": "1498a80a8c92771f2bd524535fb923c73e352959a19f71dd4724685fe1fd8bd3",
+      "policy": "1.2.804.2.1.1.1.2.3.1",
+      "serialNumber": "4",
+      "genTime": "2026-10-10T18:50:06Z",
+      "nonce": null,
+      "tsaCertificateEmbedded": false,
+      "tsaCertificate": "hierarchy/tsa.cer",
+      "signerSerialNumber": "8178083030600647207",
+      "signerDigestAlgorithm": "1.2.804.2.1.1.1.1.2.1",
+      "signerSignatureAlgorithm": "1.2.804.2.1.1.1.1.3.1.1"
+    },
+    {
+      "file": "tsp/token-dstu7564-over-data.der",
+      "covered": "tsp/data.bin",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "imprint": "0323dc8726e54bf69f6a839104c248913d1f5df0b92454a9f3823255208474da",
+      "policy": "1.2.804.2.1.1.1.2.3.4.1.1",
+      "serialNumber": "5",
+      "genTime": "2026-10-10T18:50:06Z",
+      "nonce": null,
+      "tsaCertificateEmbedded": true,
+      "tsaCertificate": "hierarchy/tsa.cer",
+      "signerSerialNumber": "8178083030600647207",
+      "signerDigestAlgorithm": "1.2.804.2.1.1.1.1.2.2.1",
+      "signerSignatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1"
+    }
+  ],
+  "responses": [
+    {
+      "file": "tsp/response-granted.der",
+      "status": 0,
+      "imprintAlgorithm": "1.2.804.2.1.1.1.1.2.2.1",
+      "imprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "nonce": "3235348392905033523",
+      "about": "TimeStampResp { granted, token over 32 zero bytes with the nonce }: ParseResponse accepts it for this imprint and nonce only"
+    },
+    {
+      "file": "tsp/response-rejection.der",
+      "status": 2,
+      "about": "TimeStampResp { rejection }, no token: ParseResponse throws"
+    }
+  ],
+  "requests": [
+    {
+      "file": "tsp/request-dstu7564.der",
+      "madeBy": "UA.Cryptography.Pki.Tsp.TimeStampProtocol.CreateRequest(hash, hashOid, nonce)",
+      "input": {
+        "hash": "c742505387d3b5cd3062d7721f20b5e7045b597f472636b5c4eabda4238d59fb",
+        "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+        "nonce": "4044889841057544705"
+      },
+      "bouncyCastle": {
+        "version": 1,
+        "messageImprintAlgOid": "1.2.804.2.1.1.1.1.2.2.1",
+        "messageImprintDigest": "c742505387d3b5cd3062d7721f20b5e7045b597f472636b5c4eabda4238d59fb",
+        "reqPolicy": null,
+        "nonce": "4044889841057544705",
+        "certReq": true
+      }
+    },
+    {
+      "file": "tsp/request-gost34311.der",
+      "madeBy": "UA.Cryptography.Pki.Tsp.TimeStampProtocol.CreateRequest(hash, hashOid, nonce)",
+      "input": {
+        "hash": "1498a80a8c92771f2bd524535fb923c73e352959a19f71dd4724685fe1fd8bd3",
+        "hashOid": "1.2.804.2.1.1.1.1.2.1",
+        "nonce": "902944466687524001"
+      },
+      "bouncyCastle": {
+        "version": 1,
+        "messageImprintAlgOid": "1.2.804.2.1.1.1.1.2.1",
+        "messageImprintDigest": "1498a80a8c92771f2bd524535fb923c73e352959a19f71dd4724685fe1fd8bd3",
+        "reqPolicy": null,
+        "nonce": "902944466687524001",
+        "certReq": true
+      }
+    }
+  ]
+}

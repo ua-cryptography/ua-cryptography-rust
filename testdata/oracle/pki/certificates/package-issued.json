@@ -1,0 +1,185 @@
+[
+  {
+    "signatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1",
+    "rootM": 257,
+    "root": {
+      "file": "certificates/package-issued/root-dstu7564-257.cer",
+      "d": "1fee89c76e3831fb412346a6d1e0f55c244fdced9b188b023948cfbf2b1fbff8",
+      "sigAlgOid": "1.2.804.2.1.1.1.1.3.6.1.1",
+      "basicConstraints": 2147483647,
+      "keyUsage": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "subject": "30443115301306035504030c0c5061636b61676520526f6f74311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "issuer": "30443115301306035504030c0c5061636b61676520526f6f74311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "extensionOids": [
+        "2.5.29.14",
+        "2.5.29.15",
+        "2.5.29.19"
+      ],
+      "qx": "013007429c716cd6dda98f05f83d4fe4981062a13c666500198731d9e3de120fde",
+      "qy": "c388b8541e12f1b2af09f77d178d5d4ec581c8c5d86797d511fb8b7b6180ea89",
+      "selfSignatureVerifies": true
+    },
+    "leaf": {
+      "file": "certificates/package-issued/leaf-dstu7564-257.cer",
+      "d": "08f6b92f929edd44e2a894fcb2008a5bde9a23e507ce7fa4a78744c88434a7ee",
+      "sigAlgOid": "1.2.804.2.1.1.1.1.3.6.1.1",
+      "basicConstraints": -1,
+      "keyUsage": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "subject": "30443115301306035504030c0c5061636b616765204c656166311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "issuer": "30443115301306035504030c0c5061636b61676520526f6f74311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "extensionOids": [
+        "1.3.6.1.5.5.7.1.1",
+        "1.3.6.1.5.5.7.1.11",
+        "2.5.29.15",
+        "2.5.29.19",
+        "2.5.29.35"
+      ],
+      "qx": "df17cd0ed7d9f6870aa54433ab0d207c4506f8219f4d9abfab2bee4e11602fc2",
+      "qy": "da9fa7454fa50470fbcd575f601142658b10298901b19ba951eb96e9515451c4",
+      "selfSignatureVerifies": false
+    },
+    "leafSignedByRoot": true
+  },
+  {
+    "signatureAlgorithm": "1.2.804.2.1.1.1.1.3.1.1",
+    "rootM": 431,
+    "root": {
+      "file": "certificates/package-issued/root-gost34311-431.cer",
+      "d": "1ddd12fa9fab0c948bb8a11ed257675912bf5aeafb08968c226a3685c31d943a1d8f03ccfebb689e9c79074ed3fbf2b4c019d0202ebb",
+      "sigAlgOid": "1.2.804.2.1.1.1.1.3.1.1",
+      "basicConstraints": 2147483647,
+      "keyUsage": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "subject": "30443115301306035504030c0c5061636b61676520526f6f74311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "issuer": "30443115301306035504030c0c5061636b61676520526f6f74311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "extensionOids": [
+        "2.5.29.14",
+        "2.5.29.15",
+        "2.5.29.19"
+      ],
+      "qx": "50d0997aad487b3f89e26835440fc84007c55180365a61ccbcd979f82a01436cfad34ad3af705f1ed719e674ef401d88fdcb658c8acd",
+      "qy": "20ebf77131bc22529ff181f1a75342bab4cd0410457280846db3a51b9be425a77d90afd4ec284535bc1f68628d5585db853a19a112ca",
+      "selfSignatureVerifies": true
+    },
+    "leaf": {
+      "file": "certificates/package-issued/leaf-gost34311-431.cer",
+      "d": "2ee22beb2a977ef79594345687a2d8e8a8843578579beed7e1787a6e416ce6c7",
+      "sigAlgOid": "1.2.804.2.1.1.1.1.3.1.1",
+      "basicConstraints": -1,
+      "keyUsage": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "subject": "30443115301306035504030c0c5061636b616765204c656166311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "issuer": "30443115301306035504030c0c5061636b61676520526f6f74311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "extensionOids": [
+        "1.3.6.1.5.5.7.1.1",
+        "1.3.6.1.5.5.7.1.11",
+        "2.5.29.15",
+        "2.5.29.19",
+        "2.5.29.35"
+      ],
+      "qx": "5586dabca0858f79eb15583ebdea56fd7d15f1d7030a3f205f8b45cc9cc440fe",
+      "qy": "c311d52b6d023de96f5bcb469f014cc31ad1ca5d9ac96826fcfb3698ed6f1999",
+      "selfSignatureVerifies": false
+    },
+    "leafSignedByRoot": true
+  },
+  {
+    "signatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1",
+    "rootM": 163,
+    "root": {
+      "file": "certificates/package-issued/root-dstu7564-163.cer",
+      "d": "a4dbb02c9e987a661ab4b3d276cda28ff90b621c",
+      "sigAlgOid": "1.2.804.2.1.1.1.1.3.6.1.1",
+      "basicConstraints": 2147483647,
+      "keyUsage": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "subject": "30443115301306035504030c0c5061636b61676520526f6f74311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "issuer": "30443115301306035504030c0c5061636b61676520526f6f74311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "extensionOids": [
+        "2.5.29.14",
+        "2.5.29.15",
+        "2.5.29.19"
+      ],
+      "qx": "051e6244bcc4096a542a8c05d86fe11168d4806441",
+      "qy": "06d657db8e89c7b55b2da0781dd36fefbe40bb7ef9",
+      "selfSignatureVerifies": true
+    },
+    "leaf": {
+      "file": "certificates/package-issued/leaf-dstu7564-163.cer",
+      "d": "04ac8b27694d12509063ad92ad1ba739800f15af78ebedcee6acfbcb277caecc",
+      "sigAlgOid": "1.2.804.2.1.1.1.1.3.6.1.1",
+      "basicConstraints": -1,
+      "keyUsage": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "subject": "30443115301306035504030c0c5061636b616765204c656166311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "issuer": "30443115301306035504030c0c5061636b61676520526f6f74311e301c060355040a0c1555412043727970746f677261706879205465737473310b3009060355040613025541",
+      "extensionOids": [
+        "1.3.6.1.5.5.7.1.1",
+        "1.3.6.1.5.5.7.1.11",
+        "2.5.29.15",
+        "2.5.29.19",
+        "2.5.29.35"
+      ],
+      "qx": "0184d12c9a6892ce3180b335b7182e36fd9e260d0505849172164aba94042c84e0",
+      "qy": "016a813fcc122aa4c55db7af1cd84ed4484a6dd2ad8fbaf1c5b87c9feb6c6f612a",
+      "selfSignatureVerifies": false
+    },
+    "leafSignedByRoot": true
+  }
+]

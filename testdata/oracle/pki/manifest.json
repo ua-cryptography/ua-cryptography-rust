@@ -1,0 +1,5480 @@
+{
+  "description": "Every signature fixture under testdata/oracle/pki with the verdicts of the C# package (see README.md).",
+  "paths": "relative to testdata/oracle/pki",
+  "signatures": [
+    {
+      "file": "cades/cades-dstu7564-enveloped-b.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.TestBuilderSignatureVerifiesByThePackage",
+        "Signatures/CadesTests.SignatureVerifies",
+        "Signatures/CadesTests.SignerCertificateChainsToTheRoot",
+        "Signatures/CadesTests.TamperedDataFailsMessageDigest",
+        "Signatures/CadesTests.ForeignCertificateFailsSigningCertificateCheck"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-enveloped-b-content-ts.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-enveloped-t.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-enveloped-t-content-ts.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/CadesTests.TimeStampsCoverDataAndSignature"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-enveloped-x-long.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.TestBuilderSignatureVerifiesByThePackage",
+        "Signatures/CadesTests.LongTermValidationDataIsConsistent"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-enveloped-x-long-content-ts.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-detached-b.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/CadesTests.SignatureVerifies"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-detached-b-content-ts.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-detached-t.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-detached-t-content-ts.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.TestBuilderSignatureVerifiesByThePackage"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-detached-x-long.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/asics-dstu7564-x-long.asics",
+      "format": "ASiC-S",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder.WrapAsicS",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-S",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: data"
+              ]
+            },
+            {
+              "title": "CAdES signature (META-INF/signature.p7s)",
+              "valid": true,
+              "format": "CAdES-X Long, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Asic/AsicContainerTests.TestBuilderContainersVerify (another level)"
+      ]
+    },
+    {
+      "file": "cades/cades-dstu7564-detached-x-long-content-ts.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-enveloped-b.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, enveloped, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/CadesTests.SignatureVerifies"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-enveloped-b-content-ts.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, enveloped, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-enveloped-t.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.TestBuilderSignatureVerifiesByThePackage"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-enveloped-t-content-ts.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/CadesTests.TimeStampsCoverDataAndSignature"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-enveloped-x-long.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, enveloped, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-enveloped-x-long-content-ts.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, enveloped, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-detached-b.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/CadesTests.SignatureVerifies"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-detached-b-content-ts.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-detached-t.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-detached-t-content-ts.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/CadesTests.AsicSContainerIsWellFormedAndVerifies (the .p7s inside)"
+      ]
+    },
+    {
+      "file": "cades/asics-gost34311-t-content-ts.asics",
+      "format": "ASiC-S",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "container",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder.WrapAsicS",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-S",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: data"
+              ]
+            },
+            {
+              "title": "CAdES signature (META-INF/signature.p7s)",
+              "valid": true,
+              "format": "CAdES-T, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/CadesTests.AsicSContainerIsWellFormedAndVerifies",
+        "Pki/Asic/AsicContainerTests.TestBuilderContainersVerify"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-detached-x-long.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × packaging × level × content time-stamp grid)"
+      ]
+    },
+    {
+      "file": "cades/cades-gost34311-detached-x-long-content-ts.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": true,
+      "producer": "CadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "cades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.TestBuilderSignatureVerifiesByThePackage"
+      ]
+    },
+    {
+      "file": "xades/xades-dstu7564-b.xml",
+      "format": "XAdES",
+      "level": "B-B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature signature-1",
+              "valid": true,
+              "format": "XAdES-B-B, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Xades/XadesSignerTests.TestBuilderSignatureVerifiesByThePackage",
+        "Signatures/XadesTests.TamperedDataBreaksTheReference"
+      ]
+    },
+    {
+      "file": "xades/asice-dstu7564-b.asice",
+      "format": "ASiC-E",
+      "level": "B-B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder.WrapAsicE",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-E",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: manifest"
+              ]
+            },
+            {
+              "title": "XAdES signature signature-1 (META-INF/signatures001.xml)",
+              "valid": true,
+              "format": "XAdES-B-B, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × level × packaging grid)"
+      ]
+    },
+    {
+      "file": "xades/xades-dstu7564-t.xml",
+      "format": "XAdES",
+      "level": "B-T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature signature-1",
+              "valid": true,
+              "format": "XAdES-B-T, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/XadesTests.TimeStampCoversTheSignature"
+      ]
+    },
+    {
+      "file": "xades/asice-dstu7564-t.asice",
+      "format": "ASiC-E",
+      "level": "B-T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder.WrapAsicE",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-E",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: manifest"
+              ]
+            },
+            {
+              "title": "XAdES signature signature-1 (META-INF/signatures001.xml)",
+              "valid": true,
+              "format": "XAdES-B-T, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × level × packaging grid)"
+      ]
+    },
+    {
+      "file": "xades/xades-dstu7564-lt.xml",
+      "format": "XAdES",
+      "level": "B-LT",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature signature-1",
+              "valid": true,
+              "format": "XAdES-B-LT, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Xades/XadesSignerTests.TestBuilderSignatureVerifiesByThePackage",
+        "Signatures/XadesTests.SignatureVerifies",
+        "Signatures/XadesTests.SignerCertificateIsIssuedByEmbeddedCa",
+        "Signatures/XadesTests.RevocationValuesAreSignedAndGood",
+        "Pki/Xml/XmlCanonicalizerTests.XadesBuilderDocumentMatchesMicrosoft (with c14n-xades-dstu7564-lt.json)"
+      ]
+    },
+    {
+      "file": "xades/asice-dstu7564-lt.asice",
+      "format": "ASiC-E",
+      "level": "B-LT",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder.WrapAsicE",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-E",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: manifest"
+              ]
+            },
+            {
+              "title": "XAdES signature signature-1 (META-INF/signatures001.xml)",
+              "valid": true,
+              "format": "XAdES-B-LT, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/XadesTests.SignatureVerifies",
+        "Pki/Asic/AsicContainerTests.TestBuilderContainersVerify"
+      ]
+    },
+    {
+      "file": "xades/xades-gost34311-b.xml",
+      "format": "XAdES",
+      "level": "B-B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature signature-1",
+              "valid": true,
+              "format": "XAdES-B-B, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × level × packaging grid)"
+      ]
+    },
+    {
+      "file": "xades/asice-gost34311-b.asice",
+      "format": "ASiC-E",
+      "level": "B-B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder.WrapAsicE",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-E",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: manifest"
+              ]
+            },
+            {
+              "title": "XAdES signature signature-1 (META-INF/signatures001.xml)",
+              "valid": true,
+              "format": "XAdES-B-B, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × level × packaging grid)"
+      ]
+    },
+    {
+      "file": "xades/xades-gost34311-t.xml",
+      "format": "XAdES",
+      "level": "B-T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature signature-1",
+              "valid": true,
+              "format": "XAdES-B-T, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Xades/XadesSignerTests.TestBuilderSignatureVerifiesByThePackage",
+        "Signatures/XadesTests.TimeStampCoversTheSignature"
+      ]
+    },
+    {
+      "file": "xades/asice-gost34311-t.asice",
+      "format": "ASiC-E",
+      "level": "B-T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder.WrapAsicE",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-E",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: manifest"
+              ]
+            },
+            {
+              "title": "XAdES signature signature-1 (META-INF/signatures001.xml)",
+              "valid": true,
+              "format": "XAdES-B-T, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × level × packaging grid)"
+      ]
+    },
+    {
+      "file": "xades/xades-gost34311-lt.xml",
+      "format": "XAdES",
+      "level": "B-LT",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature signature-1",
+              "valid": true,
+              "format": "XAdES-B-LT, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/XadesTests.SignatureVerifies"
+      ]
+    },
+    {
+      "file": "xades/asice-gost34311-lt.asice",
+      "format": "ASiC-E",
+      "level": "B-LT",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "XadesBuilder.WrapAsicE",
+      "data": [
+        {
+          "name": "data.txt",
+          "file": "xades/data.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-E",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: manifest"
+              ]
+            },
+            {
+              "title": "XAdES signature signature-1 (META-INF/signatures001.xml)",
+              "valid": true,
+              "format": "XAdES-B-LT, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'data.txt'",
+                "Passed: reference '#signed-properties-1'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × level × packaging grid)"
+      ]
+    },
+    {
+      "file": "providers/privatbank/doc.txt.sig",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "PrivatBankSig.Build",
+      "data": [
+        {
+          "name": "doc.txt",
+          "file": "providers/doc.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [],
+          "extraCertificates": [],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signature time-stamp: service certificate",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Warning: signature time-stamp: service certificate",
+                "Passed: signer: path",
+                "Warning: signer: trust"
+              ]
+            }
+          ]
+        },
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [],
+          "valid": false,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Failed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": false,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Warning: signature time-stamp: service certificate",
+                "Passed: signer: path",
+                "Failed: signer: trust"
+              ]
+            }
+          ]
+        },
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [],
+          "downloads": {
+            "http://127.0.0.1:18089/ca.p7b": [
+              "hierarchy/issuing-ca.cer",
+              "hierarchy/tsa.cer",
+              "hierarchy/ocsp.cer"
+            ]
+          },
+          "onlineOcsp": {
+            "providers/privatbank/customer.cer": "providers/privatbank/customer-ocsp.der",
+            "hierarchy/issuing-ca.cer": "hierarchy/ocsp-issuing-ca.der"
+          },
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signature time-stamp: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Bank Customer'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Bank Customer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Bank Customer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        },
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/tsa.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signature time-stamp: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Bank Customer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Bank Customer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/ProviderFormatTests.PrivatBankSigAsTheBankMakesItVerifies"
+      ]
+    },
+    {
+      "file": "providers/privatbank/doc.txt.ua-sign.sig",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "ua-sign (C# CLI)",
+      "data": [
+        {
+          "name": "doc.txt",
+          "file": "providers/doc.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [],
+          "downloads": {
+            "http://127.0.0.1:18089/ca.p7b": [
+              "hierarchy/issuing-ca.cer",
+              "hierarchy/tsa.cer",
+              "hierarchy/ocsp.cer"
+            ]
+          },
+          "onlineOcsp": {
+            "providers/privatbank/customer.cer": "providers/privatbank/customer-ocsp.der",
+            "hierarchy/issuing-ca.cer": "hierarchy/ocsp-issuing-ca.der"
+          },
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signature time-stamp: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Bank Customer'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Bank Customer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Bank Customer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        },
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/issuing-ca.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signature time-stamp: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Bank Customer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Bank Customer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/ProviderFormatTests.PrivatBankSigIsMadeByUaSignAndVerifies (bank-issued)"
+      ]
+    },
+    {
+      "file": "providers/diia/doc.txt.asice",
+      "format": "ASiC-E",
+      "level": "B-LT",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "DiiaAsicE.Build",
+      "data": [
+        {
+          "name": "doc.txt",
+          "file": "providers/doc.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [],
+          "valid": true,
+          "format": "ASiC-E",
+          "requiredChecks": [
+            {
+              "name": "manifest",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: manifest"
+              ]
+            },
+            {
+              "title": "XAdES signature id-b6fb5fba3295518efff17b49bf942a98 (META-INF/signatures001.xml)",
+              "valid": true,
+              "format": "XAdES-B-LT, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'doc.txt'",
+                "Passed: reference '#xades-id-b6fb5fba3295518efff17b49bf942a98'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/ProviderFormatTests.DiiaAsicEAsDiiaMakesItVerifies"
+      ]
+    },
+    {
+      "file": "providers/diia/doc.txt.ua-sign.asice",
+      "format": "ASiC-E",
+      "level": "B-LT",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "ua-sign (C# CLI)",
+      "data": [
+        {
+          "name": "doc.txt",
+          "file": "providers/doc.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [],
+          "valid": true,
+          "format": "ASiC-E",
+          "requiredChecks": [
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: manifest"
+              ]
+            },
+            {
+              "title": "XAdES signature S-0F59188F5F1C43AC (META-INF/signatures001.xml)",
+              "valid": true,
+              "format": "XAdES-B-LT, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'doc.txt'",
+                "Passed: reference '#S-0F59188F5F1C43AC-SignedProperties'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Signatures/ProviderFormatTests.DiiaAsicEIsMadeByUaSignAndVerifies"
+      ]
+    },
+    {
+      "file": "package/cades-dstu7564-enveloped-b.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.PackageSignatureVerifiesByThePackage",
+        "Pki/Cades/CadesSignerTests.PackageSignatureVerifiesByTheBouncyCastleRecipe",
+        "Pki/Cades/CadesSignerTests.TamperedDataFailsTheMessageDigest / TamperedSignatureValueFails / SigningCertificateV2NamesTheIssuerAndSerialNumber / DetachedSignatureWithoutDataAndUntrustedRootFail"
+      ]
+    },
+    {
+      "file": "package/cades-dstu7564-enveloped-t.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Tsp/TimeStampTokenTests.SignatureTimeStampOverOtherBytesFailsTheSignature (the valid half)"
+      ]
+    },
+    {
+      "file": "package/cades-dstu7564-enveloped-lt.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": true,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.PackageLevelsTAndLtAreReadByBouncyCastle"
+      ]
+    },
+    {
+      "file": "package/cades-dstu7564-detached-b.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.PackageSignatureVerifiesByThePackage",
+        "Pki/Cades/CadesSignerTests.PackageSignatureVerifiesByTheBouncyCastleRecipe",
+        "Pki/Cades/CadesSignerTests.TamperedDataFailsTheMessageDigest / TamperedSignatureValueFails / SigningCertificateV2NamesTheIssuerAndSerialNumber / DetachedSignatureWithoutDataAndUntrustedRootFail"
+      ]
+    },
+    {
+      "file": "package/cades-dstu7564-detached-t.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Tsp/TimeStampTokenTests.SignatureTimeStampOverOtherBytesFailsTheSignature (the valid half)"
+      ]
+    },
+    {
+      "file": "package/cades-dstu7564-detached-lt.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": true,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(LT, detached: completes the grid)"
+      ]
+    },
+    {
+      "file": "package/cades-gost34311-enveloped-b.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, enveloped, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.PackageSignatureVerifiesByThePackage",
+        "Pki/Cades/CadesSignerTests.PackageSignatureVerifiesByTheBouncyCastleRecipe"
+      ]
+    },
+    {
+      "file": "package/cades-gost34311-enveloped-t.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Tsp/TimeStampTokenTests.SignatureTimeStampOverOtherBytesFailsTheSignature (the valid half)"
+      ]
+    },
+    {
+      "file": "package/cades-gost34311-enveloped-lt.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": true,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, enveloped, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.PackageLevelsTAndLtAreReadByBouncyCastle"
+      ]
+    },
+    {
+      "file": "package/cades-gost34311-detached-b.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.PackageSignatureVerifiesByThePackage",
+        "Pki/Cades/CadesSignerTests.PackageSignatureVerifiesByTheBouncyCastleRecipe"
+      ]
+    },
+    {
+      "file": "package/cades-gost34311-detached-t.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Tsp/TimeStampTokenTests.SignatureTimeStampOverOtherBytesFailsTheSignature (the valid half)"
+      ]
+    },
+    {
+      "file": "package/cades-gost34311-detached-lt.p7s",
+      "format": "CAdES",
+      "level": "X-Long",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": true,
+      "producer": "CadesSigner",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (detached)",
+          "requiredChecks": [
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            },
+            {
+              "name": "signature time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "content time-stamp: imprint",
+              "status": "Passed"
+            },
+            {
+              "name": "certificate references",
+              "status": "Passed"
+            },
+            {
+              "name": "revocation references",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-X Long, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: content time-stamp: imprint",
+                "Passed: content time-stamp: messageDigest",
+                "Passed: content time-stamp: signing certificate",
+                "Passed: content time-stamp: signature",
+                "Passed: content time-stamp service: path",
+                "Passed: content time-stamp service: signature of 'Test TSP Server'",
+                "Passed: content time-stamp service: trust",
+                "Warning: content time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: certificate references",
+                "Passed: revocation references",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(LT, detached: completes the grid)"
+      ]
+    },
+    {
+      "file": "package/asics-gost34311-t.asics",
+      "format": "ASiC-S",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "AsicContainer.CreateAsicS",
+      "data": [
+        {
+          "name": "contract.pdf",
+          "file": "package/data/contract.pdf"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-S",
+          "requiredChecks": [],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: data"
+              ]
+            },
+            {
+              "title": "CAdES signature (META-INF/signature.p7s)",
+              "valid": true,
+              "format": "CAdES-T, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Asic/AsicContainerTests.PackageAsicSIsWellFormedAndVerifies"
+      ]
+    },
+    {
+      "file": "package/xades-dstu7564-b.xml",
+      "format": "XAdES",
+      "level": "B-B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesSigner",
+      "data": [
+        {
+          "name": "заява.txt",
+          "file": "package/data/zayava.txt"
+        },
+        {
+          "name": "data file.bin",
+          "file": "package/data/data-file.bin"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature S-468D36C6D3C6EACE",
+              "valid": true,
+              "format": "XAdES-B-B, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference '%D0%B7%D0%B0%D1%8F%D0%B2%D0%B0.txt'",
+                "Passed: reference 'data%20file.bin'",
+                "Passed: reference '#S-468D36C6D3C6EACE-SignedProperties'",
+                "Passed: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Xades/XadesSignerTests.PackageSignatureVerifiesWithMicrosoftCanonicalization",
+        "Pki/Xades/XadesSignerTests.PackageSignatureVerifiesByThePackage",
+        "Pki/Xades/XadesSignerTests.TamperedFileFailsItsReference / ChangedSignedPropertyOrSignatureValueFails / DuplicateIdIsRejected / MissingFileIsReported"
+      ]
+    },
+    {
+      "file": "package/xades-dstu7564-t.xml",
+      "format": "XAdES",
+      "level": "B-T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesSigner",
+      "data": [
+        {
+          "name": "заява.txt",
+          "file": "package/data/zayava.txt"
+        },
+        {
+          "name": "data file.bin",
+          "file": "package/data/data-file.bin"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature S-6FBCAF3925AC6C26",
+              "valid": true,
+              "format": "XAdES-B-T, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference '%D0%B7%D0%B0%D1%8F%D0%B2%D0%B0.txt'",
+                "Passed: reference 'data%20file.bin'",
+                "Passed: reference '#S-6FBCAF3925AC6C26-SignedProperties'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Xades/XadesSignerTests.PackageSignatureVerifiesByThePackage"
+      ]
+    },
+    {
+      "file": "package/xades-dstu7564-lt.xml",
+      "format": "XAdES",
+      "level": "B-LT",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesSigner",
+      "data": [
+        {
+          "name": "заява.txt",
+          "file": "package/data/zayava.txt"
+        },
+        {
+          "name": "data file.bin",
+          "file": "package/data/data-file.bin"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature S-7183EADCB4C7CD67",
+              "valid": true,
+              "format": "XAdES-B-LT, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference '%D0%B7%D0%B0%D1%8F%D0%B2%D0%B0.txt'",
+                "Passed: reference 'data%20file.bin'",
+                "Passed: reference '#S-7183EADCB4C7CD67-SignedProperties'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Xades/XadesSignerTests.PackageSignatureVerifiesByThePackage"
+      ]
+    },
+    {
+      "file": "package/xades-gost34311-b.xml",
+      "format": "XAdES",
+      "level": "B-B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesSigner",
+      "data": [
+        {
+          "name": "заява.txt",
+          "file": "package/data/zayava.txt"
+        },
+        {
+          "name": "data file.bin",
+          "file": "package/data/data-file.bin"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature S-A3F479FB399F0456",
+              "valid": true,
+              "format": "XAdES-B-B, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference '%D0%B7%D0%B0%D1%8F%D0%B2%D0%B0.txt'",
+                "Passed: reference 'data%20file.bin'",
+                "Passed: reference '#S-A3F479FB399F0456-SignedProperties'",
+                "Passed: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Xades/XadesSignerTests.PackageSignatureVerifiesWithMicrosoftCanonicalization"
+      ]
+    },
+    {
+      "file": "package/xades-gost34311-t.xml",
+      "format": "XAdES",
+      "level": "B-T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesSigner",
+      "data": [
+        {
+          "name": "заява.txt",
+          "file": "package/data/zayava.txt"
+        },
+        {
+          "name": "data file.bin",
+          "file": "package/data/data-file.bin"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signature",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature S-F26626244C67737E",
+              "valid": true,
+              "format": "XAdES-B-T, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference '%D0%B7%D0%B0%D1%8F%D0%B2%D0%B0.txt'",
+                "Passed: reference 'data%20file.bin'",
+                "Passed: reference '#S-F26626244C67737E-SignedProperties'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "(completes the hash × level grid)"
+      ]
+    },
+    {
+      "file": "package/xades-gost34311-lt.xml",
+      "format": "XAdES",
+      "level": "B-LT",
+      "hashOid": "1.2.804.2.1.1.1.1.2.1",
+      "packaging": "detached",
+      "contentTimeStamp": false,
+      "producer": "XadesSigner",
+      "data": [
+        {
+          "name": "заява.txt",
+          "file": "package/data/zayava.txt"
+        },
+        {
+          "name": "data file.bin",
+          "file": "package/data/data-file.bin"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "XAdES (XML)",
+          "requiredChecks": [
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "XAdES signature S-96FE0D949E7E1FC8",
+              "valid": true,
+              "format": "XAdES-B-LT, detached, GOST 34.311-95",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference '%D0%B7%D0%B0%D1%8F%D0%B2%D0%B0.txt'",
+                "Passed: reference 'data%20file.bin'",
+                "Passed: reference '#S-96FE0D949E7E1FC8-SignedProperties'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Xades/XadesSignerTests.PackageSignatureVerifiesByThePackage"
+      ]
+    },
+    {
+      "file": "package/asice-dstu7564-lt.asice",
+      "format": "ASiC-E",
+      "level": "B-LT",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "AsicContainer.CreateAsicE",
+      "data": [
+        {
+          "name": "contract.pdf",
+          "file": "package/data/contract.pdf"
+        },
+        {
+          "name": "annex/табл.csv",
+          "file": "package/data/annex-tabl.csv"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-E",
+          "requiredChecks": [
+            {
+              "name": "manifest",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Signer'",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: revocation of 'Test Issuing CA'",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: manifest"
+              ]
+            },
+            {
+              "title": "XAdES signature S-28889F4BDB101766 (META-INF/signatures001.xml)",
+              "valid": true,
+              "format": "XAdES-B-LT, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'contract.pdf'",
+                "Passed: reference 'annex/%D1%82%D0%B0%D0%B1%D0%BB.csv'",
+                "Passed: reference '#S-28889F4BDB101766-SignedProperties'",
+                "Passed: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Passed: signer: revocation of 'Test Signer'",
+                "Passed: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Asic/AsicContainerTests.PackageAsicEIsWellFormedAndVerifies"
+      ]
+    },
+    {
+      "file": "package/asice-dstu7564-b.asice",
+      "format": "ASiC-E",
+      "level": "B-B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "container",
+      "contentTimeStamp": false,
+      "producer": "AsicContainer.CreateAsicE",
+      "data": [
+        {
+          "name": "contract.pdf",
+          "file": "package/data/contract.pdf"
+        },
+        {
+          "name": "annex/табл.csv",
+          "file": "package/data/annex-tabl.csv"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "ASiC-E",
+          "requiredChecks": [],
+          "reports": [
+            {
+              "title": "container",
+              "valid": true,
+              "format": null,
+              "checks": [
+                "Passed: mimetype",
+                "Passed: manifest"
+              ]
+            },
+            {
+              "title": "XAdES signature S-06BC93B0DD6ED736 (META-INF/signatures001.xml)",
+              "valid": true,
+              "format": "XAdES-B-B, detached, DSTU 7564-256",
+              "checks": [
+                "Passed: signing certificate",
+                "Passed: reference 'contract.pdf'",
+                "Passed: reference 'annex/%D1%82%D0%B0%D0%B1%D0%BB.csv'",
+                "Passed: reference '#S-06BC93B0DD6ED736-SignedProperties'",
+                "Passed: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Asic/AsicContainerTests.AddedOrReplacedEntriesAreCaught",
+        "Pki/Asic/AsicContainerTests.WrongMimeTypeIsReported"
+      ]
+    },
+    {
+      "file": "package/twin-honest.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "UA.Cryptography.Pki.Cms.CmsBuilder (twin certificate)",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-B, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.ForeignCertificateFailsTheSigningCertificateCheck"
+      ]
+    },
+    {
+      "file": "package/twin-swapped.p7s",
+      "format": "CAdES",
+      "level": "B",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "UA.Cryptography.Pki.Cms.CmsBuilder (signed for the twin, carries signer.cer)",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer",
+            "hierarchy/tsa.cer",
+            "hierarchy/ocsp.cer",
+            "hierarchy/root-ocsp.cer"
+          ],
+          "valid": false,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "CMS: signing certificate",
+              "status": "Failed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": false,
+              "format": "CAdES-B, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Failed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.ForeignCertificateFailsTheSigningCertificateCheck"
+      ]
+    },
+    {
+      "file": "package/cades-t-no-tsa-certificate.p7s",
+      "format": "CAdES",
+      "level": "T",
+      "hashOid": "1.2.804.2.1.1.1.1.2.2.1",
+      "packaging": "enveloped",
+      "contentTimeStamp": false,
+      "producer": "CadesSigner (package/caissuers-signer.cer, TSA without certificate)",
+      "data": [
+        {
+          "name": "content",
+          "file": "package/data/document.txt"
+        }
+      ],
+      "verifications": [
+        {
+          "trustAnchors": [],
+          "extraCertificates": [],
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signature time-stamp: service certificate",
+              "status": "Warning"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Warning: signature time-stamp: service certificate",
+                "Passed: signer: path",
+                "Warning: signer: trust"
+              ]
+            }
+          ]
+        },
+        {
+          "trustAnchors": [
+            "hierarchy/root.cer"
+          ],
+          "extraCertificates": [],
+          "downloads": {
+            "http://ca.test/bundle.p7b": [
+              "hierarchy/issuing-ca.cer",
+              "hierarchy/tsa.cer"
+            ]
+          },
+          "valid": true,
+          "format": "CAdES (enveloped)",
+          "requiredChecks": [
+            {
+              "name": "signature time-stamp: signature",
+              "status": "Passed"
+            },
+            {
+              "name": "signer: trust",
+              "status": "Passed"
+            }
+          ],
+          "reports": [
+            {
+              "title": "CAdES signature",
+              "valid": true,
+              "format": "CAdES-T, enveloped, DSTU 7564-256",
+              "checks": [
+                "Passed: CMS: messageDigest",
+                "Passed: CMS: signing certificate",
+                "Passed: CMS: signature",
+                "Passed: signature time-stamp: imprint",
+                "Passed: signature time-stamp: messageDigest",
+                "Passed: signature time-stamp: signing certificate",
+                "Passed: signature time-stamp: signature",
+                "Passed: signature time-stamp service: path",
+                "Passed: signature time-stamp service: signature of 'Test TSP Server'",
+                "Passed: signature time-stamp service: trust",
+                "Warning: signature time-stamp service: revocation of 'Test TSP Server'",
+                "Passed: signer: path",
+                "Passed: signer: signature of 'Test Signer'",
+                "Passed: signer: signature of 'Test Issuing CA'",
+                "Passed: signer: trust",
+                "Warning: signer: revocation of 'Test Signer'",
+                "Warning: signer: revocation of 'Test Issuing CA'"
+              ]
+            }
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/Cades/CadesSignerTests.TimeStampWithoutTheServiceCertificateIsCompletedFromCaIssuers"
+      ]
+    }
+  ]
+}

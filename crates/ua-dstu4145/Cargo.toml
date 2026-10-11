@@ -1,0 +1,23 @@
+[package]
+name = "ua-dstu4145"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+# The field GF(2^m), the curve and its points.
+ua-gf2m.workspace = true
+# GOST 34.311 hashes messages (6.2); GOST 28147 drives the generator of Appendix А.
+ua-gost.workspace = true
+# Keys, the order n, r and s are integers of up to 512 bits.
+num-bigint.workspace = true
+# `Zero` / `One` of the integers above.
+num-traits.workspace = true
+# Key pairs and presignatures take any cryptographic generator; the Appendix А generator is one.
+rand_core.workspace = true
+
+[dev-dependencies]
+# Reads the BouncyCastle answers recorded by tools/csharp-oracle.
+serde_json.workspace = true

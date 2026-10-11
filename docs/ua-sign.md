@@ -1,0 +1,200 @@
+# ua-sign — signing and verification from the command line
+
+`ua-sign` (`crates/ua-sign`) signs and verifies files in the formats of the Ukrainian PKI with DSTU 4145 keys
+kept in JKS key stores. It is built on [ua-pki](#the-library-underneath); beyond the dependencies of the libraries it
+uses only `rpassword` (a password typed at the terminal without echo). It is a port of the C# `ua-sign`,
+and `build_scripts/interop.sh` checks the two against each other.
+
+| Command | What it does |
+|---|---|
+| `keygen` | creates a JKS key store with a new DSTU 4145 key and a self-signed certificate |
+| `info` | lists the entries of a key store, or shows certificates (DER, PEM, `.p7b`) |
+| `sign` | signs files: CAdES, XAdES, ASiC-S, ASiC-E at levels B, T and LT |
+| `verify` | verifies a signature of any of these formats and prints every check |
+
+Exit codes: **0** — done / the signature is valid, **1** — the signature is invalid, **2** — a usage or processing
+error (wrong password, unreadable file, network failure). `ua-sign <command> --help` lists the options of a command.
+
+## Running it
+
+```bash
+build_scripts/publish.sh                      # one release executable: artifacts/ua-sign/<target>/ua-sign
+build_scripts/ua-sign.sh verify --in doc.p7s  # runs target/release/ua-sign, or `cargo run --release` when it is not built
+build_scripts/demo.sh                         # key, every format, verification, a tampered copy rejected (offline)
+build_scripts/interop.sh                      # against the C# ua-sign: every format both ways, T and LT, INI reports
+```
+
+On Windows the same scripts exist as `.ps1` (`build_scripts/publish.ps1`, `build_scripts/ua-sign.ps1`, …). The wrappers
+`keygen`, `sign` and `verify` take the usual parameters positionally and pass any further `ua-sign` options through:
+
+```bash
+export UA_SIGN_PASSWORD='…'                                     # or leave it unset to be asked
+build_scripts/keygen.sh key.jks "CN=Name,O=Organization,C=UA" 257 365
+build_scripts/sign.sh cades key.jks contract.pdf                 # contract.pdf.p7s, data inside
+build_scripts/sign.sh cades-detached key.jks contract.pdf T --tsa http://tsp.example/
+build_scripts/sign.sh asic-e key.jks contract.pdf LT
+build_scripts/verify.sh contract.pdf.p7s --trust czo-root-2036-dstu7564.cer
+```
+
+```powershell
+$env:UA_SIGN_PASSWORD = '…'
+build_scripts/keygen.ps1 key.jks "CN=Name,O=Organization,C=UA" -Curve 257
+build_scripts/sign.ps1 xades key.jks contract.pdf -Hash gost34311
+build_scripts/verify.ps1 contract.pdf.xml -Trust czo-root.cer -Online
+```
+
+## Passwords
+
+The key store password is read from `--password-env NAME` (an environment variable), `--password-file PATH` (the
+first line) or typed at the terminal without echo. `--password VALUE` exists for tests and private machines: other
+processes can see command lines. The key entry is expected to have the same password as the store, as in the stores
+issued by Ukrainian banks.
+
+## keygen
+
+```bash
+ua-sign keygen --keystore key.jks --subject "CN=Name,O=Organization,C=UA" [--alias key] [--curve 257] [--days 365]
+               [--signature-hash dstu7564|gost34311] [--cert key.cer] [--force]
+```
+
+The key lies on a curve of table Г.1 (polynomial basis, the default m = 257 as in the national PKI) with DKE No. 1
+written into the parameters. The certificate is self-signed (basicConstraints cA = false, keyUsage digitalSignature
+and nonRepudiation, a subject key identifier) and signed with DSTU 4145 + DSTU 7564 unless `--signature-hash gost34311`
+is given. Signatures made with such a key verify, with the certificate given as `--trust`, but they are not qualified:
+a qualified certificate is issued by a qualified trust service provider (КНЕДП).
+
+## sign
+
+```bash
+ua-sign sign --keystore key.jks --format cades|xades|asic-s|asic-e --in FILE [--in FILE…] [--out PATH]
+             [--level B|T|LT] [--hash dstu7564|gost34311] [--detached] [--content-timestamp]
+             [--tsa URL] [--ocsp URL] [--certs CA.cer…] [--alias NAME] [--force]
+```
+
+| Format | Result | Contents |
+|---|---|---|
+| `cades` | `FILE.p7s` | CMS SignedData with the data (`--detached`: without it) |
+| `xades` | `FILE.xml` | a detached `ds:Signature` with one reference per file; the files stay next to it |
+| `asic-s` | `FILE.asics` | ZIP: `mimetype`, the file, `META-INF/signature.p7s` (detached CAdES) |
+| `asic-e` | `FILE.asice` | ZIP: `mimetype`, the files, `META-INF/manifest.xml`, `META-INF/signatures001.xml` (XAdES) |
+
+| Level | CAdES | XAdES | Needs |
+|---|---|---|---|
+| `B` | signed attributes | signed properties | — |
+| `T` | + signatureTimeStampToken | + SignatureTimeStamp | a time-stamping service |
+| `LT` | CAdES-X Long: + references and values of the CA certificates and OCSP responses | XAdES-B-LT: + CertificateValues, RevocationValues | the TSA and the OCSP responders |
+
+The time-stamping service is `--tsa URL`, or the one the signer's certificate names (subjectInfoAccess,
+id-ad-timeStamping) — Ukrainian qualified certificates do. For LT the responders come from each certificate's
+authorityInfoAccess (or `--ocsp URL` for all), and missing CA certificates are downloaded from caIssuers or taken from
+`--certs`. A self-signed key has nothing to ask OCSP about, so LT only adds the time-stamp to it.
+
+The formats follow [signature-formats.md](signature-formats.md): signature algorithm DSTU 4145 + DSTU 7564-256
+(`--hash dstu7564`, default) or DSTU 4145 + GOST 34.311 (`--hash gost34311`; GOST hashing uses the DKE of the key),
+the hash reversed before 5.9, D stored little-endian, exclusive canonicalization in XAdES.
+
+## verify
+
+```bash
+ua-sign verify --in SIGNATURE [--data FILE…] [--trust ROOT…] [--certs CA…] [--online] [--extract DIR] [--quiet]
+               [--format text|ini] [--report FILE]
+```
+
+The format is recognised by the content: a ZIP is ASiC-S / ASiC-E, XML is XAdES, anything else is CAdES (DER, PEM or
+base64). The data of a detached signature is `--data`, or the file next to the signature with the name the signature
+uses (`doc.txt` for `doc.txt.p7s`, the reference URIs in XAdES).
+
+Every signature is reported check by check — `[ OK ]`, `[WARN]`, `[FAIL]`:
+
+- the binding to the data (messageDigest, ds:Reference digests) and to the certificate (signingCertificateV2,
+  SigningCertificateV2), the DSTU 4145 signature;
+- time-stamps: the imprint, the service's signature and certificate path; the time-stamp time becomes the validation
+  time. A token without the service's certificate (as PrivatBank's) cannot be checked offline: that is a warning and
+  the claimed signing time is used instead;
+- CAdES-X Long references against their values;
+- the certificate path: each signature, the validity periods at the validation time, CA flags, the trust anchor
+  (`--trust`; without it the root is reported with a warning), and an OCSP response for every certificate below the
+  root — embedded in the signature, or asked online with `--online`. `--online` also downloads the certificates a
+  signature leaves out from the caIssuers address of the signer's certificate: providers publish there their CA and
+  their time-stamping and OCSP services' certificates;
+- for containers: the mimetype entry, the manifest, and that every data file is covered by a signature.
+
+A signature is valid when no check failed; warnings mark what could not be established (no trusted root given, no
+revocation data). With `--trust`, a path that cannot be completed up to a trusted root fails; without it, it is a
+warning. When certificates are missing, the output ends with a hint to use `--online` or `--certs`.
+
+Trusted roots for qualified signatures are the ЦЗО certificates (`testdata/certificates/czo-roots`
+holds the current ones); providers of banks, PrivatBank among them, are certified under the root of the National Bank's
+certification centre instead (`…/certificates/nbu-roots`). A signature PrivatBank hands out (`.sig`, CAdES-T):
+
+```bash
+ua-sign verify --in document.txt.sig --trust nbu-root-2036-dstu7564.cer --online
+```
+
+The PrivatBank and "Дія" formats — what each provider puts where, and how to make each with `ua-sign` — are described
+in [provider-formats.md](provider-formats.md).
+
+### The INI report
+
+`--format ini` prints, instead of the checks, a report with everything the checks were made on; `--report FILE` writes
+the same report to a file in UTF-8 (use it rather than redirecting the output on Windows PowerShell 5, whose `>` writes
+UTF-16). Times are UTC in ISO 8601, digests and serial numbers are hex, algorithms are a name and the identifier the
+signature uses (an OID in CMS, a URI in XML-DSig). Sections:
+
+| Section | Keys |
+|---|---|
+| `[summary]` | `file`, `format`, `result` (`VALID` / `INVALID`), `signatures`, `warnings`, `failures`, `verified_at`, `signed_file.N` |
+| `[container]`, `[container.checks]` | ASiC only: the structure checks |
+| `[signature.N]` | `title`, `level`, `packaging`, `signature_algorithm`, `digest_algorithm`, `signing_time` (claimed), `timestamp_time`, `validation_time`, `result`, `warnings`, `failures` |
+| `[signature.N.signer]` | `subject`, `issuer`, `serial`, `valid_from`, `valid_to`, `key`, `certificate_signature_algorithm` |
+| `[signature.N.reference.M]` | what the signature covers: `name` (a XAdES reference URI, or `content` in CAdES), `digest_algorithm`, `digest` |
+| `[signature.N.timestamp.M]` | `kind`, `time`, `serial`, `policy`, `imprint_algorithm`, `imprint`, `authority`, `authority_serial` |
+| `[signature.N.path.M]` | `for` (`signer`, `signature time-stamp service`), then `certificate.K` with `.serial`, `.valid_from`, `.valid_to`, from the certificate up |
+| `[signature.N.ocsp.M]` | `path`, `certificate`, `serial`, `status`, `revocation_time`, `source` (`embedded` / `online`), `responder`, `produced_at`, `this_update`, `next_update` |
+| `[signature.N.checks]` | `K=STATUS \| check \| details`, `STATUS` being `OK`, `WARN` or `FAIL` |
+
+```ini
+[signature.1]
+level=XAdES-B-LT
+packaging=detached
+signature_algorithm=DSTU 4145 with DSTU 7564-256 (http://www.w3.org/2001/04/xmldsig-more#dstu4145-dstu7564-256)
+digest_algorithm=DSTU 7564-256 (1.2.804.2.1.1.1.1.2.2.1)
+signing_time=2026-01-01T12:00:00Z
+timestamp_time=2026-01-01T12:00:25Z
+
+[signature.1.timestamp.1]
+kind=signature time-stamp
+time=2026-01-01T12:00:25Z
+policy=1.2.804.2.1.1.1.2.3.4.1.1
+imprint_algorithm=DSTU 7564-256 (1.2.804.2.1.1.1.1.2.2.1)
+```
+
+Test: `crates/ua-sign/tests/ua_sign.rs`, `the_ini_report_of_…_holds_every_detail`.
+
+## What is not supported
+
+- PAdES (PDF signatures) — neither signing nor verification.
+- Key containers other than Sun JKS: PKCS#12, JCEKS, IIT `Key-6.dat` / `.ZS2`.
+- CRLs, XAdES-B-LTA / CAdES-A archive time-stamps, countersignatures, CAdES inside ASiC-E (ASiCManifest).
+- Certificate policies and qcStatements are not evaluated; the freshness of an OCSP response relative to the signing
+  time and the OCSP nonce are not checked.
+
+## The library underneath
+
+`ua-pki` (`crates/ua-pki`) can be used without the tool; its README lists the API:
+
+```rust
+use ua_pki::{CadesOptions, CadesSigner, Certificate, JksKeyStore, SignatureServices, SigningKey, ValidationOptions,
+    signature_verifier};
+
+let store = JksKeyStore::load(&std::fs::read("key.jks")?, password)?;
+let signer = SigningKey::from_jks(&store, password, None, None)?;
+let options = CadesOptions { is_detached: true, ..CadesOptions::default() };
+let p7s = CadesSigner::new(signer, SignatureServices::default()).sign(&data, &options)?;
+
+let options = ValidationOptions {
+    trust_anchors: vec![Certificate::load(&std::fs::read("czo-root.cer")?)?],
+    ..ValidationOptions::default()
+};
+let result = signature_verifier::verify(&p7s, &|_| Some(data.clone()), &options)?;
+```

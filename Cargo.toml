@@ -1,0 +1,46 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+publish = false
+repository = "https://github.com/ua-cryptography/ua-cryptography-rust"
+
+[workspace.dependencies]
+# The crates of this workspace.
+ua-gf2m = { path = "crates/ua-gf2m" }
+ua-gost = { path = "crates/ua-gost" }
+ua-dstu4145 = { path = "crates/ua-dstu4145" }
+ua-dstu-sboxes = { path = "crates/ua-dstu-sboxes" }
+ua-dstu7564 = { path = "crates/ua-dstu7564" }
+ua-dstu7624 = { path = "crates/ua-dstu7624" }
+ua-der = { path = "crates/ua-der" }
+ua-xml-c14n = { path = "crates/ua-xml-c14n" }
+ua-pki = { path = "crates/ua-pki" }
+
+# Third-party crates; each crate that uses one says why in its own Cargo.toml.
+num-bigint = "0.4"
+num-integer = "0.1"
+num-traits = "0.2"
+rand_core = { version = "0.6", features = ["getrandom"] }
+sha1 = "0.10"
+sha2 = "0.10"
+base64 = "0.22"
+time = { version = "0.3", features = ["formatting", "parsing", "macros"] }
+roxmltree = "0.21"
+zip = { version = "9", default-features = false, features = ["deflate"] }
+ureq = "2"
+rpassword = "7"
+serde_json = "1"
+
+# Field and curve arithmetic dominates the test suite; unoptimized it is two orders of magnitude slower.
+[profile.test]
+opt-level = 3
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

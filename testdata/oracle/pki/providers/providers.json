@@ -1,0 +1,36 @@
+{
+  "document": "providers/doc.txt",
+  "keyStorePassword": "provider formats",
+  "privatbank": {
+    "customer": "providers/privatbank/customer.cer",
+    "customerKey": "the signer's key: hierarchy/keys.json identities.signer.key",
+    "agreementCertificate": "providers/privatbank/agreement.cer",
+    "ocspUrl": "http://127.0.0.1:18089/ocsp",
+    "caIssuersUrl": "http://127.0.0.1:18089/ca.p7b",
+    "caIssuersBundle": "providers/privatbank/ca.p7b",
+    "caIssuersBundleCertificates": [
+      "hierarchy/issuing-ca.cer",
+      "hierarchy/tsa.cer",
+      "hierarchy/ocsp.cer"
+    ],
+    "customerOcsp": "providers/privatbank/customer-ocsp.der",
+    "keyStore": "providers/privatbank/key.jks",
+    "keyStoreAlias": "pb_sign",
+    "keyStoreChain": [
+      "hierarchy/root.cer",
+      "hierarchy/issuing-ca.cer",
+      "providers/privatbank/customer.cer",
+      "providers/privatbank/agreement.cer"
+    ]
+  },
+  "diia": {
+    "signer": "hierarchy/signer.cer",
+    "keyStore": "providers/diia/key.jks",
+    "keyStoreAlias": "signer",
+    "keyStoreChain": [
+      "hierarchy/signer.cer",
+      "hierarchy/issuing-ca.cer",
+      "hierarchy/root.cer"
+    ]
+  }
+}

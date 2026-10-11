@@ -1,0 +1,262 @@
+{
+  "about": "d, qx, qy: big-endian hex; aliases also as UTF-16 code units (hex) since some are not printable",
+  "stores": [
+    {
+      "file": "jks/test-impl-signer.jks",
+      "writer": "Support/Jks.cs",
+      "storePassword": "correct horse battery staple",
+      "keyPassword": "correct horse battery staple",
+      "about": "the signer with signer, CA, root; SigningKey.FromJks picks it",
+      "entries": [
+        {
+          "alias": "signer",
+          "aliasUtf16": "007300690067006e00650072",
+          "type": "privateKey",
+          "m": 257,
+          "d": "484522537059b54bd98bbc6904948f60e89cdbdb07c33541da5d24fc6c88d0bf",
+          "qx": "e10046ae4bda5fba22da26fc1b11274bfd6670512e56b7bee64cdebfc881979a",
+          "qy": "014b34236079131a8a7ed55484698d3f648bb0c86478299c78c8eb6ff3e4a84180",
+          "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+          "chain": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer"
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/KeyStore/JksKeyStoreTests.StoreWrittenByTheTestImplementationIsReadByThePackage",
+        "Pki/TestPkiTests.JksRoundTripRecoversKeyAndChain",
+        "Pki/TestPkiTests.JksWithWrongPasswordIsRejected (any other password)"
+      ]
+    },
+    {
+      "file": "jks/test-impl-root-first-agreement.jks",
+      "writer": "Support/Jks.cs",
+      "storePassword": "correct horse battery staple",
+      "keyPassword": "correct horse battery staple",
+      "about": "chain stored root first with a key-agreement certificate (agreement.cer, keyUsage keyAgreement, made by the package's CertificateBuilder); SigningKey.FromJks yields [signer, CA, root]",
+      "entries": [
+        {
+          "alias": "pb_sign",
+          "aliasUtf16": "00700062005f007300690067006e",
+          "type": "privateKey",
+          "m": 257,
+          "d": "484522537059b54bd98bbc6904948f60e89cdbdb07c33541da5d24fc6c88d0bf",
+          "qx": "e10046ae4bda5fba22da26fc1b11274bfd6670512e56b7bee64cdebfc881979a",
+          "qy": "014b34236079131a8a7ed55484698d3f648bb0c86478299c78c8eb6ff3e4a84180",
+          "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+          "chain": [
+            "hierarchy/root.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/signer.cer",
+            "jks/agreement.cer"
+          ]
+        }
+      ],
+      "expectedSigningChain": [
+        "hierarchy/signer.cer",
+        "hierarchy/issuing-ca.cer",
+        "hierarchy/root.cer"
+      ],
+      "csharpTests": [
+        "Pki/KeyStore/JksKeyStoreTests.ChainStoredRootFirstWithAKeyAgreementCertificateIsReordered"
+      ]
+    },
+    {
+      "file": "jks/test-impl-key-matches-no-certificate.jks",
+      "writer": "Support/Jks.cs",
+      "storePassword": "correct horse battery staple",
+      "keyPassword": "correct horse battery staple",
+      "about": "the key-agreement key with root, CA, signer: no certificate matches the key, SigningKey.FromJks throws InvalidDataException",
+      "entries": [
+        {
+          "alias": "other",
+          "aliasUtf16": "006f0074006800650072",
+          "type": "privateKey",
+          "m": 431,
+          "d": "17fd5011ea5384820137c764089096a421a6f487c3e5e6eb78c0884ce3b58bb9c733e1a3c21bc4b9816298f518502d78c8388ccb7207",
+          "qx": "496ed9a78e4e9df9133ff30e57d8c7888a76cdfb7e7f2eeff81fae657e82e2e745cbdde7dc6a77310cfefa4a45ee6ec8131f8fa988e3",
+          "qy": "4bef318f9db64d369d22fc274fef658188b1b1916866e821fed70cc89a5aae26632f309eb8990b15793950740deeff6642bc0cd1b042",
+          "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+          "chain": [
+            "hierarchy/root.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/signer.cer"
+          ]
+        }
+      ],
+      "expectedError": "InvalidDataException from SigningKey.FromJks",
+      "csharpTests": [
+        "Pki/KeyStore/JksKeyStoreTests.ChainStoredRootFirstWithAKeyAgreementCertificateIsReordered (second half)"
+      ]
+    },
+    {
+      "file": "jks/test-impl-key-certificate-mismatch.jks",
+      "writer": "Support/Jks.cs",
+      "storePassword": "correct horse battery staple",
+      "keyPassword": "correct horse battery staple",
+      "about": "the signer's key with the issuing CA's certificate: GetPrivateKey throws InvalidDataException",
+      "entries": [
+        {
+          "alias": "mismatch",
+          "aliasUtf16": "006d00690073006d0061007400630068",
+          "type": "privateKey",
+          "m": 257,
+          "d": "484522537059b54bd98bbc6904948f60e89cdbdb07c33541da5d24fc6c88d0bf",
+          "qx": "e10046ae4bda5fba22da26fc1b11274bfd6670512e56b7bee64cdebfc881979a",
+          "qy": "014b34236079131a8a7ed55484698d3f648bb0c86478299c78c8eb6ff3e4a84180",
+          "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+          "chain": [
+            "hierarchy/issuing-ca.cer"
+          ]
+        }
+      ],
+      "expectedError": "InvalidDataException from GetPrivateKey",
+      "csharpTests": [
+        "Pki/KeyStore/JksKeyStoreTests.KeyThatDoesNotMatchItsCertificateIsRejected"
+      ]
+    },
+    {
+      "file": "jks/test-impl-password-right.jks",
+      "writer": "Support/Jks.cs",
+      "storePassword": "right",
+      "keyPassword": "right",
+      "about": "self-signed key (CN=Signer,C=UA, GOST 34.311 signature, jks/standalone.cer) with password \"right\"; \"wrong\" fails the integrity check",
+      "entries": [
+        {
+          "alias": "signer",
+          "aliasUtf16": "007300690067006e00650072",
+          "type": "privateKey",
+          "m": 257,
+          "d": "564c92fa446d03517ed2b91c9fe75776eac40a94076aec7ef57d0ba82bc6c879",
+          "qx": "2471feaae3e99497f8fb58e7626850d58a896105b20806b83301fadd759012e9",
+          "qy": "011f557c9bd61fa1c709b9b2a54a30f7dd32bc3849bf8e28bfb9c1d31d00f92bea",
+          "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+          "chain": [
+            "jks/standalone.cer"
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/TestPkiTests.JksWithWrongPasswordIsRejected"
+      ]
+    },
+    {
+      "file": "jks/package-signer.jks",
+      "writer": "C# package JksKeyStore",
+      "storePassword": "correct horse battery staple",
+      "keyPassword": "correct horse battery staple",
+      "about": "written by the C# package and read back by Support/Jks.cs (alias, d, chain)",
+      "entries": [
+        {
+          "alias": "signer",
+          "aliasUtf16": "007300690067006e00650072",
+          "type": "privateKey",
+          "m": 257,
+          "d": "484522537059b54bd98bbc6904948f60e89cdbdb07c33541da5d24fc6c88d0bf",
+          "qx": "e10046ae4bda5fba22da26fc1b11274bfd6670512e56b7bee64cdebfc881979a",
+          "qy": "014b34236079131a8a7ed55484698d3f648bb0c86478299c78c8eb6ff3e4a84180",
+          "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+          "chain": [
+            "hierarchy/signer.cer",
+            "hierarchy/issuing-ca.cer",
+            "hierarchy/root.cer"
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/KeyStore/JksKeyStoreTests.StoreWrittenByThePackageIsReadByTheTestImplementation (reverse direction)"
+      ]
+    },
+    {
+      "file": "jks/package-several-entries.jks",
+      "writer": "C# package JksKeyStore",
+      "storePassword": "correct horse battery staple",
+      "keyPassword": "correct horse battery staple",
+      "about": "three private keys (self-signed, m = 257) with aliases \"підпис\", \"nul\\u0000char\" (Java modified UTF-8: C0 80) and \"emoji \uD83D\uDD11\" (a surrogate pair: two 3-byte sequences), then a trusted certificate \"root\"; SigningKey.FromJks without alias throws ArgumentException, with \"ПІДПИС\" picks the first",
+      "entries": [
+        {
+          "alias": "підпис",
+          "aliasUtf16": "043f04560434043f04380441",
+          "type": "privateKey",
+          "m": 257,
+          "d": "5bedec0be7dbbaa9a2a5b05c7bb435689bb31b04b64430644c1652fa0ef914dd",
+          "qx": "015e95e509934c7d63ce1caeeb4c9a65b3b151c3af280c02602618ef63fd93e1b0",
+          "qy": "0178dfe9a395ed22d06b11b4a27fe353614c6179aa7682d45271ce07858ce2ce16",
+          "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+          "chain": [
+            "jks/several-entries-1.cer"
+          ]
+        },
+        {
+          "alias": "nul\u0000char",
+          "aliasUtf16": "006e0075006c00000063006800610072",
+          "type": "privateKey",
+          "m": 257,
+          "d": "77065e4a24f3314718090d7c1b626f7b32a13beecc15e484ec9b790afef1f65c",
+          "qx": "21e10b64d5c7cba3d9c0706f578bef58792baab9206a65417efb4d818ee47e4b",
+          "qy": "f99762d2b143c90404bcf19f111e2fb49525e06e63242ab623277a4037d12bfd",
+          "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+          "chain": [
+            "jks/several-entries-2.cer"
+          ]
+        },
+        {
+          "alias": "emoji \uD83D\uDD11",
+          "aliasUtf16": "0065006d006f006a00690020d83ddd11",
+          "type": "privateKey",
+          "m": 257,
+          "d": "6e960906351903ba4cb550351c9478d16429be4017e5b6c70025b27f7a52f434",
+          "qx": "0129b6dead7d36e73080b332bfbc735064b35d3b254b76374d4ff29c098214267d",
+          "qy": "a761aef4833be5517cb700dc50c47288966151f01c92973088f4c0b72ec20216",
+          "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+          "chain": [
+            "jks/several-entries-3.cer"
+          ]
+        },
+        {
+          "alias": "root",
+          "aliasUtf16": "0072006f006f0074",
+          "type": "trustedCertificate",
+          "certificate": "hierarchy/root.cer"
+        }
+      ],
+      "csharpTests": [
+        "Pki/KeyStore/JksKeyStoreTests.SeveralEntriesAndUnusualAliasesRoundTrip"
+      ]
+    },
+    {
+      "file": "jks/package-key-password.jks",
+      "writer": "C# package JksKeyStore",
+      "storePassword": "correct horse battery staple",
+      "keyPassword": "key password",
+      "about": "store password and key password differ: the store password fails the key protector (CryptographicException); \"wrong\" fails the integrity check",
+      "entries": [
+        {
+          "alias": "signer",
+          "aliasUtf16": "007300690067006e00650072",
+          "type": "privateKey",
+          "m": 257,
+          "d": "484522537059b54bd98bbc6904948f60e89cdbdb07c33541da5d24fc6c88d0bf",
+          "qx": "e10046ae4bda5fba22da26fc1b11274bfd6670512e56b7bee64cdebfc881979a",
+          "qy": "014b34236079131a8a7ed55484698d3f648bb0c86478299c78c8eb6ff3e4a84180",
+          "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+          "chain": [
+            "hierarchy/signer.cer"
+          ]
+        }
+      ],
+      "csharpTests": [
+        "Pki/KeyStore/JksKeyStoreTests.WrongPasswordsAndDamageAreDetected"
+      ]
+    }
+  ],
+  "pkcs8": {
+    "standard": "jks/pkcs8-octet-string.der",
+    "bouncyCastle": "jks/pkcs8-integer.der",
+    "d": "72dc41fef2e84eeb78336e5269da03c18c3ece77eb2e6abfc21070868f0c9547",
+    "m": 257,
+    "about": "PrivateKeyInfo { 0, { DSTU 4145 LE OID, { named curve, DKE } }, privateKey }: the standard form holds d little-endian in an OCTET STRING (C# package and Support/Jks.cs agree byte for byte); the BouncyCastle form holds an OCTET STRING wrapping the DER INTEGER d (Pki/KeyStore/JksKeyStoreTests.Pkcs8AcceptsTheBouncyCastleIntegerForm)"
+  }
+}

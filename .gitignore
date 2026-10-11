@@ -1,0 +1,43 @@
+# Build output
+/target/
+/artifacts/
+/tools/csharp-oracle/bin/
+/tools/csharp-oracle/obj/
+**/*.rs.bk
+*.profraw
+*.profdata
+
+# Local assistant instructions and settings
+/.claude/
+/CLAUDE.md
+/CLAUDE.local.md
+/CODE_STANDARD.md
+/ARCHITECTURE.md
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Private key material and real signed documents must never be committed:
+# the tests use synthetic keys and public CA certificates only.
+*.jks
+*.pfx
+*.p12
+*.pck
+*.PCK
+*.SK
+*.ZS2
+Key-6.dat
+/private/
+
+# The text of DSTU 4145-2002 is copyrighted (Derzhstandart of Ukraine) and may not be redistributed.
+/docs/dstu-4145-2002.md
+
+# Synthetic key stores recorded by tools/csharp-oracle (generated keys, no real material) are test fixtures.
+!/testdata/oracle/**/*.jks

@@ -1,0 +1,182 @@
+{
+  "identities": {
+    "root": {
+      "role": "self-signed root CA, m = 431 (like the Central Certification Authority)",
+      "certificate": "hierarchy/root.cer",
+      "subject": "CN=Test Root CA,O=UA Cryptography Tests,C=UA",
+      "issuer": "root",
+      "serialNumber": "166456894145916465",
+      "notBefore": "2026-10-09T18:50:06Z",
+      "notAfter": "2031-10-10T18:50:06Z",
+      "signatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1",
+      "isCa": true,
+      "extendedKeyUsage": null,
+      "key": {
+        "m": 431,
+        "basis": "polynomial",
+        "namedCurveIndex": 9,
+        "namedCurveOid": "1.2.804.2.1.1.1.1.3.1.1.2.9",
+        "d": "18c67073b18cd25441e70a093cb2ef3461752e37e05846ef995c64edadf9e1c12cf97e0d7d4a62d6600ef54b84a96b5d6087044e2890",
+        "qx": "76e28ecbd8ff25f849a22733184bc6be22722f1da809cd9f3fd983d4c84414e40ca3de78efbe7dae463069ce814f1925ff64f699aac3",
+        "qy": "53aad2f97bb25cbb2245b96b4faf8274ccd30099a13b8934705815d33cd35434366d36f2259023d0c1b397e3f2aa4f0266108ef869a7",
+        "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+        "dkeIsDefault": true,
+        "publicKeyOid": "1.2.804.2.1.1.1.1.3.1.1"
+      }
+    },
+    "issuing-ca": {
+      "role": "issuing CA (like a qualified trust service provider)",
+      "certificate": "hierarchy/issuing-ca.cer",
+      "subject": "CN=Test Issuing CA,O=UA Cryptography Tests,C=UA",
+      "issuer": "root",
+      "serialNumber": "629247932652768171",
+      "notBefore": "2026-10-09T18:50:06Z",
+      "notAfter": "2031-10-10T18:50:06Z",
+      "signatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1",
+      "isCa": true,
+      "extendedKeyUsage": null,
+      "key": {
+        "m": 257,
+        "basis": "polynomial",
+        "namedCurveIndex": 6,
+        "namedCurveOid": "1.2.804.2.1.1.1.1.3.1.1.2.6",
+        "d": "5923a3136eb6616f8d2050a56ef420318bd4d60a376f2f342a2e96839b4d7003",
+        "qx": "01a5e05815cc84a5d22fa3eeb5da5bf4a78eec2fd869d6291a1d4a0a86e7b00fff",
+        "qy": "1feeb2f5782e5e89882b5a78b690cf0cd1ef72126ae247469148a2623ce9bb55",
+        "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+        "dkeIsDefault": true,
+        "publicKeyOid": "1.2.804.2.1.1.1.1.3.1.1"
+      }
+    },
+    "signer": {
+      "role": "the end-entity key that signs documents",
+      "certificate": "hierarchy/signer.cer",
+      "subject": "CN=Test Signer,O=UA Cryptography Tests,C=UA",
+      "issuer": "issuing-ca",
+      "serialNumber": "1105379065860848022",
+      "notBefore": "2026-10-09T18:50:06Z",
+      "notAfter": "2031-10-10T18:50:06Z",
+      "signatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1",
+      "isCa": false,
+      "extendedKeyUsage": null,
+      "key": {
+        "m": 257,
+        "basis": "polynomial",
+        "namedCurveIndex": 6,
+        "namedCurveOid": "1.2.804.2.1.1.1.1.3.1.1.2.6",
+        "d": "484522537059b54bd98bbc6904948f60e89cdbdb07c33541da5d24fc6c88d0bf",
+        "qx": "e10046ae4bda5fba22da26fc1b11274bfd6670512e56b7bee64cdebfc881979a",
+        "qy": "014b34236079131a8a7ed55484698d3f648bb0c86478299c78c8eb6ff3e4a84180",
+        "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+        "dkeIsDefault": true,
+        "publicKeyOid": "1.2.804.2.1.1.1.1.3.1.1"
+      }
+    },
+    "tsa": {
+      "role": "time-stamping service (extendedKeyUsage timeStamping)",
+      "certificate": "hierarchy/tsa.cer",
+      "subject": "CN=Test TSP Server,O=UA Cryptography Tests,C=UA",
+      "issuer": "root",
+      "serialNumber": "8178083030600647207",
+      "notBefore": "2026-10-09T18:50:06Z",
+      "notAfter": "2031-10-10T18:50:06Z",
+      "signatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1",
+      "isCa": false,
+      "extendedKeyUsage": [
+        "1.3.6.1.5.5.7.3.8"
+      ],
+      "key": {
+        "m": 257,
+        "basis": "polynomial",
+        "namedCurveIndex": 6,
+        "namedCurveOid": "1.2.804.2.1.1.1.1.3.1.1.2.6",
+        "d": "51f8c83c6fe97535e834e16e6f1b3cd386f30d8e6a06154909f9c1c5134dc288",
+        "qx": "01a0f1e55031896a0f7c99d7608c702eef9d7edacfd9c1eab71776dbfc90bfba01",
+        "qy": "347ae277092412c8f94dcf5e55ba1599e5e5616393e368c9c1f0157f742b691f",
+        "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+        "dkeIsDefault": true,
+        "publicKeyOid": "1.2.804.2.1.1.1.1.3.1.1"
+      }
+    },
+    "ocsp": {
+      "role": "OCSP responder for the issuing CA's certificates (extendedKeyUsage OCSPSigning)",
+      "certificate": "hierarchy/ocsp.cer",
+      "subject": "CN=Test OCSP,O=UA Cryptography Tests,C=UA",
+      "issuer": "issuing-ca",
+      "serialNumber": "7901470875187503803",
+      "notBefore": "2026-10-09T18:50:06Z",
+      "notAfter": "2031-10-10T18:50:06Z",
+      "signatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1",
+      "isCa": false,
+      "extendedKeyUsage": [
+        "1.3.6.1.5.5.7.3.9"
+      ],
+      "key": {
+        "m": 257,
+        "basis": "polynomial",
+        "namedCurveIndex": 6,
+        "namedCurveOid": "1.2.804.2.1.1.1.1.3.1.1.2.6",
+        "d": "04e6c9e1d6396a8b360e4cba531e4b53a6fa3ad41269e25cc7c13ab93299563f",
+        "qx": "18dbc3780551bf583296e29d9be90165740036987439393742c26d08019d9612",
+        "qy": "bdf59a05efbe6fee7f74cc07bf1aaed44c1af1ba062999f7e66a7fac97d7e1b6",
+        "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+        "dkeIsDefault": true,
+        "publicKeyOid": "1.2.804.2.1.1.1.1.3.1.1"
+      }
+    },
+    "root-ocsp": {
+      "role": "OCSP responder for the root's certificates (extendedKeyUsage OCSPSigning)",
+      "certificate": "hierarchy/root-ocsp.cer",
+      "subject": "CN=Test Root OCSP,O=UA Cryptography Tests,C=UA",
+      "issuer": "root",
+      "serialNumber": "1654769160928430967",
+      "notBefore": "2026-10-09T18:50:06Z",
+      "notAfter": "2031-10-10T18:50:06Z",
+      "signatureAlgorithm": "1.2.804.2.1.1.1.1.3.6.1.1",
+      "isCa": false,
+      "extendedKeyUsage": [
+        "1.3.6.1.5.5.7.3.9"
+      ],
+      "key": {
+        "m": 257,
+        "basis": "polynomial",
+        "namedCurveIndex": 6,
+        "namedCurveOid": "1.2.804.2.1.1.1.1.3.1.1.2.6",
+        "d": "527d699cb12ef565a455aa1488cbdc334853a872751d952f540d75e28dba7a1a",
+        "qx": "01bf5ff81e473a02c381527be61a950a7b1309d68ffd7ca66d2a5c487063714d8a",
+        "qy": "45d461d64bec026cebb21b91cb52781b05d5e5ae4d2f1b8e6631e9dd5c539b61",
+        "dke": "a9d6eb45f13c708280c4967b231f5eadf658eba4c037291d38d96bf025ca4e17f8e9720dc615b43a28975f0bc1dea36438b564ea2c179fd0123e6db8fac57904",
+        "dkeIsDefault": true,
+        "publicKeyOid": "1.2.804.2.1.1.1.1.3.1.1"
+      }
+    }
+  },
+  "signerChain": [
+    "hierarchy/signer.cer",
+    "hierarchy/issuing-ca.cer",
+    "hierarchy/root.cer"
+  ],
+  "validationCertificates": [
+    "hierarchy/issuing-ca.cer",
+    "hierarchy/root.cer",
+    "hierarchy/tsa.cer",
+    "hierarchy/ocsp.cer",
+    "hierarchy/root-ocsp.cer"
+  ],
+  "allCertificates": [
+    "hierarchy/signer.cer",
+    "hierarchy/issuing-ca.cer",
+    "hierarchy/root.cer",
+    "hierarchy/tsa.cer",
+    "hierarchy/ocsp.cer",
+    "hierarchy/root-ocsp.cer"
+  ],
+  "ocsp": {
+    "hierarchy/ocsp-signer.der": "good, about signer.cer, by ocsp.cer (IssuingCaOcsp.Respond(Signer, IssuingCa))",
+    "hierarchy/ocsp-issuing-ca.der": "good, about issuing-ca.cer, by root-ocsp.cer (RootOcsp.Respond(IssuingCa, Root))"
+  },
+  "twin": {
+    "certificate": "hierarchy/signer-twin.cer",
+    "about": "made by the C# package's CertificateBuilder: signer.cer's subject, key and serial number, issued by issuing-ca"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "about": "new X509Name(text).GetDerEncoded() (BouncyCastle 2.7.0); CertificateTests.DistinguishedNameEncodesLikeBouncyCastle",
+  "names": [
+    {
+      "text": "CN=Test Signer,O=UA Cryptography Tests,OU=Unit,L=Kyiv,C=UA,SERIALNUMBER=UA-12345",
+      "der": "30743114301206035504030c0b54657374205369676e6572311e301c060355040a0c1555412043727970746f677261706879205465737473310d300b060355040b0c04556e6974310d300b06035504070c044b796976310b30090603550406130255413111300f0603550405130855412d3132333435"
+    },
+    {
+      "text": "CN=Тестовий підписувач, O=Організація\\, ТОВ, C=UA",
+      "parsedFrom": "CN=Тестовий підписувач, O=Організація\\, ТОВ, C=UA",
+      "about": "the package's ToString() of the parsed name, then BouncyCastle's DER of that text",
+      "der": "3066312e302c06035504030c25d0a2d0b5d181d182d0bed0b2d0b8d0b920d0bfd196d0b4d0bfd0b8d181d183d0b2d0b0d18731273025060355040a0c1ed09ed180d0b3d0b0d0bdd196d0b7d0b0d186d196d18f2c20d0a2d09ed092310b3009060355040613025541",
+      "commonName": "Тестовий підписувач",
+      "organization": "Організація, ТОВ"
+    }
+  ]
+}
