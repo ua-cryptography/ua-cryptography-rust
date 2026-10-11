@@ -1,0 +1,70 @@
+name: CI
+
+# Tests on every push to main and every pull request, and before a release; the libraries for every platform are
+# built by release.yml.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # x64 with PCLMULQDQ (Linux, Windows), arm64 with PMULL (macOS)
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Test
+        run: cargo test --workspace --locked
+
+      # The portable carry-less multiplication, which CPUs without PMULL / PCLMULQDQ and wasm take.
+      - name: Test the portable field arithmetic
+        if: matrix.os == 'ubuntu-latest'
+        run: cargo test --locked -p ua-gf2m -p ua-dstu4145 --features ua-gf2m/portable
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+          targets: wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Format
+        run: cargo fmt --all --check
+
+      # Zero warnings is the bar.
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+
+      # The JavaScript bindings exist on wasm32 only.
+      - name: Clippy of the browser build
+        run: cargo clippy -p ua-ffi --target wasm32-unknown-unknown --locked -- -D warnings
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cbindgen
+
+      - name: The C header is current
+        run: build_scripts/ffi-header.sh --check

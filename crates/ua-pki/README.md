@@ -38,7 +38,7 @@ assert!(result.is_valid());
 | X.509 | `Certificate::load` (DER/PEM/base64) and its fields, `public_key()` (checked by 8 and 10.1, decoded once), `is_ca`, `key_usage`, `extended_key_usage`, `subject_key_identifier`, `authority_key_identifier`, `ocsp_urls`, `ca_issuer_urls`, `time_stamp_urls`, `is_signed_by`, `is_valid_at`; `DistinguishedName::{parse, from_asn1, find_attribute}`; `CertificateBuilder` (`new`, `add_*`, `self_sign`, `issue`, `key_identifier`); `KeyUsageFlags` |
 | keys | `Dstu4145PublicKey` (`from_subject_public_key_info`, `to_subject_public_key_info`, `verify_hash`, `verify_data`, `verify`); `Dstu4145PrivateKey` (`new`, `generate`, `sign_hash`, `sign`, `to_pkcs8`, `from_pkcs8`); `JksKeyStore` (`load`, `save`, `find`, `private_keys`, `add_private_key`, `add_trusted_certificate`), `JksEntry`, `JksPrivateKeyEntry::{find_certificate, decrypt_pkcs8, get_private_key}`, `JksTrustedCertificateEntry`; `SigningKey::{new, from_jks}` |
 | CMS, TSP, OCSP | `SignedData::load`, `SignerInfo`, `CmsAttribute`; `cms_builder::{attribute, signing_certificate_v2, issuer_serial, signed_attributes, signer_info, signer_info_with, signed_data}`; `cms_verifier::{verify_signer, check_signing_certificate}`; `TimeStampToken` (`load`, `covers`, `find_signer_certificate`, `verify`); `time_stamp_protocol::{create_nonce, create_request, parse_response}`; `OcspResponse` (`load`, `load_basic`, `full_encoded`, `find`, `find_responder`, `is_signed_by`, `create_request`), `OcspSingleResponse::matches`, `OcspCertificateStatus` |
-| services | traits `TimeStampService::get_token`, `OcspService::find_response`, `CertificateSource::download_certificates`; `HttpTimeStampService`, `HttpOcspService`, `HttpCertificateSource` (ureq, 30 s timeout, answers up to 10 MiB); `LongTermValidationData::collect`; `certificate_files::{parse, load}` |
+| services | traits `TimeStampService::get_token`, `OcspService::find_response`, `CertificateSource::download_certificates`; `HttpTimeStampService`, `HttpOcspService`, `HttpCertificateSource` (feature `http`, on by default; ureq, 30 s timeout, answers up to 10 MiB); `LongTermValidationData::collect`; `certificate_files::{parse, load}` |
 | signing | `CadesSigner` + `CadesOptions` (B, T, LT = CAdES-X Long; content time-stamp; detached); `XadesSigner::{sign, sign_to_bytes}` → `XadesSignature` (B, T, LT); `asic_container::{create_asic_s, create_asic_e, looks_like_zip}`; `SignatureServices`, `SignatureLevel`; `mime_type_of` |
 | verification | `signature_verifier::verify` (by content), `cades_verifier::verify`, `xades_verifier::{verify, external_references}`, `certificate_path_validator::{build_chain, download_issuers, validate, short}`; `ValidationOptions` (trust anchors, extra certificates, online OCSP, downloads, injectable "now"); `VerificationResult`, `VerificationReport` (`pass`/`warn`/`fail`/`check`, `is_valid`, `has_warnings`, `validation_time`), `VerificationCheck`, `CheckStatus`, `SignedObject`, `TimeStampDetails`, `CertificatePath`, `RevocationStatus` |
 
@@ -76,7 +76,8 @@ the signed properties are read only from the element the signature covers.
 ## Dependencies
 
 The workspace crates `ua-gf2m`, `ua-gost`, `ua-dstu4145`, `ua-dstu7564`, `ua-der`, `ua-xml-c14n`; `num-bigint`,
-`num-traits`, `rand_core`, `sha1`, `sha2`, `base64`, `time`, `roxmltree`, `zip` (deflate only), `ureq` 2. Tests:
+`num-traits`, `rand_core`, `sha1`, `sha2`, `base64`, `time`, `roxmltree`, `zip` (deflate only), `ureq` 2 (feature `http`, on by default: without it the crate builds for
+`wasm32-unknown-unknown`, and the caller implements `TimeStampService`, `OcspService` and `CertificateSource`). Tests:
 `serde_json` reads the fixtures recorded by `tools/csharp-oracle` in `testdata/oracle/pki`.
 
 ## Visibility

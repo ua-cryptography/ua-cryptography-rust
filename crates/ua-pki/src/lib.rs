@@ -9,8 +9,8 @@
 //!   signer.
 //! - Time-stamps and OCSP: [`TimeStampToken`], [`time_stamp_protocol`]; [`OcspResponse`].
 //! - Services: the traits [`TimeStampService`], [`OcspService`], [`CertificateSource`] with their HTTP clients
-//!   ([`HttpTimeStampService`], [`HttpOcspService`], [`HttpCertificateSource`]); [`LongTermValidationData`];
-//!   [`certificate_files`] reads certificate files and bundles.
+//!   ([`HttpTimeStampService`], [`HttpOcspService`], [`HttpCertificateSource`], feature `http`, on by default);
+//!   [`LongTermValidationData`]; [`certificate_files`] reads certificate files and bundles.
 //! - Signing: [`CadesSigner`], [`XadesSigner`], [`asic_container`]; the services a signer uses are
 //!   [`SignatureServices`].
 //! - Verification: [`signature_verifier`] (any format), [`cades_verifier`], [`xades_verifier`],
@@ -44,8 +44,11 @@ pub use cms::SignerInfo;
 pub use keystore::JksKeyStore;
 pub use ocsp::OcspResponse;
 pub use services::CertificateSource;
+#[cfg(feature = "http")]
 pub use services::HttpCertificateSource;
+#[cfg(feature = "http")]
 pub use services::HttpOcspService;
+#[cfg(feature = "http")]
 pub use services::HttpTimeStampService;
 pub use services::LongTermValidationData;
 pub use services::OcspService;

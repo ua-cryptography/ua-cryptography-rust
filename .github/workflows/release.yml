@@ -1,0 +1,393 @@
+name: Release
+
+# On a version tag (v1.2.3, v1.2.3-beta.1): the tests, then the ua_cryptography library (crates/ua-ffi) for every
+# platform, then a GitHub release with one archive per platform and SHA256SUMS. Nothing is published to a
+# package registry: that stays the author's decision.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  # ring compiles C: without these it targets the SDK the runner happens to have.
+  MACOSX_DEPLOYMENT_TARGET: '11.0'
+  IPHONEOS_DEPLOYMENT_TARGET: '13.0'
+
+jobs:
+  test:
+    uses: ./.github/workflows/ci.yml
+
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: The tag names the crate's version
+        id: version
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          crate_version="$(cargo metadata --no-deps --format-version 1 \
+            | jq -r '.packages[] | select(.name == "ua-ffi") | .version')"
+          if [[ "$version" != "$crate_version" ]]; then
+            echo "::error::Tag $GITHUB_REF_NAME, but the workspace version is $crate_version"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  windows:
+    needs: [test, version]
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-pc-windows-msvc
+            platform: windows-x64
+            is_native: true
+          # Cross-compiled: the smoke test cannot run on the x64 runner. ring needs the runner's clang here.
+          - target: aarch64-pc-windows-msvc
+            platform: windows-arm64
+            is_native: false
+    env:
+      PACKAGE: ua-cryptography-${{ needs.version.outputs.version }}-${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+
+      - name: Build
+        run: cargo build --release --locked -p ua-ffi --target ${{ matrix.target }}
+
+      - name: Package
+        shell: bash
+        run: |
+          built="target/${{ matrix.target }}/release"
+          mkdir -p "$PACKAGE/include" "$PACKAGE/lib"
+          cp crates/ua-ffi/include/ua_cryptography.h "$PACKAGE/include/"
+          cp "$built/ua_cryptography.dll" "$built/ua_cryptography.dll.lib" "$built/ua_cryptography.lib" \
+            "$built/ua_cryptography.pdb" "$PACKAGE/lib/"
+          build_scripts/ffi-static-libs.sh "${{ matrix.target }}" "$PACKAGE/lib/native-static-libs.txt"
+          cp LICENSE THIRD-PARTY-NOTICES.md crates/ua-ffi/README.md "$PACKAGE/"
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        if: matrix.is_native
+
+      - name: Smoke test
+        if: matrix.is_native
+        shell: cmd
+        run: |
+          cl /nologo /std:c11 /I %PACKAGE%\include crates\ua-ffi\tests\c\smoke_test.c %PACKAGE%\lib\ua_cryptography.dll.lib /Fe:smoke_test.exe
+          copy %PACKAGE%\lib\ua_cryptography.dll .
+          smoke_test.exe
+
+      - name: Archive
+        shell: pwsh
+        run: Compress-Archive -Path $env:PACKAGE -DestinationPath "$env:PACKAGE.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PACKAGE }}
+          path: ${{ env.PACKAGE }}.zip
+          if-no-files-found: error
+
+  macos:
+    needs: [test, version]
+    runs-on: macos-latest
+    env:
+      PACKAGE: ua-cryptography-${{ needs.version.outputs.version }}-macos-universal
+      # cargo's strip of the dylib breaks the linker of newer Xcode releases ("mis-aligned LINKEDIT string pool").
+      CARGO_PROFILE_RELEASE_STRIP: none
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: |
+          cargo build --release --locked -p ua-ffi --target aarch64-apple-darwin
+          cargo build --release --locked -p ua-ffi --target x86_64-apple-darwin
+
+      - name: Package
+        run: |
+          mkdir -p "$PACKAGE/include" "$PACKAGE/lib"
+          cp crates/ua-ffi/include/ua_cryptography.h crates/ua-ffi/include/module.modulemap "$PACKAGE/include/"
+          for kind in a dylib; do
+            lipo -create -output "$PACKAGE/lib/libua_cryptography.$kind" \
+              "target/aarch64-apple-darwin/release/libua_cryptography.$kind" \
+              "target/x86_64-apple-darwin/release/libua_cryptography.$kind"
+          done
+          # rustc writes the build directory as the install name; the changed dylib needs a fresh ad-hoc signature.
+          install_name_tool -id @rpath/libua_cryptography.dylib "$PACKAGE/lib/libua_cryptography.dylib"
+          codesign --force --sign - "$PACKAGE/lib/libua_cryptography.dylib"
+          lipo -info "$PACKAGE/lib/libua_cryptography.a" "$PACKAGE/lib/libua_cryptography.dylib"
+          build_scripts/ffi-static-libs.sh aarch64-apple-darwin "$PACKAGE/lib/native-static-libs.txt"
+          cp LICENSE THIRD-PARTY-NOTICES.md crates/ua-ffi/README.md "$PACKAGE/"
+
+      - name: Smoke test
+        run: |
+          cc -std=c11 -Wall -I "$PACKAGE/include" crates/ua-ffi/tests/c/smoke_test.c \
+            -L "$PACKAGE/lib" -lua_cryptography -Wl,-rpath,"$PWD/$PACKAGE/lib" -o smoke_test
+          ./smoke_test
+          # The x86_64 slice runs where the runner has Rosetta.
+          if arch -x86_64 /usr/bin/true 2> /dev/null; then
+            cc -std=c11 -arch x86_64 -I "$PACKAGE/include" crates/ua-ffi/tests/c/smoke_test.c \
+              -L "$PACKAGE/lib" -lua_cryptography -Wl,-rpath,"$PWD/$PACKAGE/lib" -o smoke_test_x86_64
+            arch -x86_64 ./smoke_test_x86_64
+          else
+            echo "::notice::No Rosetta on the runner: the x86_64 slice is built but not run."
+          fi
+
+      - name: Archive
+        run: zip -r -y "$PACKAGE.zip" "$PACKAGE"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PACKAGE }}
+          path: ${{ env.PACKAGE }}.zip
+          if-no-files-found: error
+
+  linux:
+    needs: [test, version]
+    # The oldest supported image: the library runs on glibc 2.35 and newer.
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            platform: linux-x64
+            is_native: true
+          # Cross-compiled with the distribution's GNU toolchain: the smoke test cannot run on the x64 runner.
+          - target: aarch64-unknown-linux-gnu
+            platform: linux-arm64
+            is_native: false
+    env:
+      PACKAGE: ua-cryptography-${{ needs.version.outputs.version }}-${{ matrix.platform }}
+      CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+      CC_aarch64_unknown_linux_gnu: aarch64-linux-gnu-gcc
+      AR_aarch64_unknown_linux_gnu: aarch64-linux-gnu-ar
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+
+      - name: Cross toolchain
+        if: ${{ !matrix.is_native }}
+        run: sudo apt-get update && sudo apt-get install -y gcc-aarch64-linux-gnu
+
+      - name: Build
+        run: cargo build --release --locked -p ua-ffi --target ${{ matrix.target }}
+
+      - name: Package
+        run: |
+          built="target/${{ matrix.target }}/release"
+          mkdir -p "$PACKAGE/include" "$PACKAGE/lib"
+          cp crates/ua-ffi/include/ua_cryptography.h "$PACKAGE/include/"
+          cp "$built/libua_cryptography.so" "$built/libua_cryptography.a" "$PACKAGE/lib/"
+          build_scripts/ffi-static-libs.sh "${{ matrix.target }}" "$PACKAGE/lib/native-static-libs.txt"
+          cp LICENSE THIRD-PARTY-NOTICES.md crates/ua-ffi/README.md "$PACKAGE/"
+
+      - name: Smoke test
+        if: matrix.is_native
+        run: |
+          cc -std=c11 -Wall -I "$PACKAGE/include" crates/ua-ffi/tests/c/smoke_test.c \
+            -L "$PACKAGE/lib" -lua_cryptography -Wl,-rpath,"$PWD/$PACKAGE/lib" -o smoke_test
+          ./smoke_test
+
+      - name: Archive
+        run: tar -czf "$PACKAGE.tar.gz" "$PACKAGE"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PACKAGE }}
+          path: ${{ env.PACKAGE }}.tar.gz
+          if-no-files-found: error
+
+  android:
+    needs: [test, version]
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE: ua-cryptography-${{ needs.version.outputs.version }}-android
+      # 16 KB pages, which Android 15 devices may use and Google Play requires.
+      RUSTFLAGS: -C link-arg=-Wl,-z,max-page-size=16384
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android, armv7-linux-androideabi, i686-linux-android, x86_64-linux-android
+
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-ndk
+
+      # API level 21 (Android 5.0), the lowest the NDK still supports; the runner's latest NDK.
+      - name: Build
+        run: |
+          export ANDROID_NDK_HOME="$ANDROID_NDK_LATEST_HOME"
+          cargo ndk --platform 21 --output-dir "$PACKAGE/jniLibs" \
+            -t arm64-v8a -t armeabi-v7a -t x86 -t x86_64 \
+            build --release --locked -p ua-ffi
+
+      - name: Package
+        run: |
+          mkdir -p "$PACKAGE/include"
+          cp crates/ua-ffi/include/ua_cryptography.h "$PACKAGE/include/"
+          cp LICENSE THIRD-PARTY-NOTICES.md crates/ua-ffi/README.md "$PACKAGE/"
+          find "$PACKAGE/jniLibs" -name '*.so' | sort
+          test "$(find "$PACKAGE/jniLibs" -name libua_cryptography.so | wc -l)" -eq 4
+
+      - name: Archive
+        run: zip -r "$PACKAGE.zip" "$PACKAGE"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PACKAGE }}
+          path: ${{ env.PACKAGE }}.zip
+          if-no-files-found: error
+
+  ios:
+    needs: [test, version]
+    runs-on: macos-latest
+    env:
+      PACKAGE: ua-cryptography-${{ needs.version.outputs.version }}-ios
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-ios, aarch64-apple-ios-sim, x86_64-apple-ios
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: |
+          for target in aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios; do
+            cargo build --release --locked -p ua-ffi --target "$target" --lib
+          done
+
+      # Static libraries: a device slice and one simulator slice for both architectures.
+      - name: XCFramework
+        run: |
+          mkdir -p headers simulator "$PACKAGE"
+          cp crates/ua-ffi/include/ua_cryptography.h crates/ua-ffi/include/module.modulemap headers/
+          lipo -create -output simulator/libua_cryptography.a \
+            target/aarch64-apple-ios-sim/release/libua_cryptography.a \
+            target/x86_64-apple-ios/release/libua_cryptography.a
+          xcodebuild -create-xcframework \
+            -library target/aarch64-apple-ios/release/libua_cryptography.a -headers headers \
+            -library simulator/libua_cryptography.a -headers headers \
+            -output "$PACKAGE/UaCryptography.xcframework"
+          build_scripts/ffi-static-libs.sh aarch64-apple-ios "$PACKAGE/native-static-libs.txt"
+          cp LICENSE THIRD-PARTY-NOTICES.md crates/ua-ffi/README.md "$PACKAGE/"
+
+      - name: Archive
+        run: zip -r -y "$PACKAGE.zip" "$PACKAGE"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PACKAGE }}
+          path: ${{ env.PACKAGE }}.zip
+          if-no-files-found: error
+
+  wasm:
+    needs: [test, version]
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.version.outputs.version }}
+      PACKAGE: ua-cryptography-${{ needs.version.outputs.version }}-wasm
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-pack
+
+      # An ES module for browsers: `import init, { … } from './ua_cryptography.js'; await init();`
+      - name: Build
+        run: |
+          wasm-pack build crates/ua-ffi --release --target web --out-dir "$PWD/$PACKAGE" --out-name ua_cryptography
+          cd "$PACKAGE"
+          rm -f .gitignore
+          npm pkg set name=ua-cryptography version="$VERSION"
+          cp ../LICENSE ../THIRD-PARTY-NOTICES.md .
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Smoke test
+        run: node crates/ua-ffi/tests/js/smoke_test.mjs "$PACKAGE"
+
+      - name: Archive
+        run: zip -r "$PACKAGE.zip" "$PACKAGE"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PACKAGE }}
+          path: ${{ env.PACKAGE }}.zip
+          if-no-files-found: error
+
+  release:
+    needs: [version, windows, macos, linux, android, ios, wasm]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the GitHub release
+    env:
+      VERSION: ${{ needs.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Checksums
+        working-directory: dist
+        run: |
+          sha256sum ua-cryptography-* > SHA256SUMS
+          cat SHA256SUMS
+
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease=""
+          if [[ "$VERSION" == *-* ]]; then prerelease="--prerelease"; fi
+          if gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" dist/* --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" dist/* \
+              --verify-tag --title "$GITHUB_REF_NAME" --generate-notes $prerelease
+          fi

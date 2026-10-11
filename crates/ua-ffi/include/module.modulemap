@@ -1,0 +1,4 @@
+module UaCryptography {
+    header "ua_cryptography.h"
+    export *
+}

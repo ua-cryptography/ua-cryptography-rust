@@ -77,6 +77,7 @@ build_scripts/demo.sh                                    # every format, verifie
 | [`ua-xml-c14n`](crates/ua-xml-c14n) | Canonical XML 1.0 and Exclusive C14N 1.0 over `roxmltree`, safe parsing |
 | [`ua-pki`](crates/ua-pki) | X.509, JKS, CMS/CAdES, TSP, OCSP, XAdES, ASiC, certification paths, HTTP clients of the PKI services |
 | [`ua-sign`](crates/ua-sign) | the command-line tool |
+| [`ua-ffi`](crates/ua-ffi) | `ua_cryptography`, everything above as a native library: a C ABI for Windows, macOS, Linux, Android, iOS and JavaScript bindings for the browser |
 
 Each crate has a README with its API, boundaries and dependencies.
 
@@ -90,7 +91,13 @@ cargo clippy --workspace --all-targets                   # zero warnings
 cargo run --release -p ua-dstu4145 --example bench       # performance table
 cargo run --release -p ua-dstu4145 --example bench --features ua-gf2m/portable  # without PMULL/PCLMUL
 build_scripts/interop.sh                                 # cross-verification with the C# ua-sign (needs .NET 10)
+build_scripts/ffi-header.sh                              # regenerates the C header of ua-ffi (needs cbindgen)
 ```
+
+CI (`.github/workflows/ci.yml`) runs the tests on Linux, Windows and macOS on every push and pull request. A `v*` tag
+runs `.github/workflows/release.yml`: the tests, then the `ua_cryptography` library for Windows (x64, ARM64), macOS
+(universal), Linux (x64, ARM64), Android (four ABIs), iOS (XCFramework) and the browser (WebAssembly), attached to
+a GitHub release — see [crates/ua-ffi](crates/ua-ffi).
 
 ## How the port is verified
 

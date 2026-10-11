@@ -8,7 +8,7 @@ publish.workspace = true
 
 [dependencies]
 # Key stores, certificates, signing in every format and level, verification and its reports.
-ua-pki.workspace = true
+ua-pki = { workspace = true, features = ["http"] }
 # The curves of table Г.1 a new key is generated on.
 ua-dstu4145.workspace = true
 # The basis of a key's field, shown as PB or ONB.
